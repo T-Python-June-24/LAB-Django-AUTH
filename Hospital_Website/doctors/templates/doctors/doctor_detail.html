@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Doctor Detail{% endblock title %}
+
+{% block content %}
+
+<script>
+    AOS.init();
+</script>
+
+<div class="container mx-auto p-4">
+    <div class="flex flex-col md:flex-row">
+        <!-- Image Section -->
+        <div class="w-full md:w-1/2 mb-6 md:mb-0">
+            <img src="{{ doctor.photo.url }}" alt="{{ doctor.full_name }}'s Photo"
+                class="w-full h-[500px] object-cover rounded-xl shadow-md">    
+                <p class="text-gray-600 text-lg m-8"><strong>Bio:</strong> {{ doctor.bio }}</p>
+        </div>
+
+        <!-- Details Section -->
+        <div class="w-full md:w-1/2 pl-0 md:pl-6">
+            <h1 class="text-3xl font-bold mb-4">{{ doctor.full_name }}</h1>
+            <p class="text-gray-600 text-lg mb-2"><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 mb-6 flex justify-center items-center">
+                <a href="{% url 'doctors:doctor_update' doctor.pk %}" class="bg-teal-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-teal-600">Edit</a>
+                <form method="post" action="{% url 'doctors:doctor_delete' doctor.pk %}" class="ml-4">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-red-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-red-600">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+
+{% endblock content %}

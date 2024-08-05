@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Clinics{% endblock title %}
+
+{% block content %}
+<div class="content-home-padding pr-4 md:pr-16">
+    <h1 class="bold-font-prop tilt-in-fwd-bl text-blue-800">Clinic List</h1>
+
+    {% if request.user.is_staff %}
+    <div class="mb-8 flex flex-wrap justify-between items-center">
+        <form method="GET" action="" class="m-4 flex flex-wrap items-center">
+            <img src="{% static 'images/filter.png' %}" class="h-[20px] inline-flex justify-center mr-4" alt="Filter">
+            <label for="specialization" class="mr-2">Specialization:</label>
+            <select name="specialization" id="specialization" class="mr-4">
+                <option value="">All</option>
+                {% for specialization in specializations %}
+                <option value="{{ specialization }}" {% if request.GET.specialization == specialization %}selected{% endif %}>
+                    {{ specialization }}
+                </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="h-[25px] bg-blue-800 rounded-xl px-8 text-white font-bold mt-2 md:mt-0">
+                Apply filter <img src="{% static 'images/done.png' %}" class="h-[20px] inline-flex justify-center" alt="Filter">
+            </button>
+        </form>
+        <div class="flex flex-wrap justify-end items-end pr-4 md:pr-8 mt-4 md:mt-0">
+            <a href="{% url 'clinics:import_clinics_csv' %}" class="mr-3 py-2 px-6 bg-orange-600 hover:bg-orange-600 text-sm text-white font-bold rounded-lg transition duration-200 mb-2 md:mb-0">Import CSV <i class="fas fa-file-csv mr-2"></i></a>
+            <a href="{% url 'clinics:export_clinics_csv' %}" class="mr-3 py-2 px-6 bg-teal-600 hover:bg-teal-600 text-sm text-white font-bold rounded-lg transition duration-200 mb-2 md:mb-0">Export to CSV <i class="fas fa-file-csv mr-2"></i></a>
+            <a href="{% url 'clinics:export_clinics_excel' %}" class="mr-3 py-2 px-6 bg-green-600 hover:bg-green-600 text-sm text-white font-bold rounded-lg transition duration-200 mb-2 md:mb-0">Export To Excel <i class="fas fa-file-excel mr-2"></i></a>
+            <a href="{% url 'clinics:clinic_create' %}" class="mr-3 py-2 px-6 bg-blue-800 hover:bg-blue-600 text-sm text-white font-bold rounded-lg transition duration-200">Add Clinic <i class="fa fa-fw fa-plus" aria-hidden="true"></i></a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+        {% for clinic in clinics %}
+        <div class="relative flex flex-col bg-white shadow-lg rounded-xl overflow-hidden transition-transform transform hover:scale-105">
+            <div class="relative">
+                {% if clinic.feature_image %}
+                    <img src="{{ clinic.feature_image.url }}" alt="Clinic Image" class="w-full h-48 object-cover rounded-t-xl"/>
+                {% else %}
+                    <img src="{% static 'images/default_clinic.png' %}" alt="Default Clinic" class="w-full h-48 object-cover rounded-t-xl"/>
+                {% endif %}
+                <div class="absolute top-2 right-2">
+                    <a href="{% url 'clinics:clinic_detail' clinic.pk %}" class="text-white bg-blue-800 px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">Preview</a>
+                </div>
+            </div>
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-blue-800 mb-2">
+                    <a href="{% url 'clinics:clinic_detail' clinic.pk %}" class="hover:text-teal-500">{{ clinic.name }}</a>
+                </h2>
+                <p class="text-gray-600 mb-2">
+                    {% if clinic.doctors.exists %}
+                        <strong class="text-gray-900">Doctors:</strong>
+                        <ul class="list-disc pl-4">
+                            {% for doctor in clinic.doctors.all %}
+                                <li>{{ doctor.name }}</li>
+                            {% empty %}
+                                <li>No doctors available</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        No doctors available
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-gray-500 col-span-full">No clinics found.</p>
+        {% endfor %}
+    </div>
+
+    <div class="flex justify-center items-center my-8">
+        <div class="flex items-center justify-center mt-8 space-x-2">
+            {% if clinics.has_previous %}
+                <a href="?page=1&specialization={{ request.GET.specialization }}" class="px-4 py-2 bg-blue-800 text-white rounded-lg shadow-md transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105">&laquo; First</a>
+                <a href="?page={{ clinics.previous_page_number }}&specialization={{ request.GET.specialization }}" class="px-4 py-2 bg-blue-800 text-white rounded-lg shadow-md transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105">Previous</a>
+            {% endif %}
+            
+            <span class="px-4 py-2 text-gray-700 font-semibold">Page {{ clinics.number }} of {{ clinics.paginator.num_pages }}</span>
+            
+            {% if clinics.has_next %}
+                <a href="?page={{ clinics.next_page_number }}&specialization={{ request.GET.specialization }}" class="px-4 py-2 bg-blue-800 text-white rounded-lg shadow-md transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105">Next</a>
+                <a href="?page={{ clinics.paginator.num_pages }}&specialization={{ request.GET.specialization }}" class="px-4 py-2 bg-blue-800 text-white rounded-lg shadow-md transition duration-300 ease-in-out transform hover:bg-blue-900 hover:scale-105">Last &raquo;</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

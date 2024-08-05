@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="py-12 ">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-center text-blue-800 mb-8">{{ clinic.name }}</h2>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Description:</h3>
+                <p class="text-gray-700">{{ clinic.description }}</p>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Working Hours:</h3>
+                <p class="text-gray-700">{{ clinic.get_working_hours_display }}</p>
+            </div>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-800">Doctors:</h3>
+                <ul>
+                    {% for doctor in clinic.doctors.all %}
+                        <li>{{ doctor.full_name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="text-center mt-8">
+                <a href="{% url 'clinics:clinic_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition duration-300">Back to List</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
