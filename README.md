@@ -49,7 +49,6 @@ In this project you are going to build  a web application for a hospital. The we
    - **Fields**:
      - `name` (CharField)
      - `description` (TextField)
-     - `location` (CharField)
      - `working_hours` (You can make it a charfield with choices consisting of times slots available)
      - `doctors` (Many-to-Many with `Doctor`)
    - **Relationships**:
