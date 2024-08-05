@@ -50,6 +50,7 @@ In this project you are going to build  a web application for a hospital. The we
      - `name` (CharField)
      - `description` (TextField)
      - `working_hours` (You can make it a charfield with choices consisting of times slots available)
+     - `feature_image` (ImageField)
      - `doctors` (Many-to-Many with `Doctor`)
    - **Relationships**:
      - Many-to-Many with `Doctor`.
