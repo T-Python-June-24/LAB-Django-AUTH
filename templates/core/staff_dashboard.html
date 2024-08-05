@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Staff Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-4">Staff Dashboard</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">Manage Clinics</h2>
+      <p>Add, edit, or view clinics.</p>
+      <div class="card-actions justify-end">
+        <a href="{% url 'clinic_list' %}" class="btn btn-primary">View Clinics</a>
+        <a href="{% url 'add_clinic' %}" class="btn btn-secondary">Add New Clinic</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">Manage Doctors</h2>
+      <p>Add, edit, or view doctors.</p>
+      <div class="card-actions justify-end">
+        <a href="{% url 'doctor_list' %}" class="btn btn-primary">View Doctors</a>
+        <a href="{% url 'add_doctor' %}" class="btn btn-secondary">Add New Doctor</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-8">
+  <h2 class="text-2xl font-bold mb-4">Recent Reservations</h2>
+  <div class="overflow-x-auto">
+    <table class="table w-full">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Clinic</th>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reservation in recent_reservations %}
+          <tr>
+            <td>{{ reservation.user.username }}</td>
+            <td>{{ reservation.clinic.name }}</td>
+            <td>{{ reservation.doctor.full_name }}</td>
+            <td>{{ reservation.date }}</td>
+            <td>{{ reservation.time_slot }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">No recent reservations.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

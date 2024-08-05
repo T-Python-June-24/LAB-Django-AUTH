@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Make a Reservation{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Make a Reservation</h1>
+
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-control">
+          <label for="{{ form.clinic.id_for_label }}" class="label">
+            <span class="label-text">Clinic</span>
+          </label>
+          {{ form.clinic }}
+        </div>
+        <div class="form-control mt-4">
+          <label for="{{ form.doctor.id_for_label }}" class="label">
+            <span class="label-text">Doctor</span>
+          </label>
+          {{ form.doctor }}
+        </div>
+        <div class="form-control mt-4">
+          <label for="{{ form.date.id_for_label }}" class="label">
+            <span class="label-text">Date</span>
+          </label>
+          {{ form.date }}
+        </div>
+        <div class="form-control mt-4">
+          <label for="{{ form.time_slot.id_for_label }}" class="label">
+            <span class="label-text">Time Slot</span>
+          </label>
+          {{ form.time_slot }}
+        </div>
+        <div class="form-control mt-6">
+          <button type="submit" class="btn btn-primary">Make Reservation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const clinicSelect = document.getElementById('{{ form.clinic.id_for_label }}');
+    const doctorSelect = document.getElementById('{{ form.doctor.id_for_label }}');
+
+    clinicSelect.addEventListener('change', function() {
+      const clinicId = this.value;
+      fetch(`/reservations/get-doctors/${clinicId}/`)
+        .then(response => response.json())
+        .then(data => {
+          doctorSelect.innerHTML = '<option value="">Select a doctor</option>';
+          data.forEach(doctor => {
+            const option = document.createElement('option');
+            option.value = doctor.id;
+            option.textContent = doctor.full_name;
+            doctorSelect.appendChild(option);
+          });
+        });
+    });
+  });
+</script>
+{% endblock %}

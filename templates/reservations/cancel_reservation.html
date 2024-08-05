@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Reservation{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Cancel Reservation</h1>
+
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title">Are you sure you want to cancel this reservation?</h2>
+            <p><strong>Clinic:</strong> {{ reservation.clinic.name }}</p>
+            <p><strong>Doctor:</strong> {{ reservation.doctor.full_name }}</p>
+            <p><strong>Date:</strong> {{ reservation.date }}</p>
+            <p><strong>Time:</strong> {{ reservation.time_slot }}</p>
+
+            <form method="post" class="mt-6">
+                {% csrf_token %}
+                <div class="flex justify-end space-x-4">
+                    <a href="{% url 'reservation_detail' reservation.id %}" class="btn btn-outline">Go
+                        Back</a>
+                    <button type="submit" class="btn btn-error">Confirm Cancellation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
