@@ -1,29 +1,18 @@
-
 from django.db import models
 from doctors.models import Doctor
+from django.utils import timezone
 
 class Clinic(models.Model):
-    WORKING_HOURS_CHOICES = [
-    ('09:00 - 12:00', '09:00 - 12:00'),
-    ('12:00 - 15:00', '12:00 - 15:00'),
-    ('15:00 - 18:00', '15:00 - 18:00'),
-    ('18:00 - 21:00', '18:00 - 21:00'),
-    ('21:00 - 00:00', '21:00 - 00:00'),
-    ('00:00 - 03:00', '00:00 - 03:00'),
-    ('03:00 - 06:00', '03:00 - 06:00'),
-    ('06:00 - 09:00', '06:00 - 09:00'),
-    ('10:00 - 13:00', '10:00 - 13:00'),
-    ('13:00 - 16:00', '13:00 - 16:00'),
-    ('16:00 - 19:00', '16:00 - 19:00'),
-    ('19:00 - 22:00', '19:00 - 22:00'),
-]
-
-
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=100)
     description = models.TextField()
-    working_hours = models.CharField(max_length=50, choices=WORKING_HOURS_CHOICES)
-    feature_image = models.ImageField(upload_to='clinic_images/')
+    opening_time = models.TimeField(default=timezone.now().replace(hour=9, minute=0, second=0, microsecond=0).time())
+    closing_time = models.TimeField(default=timezone.now().replace(hour=17, minute=0, second=0, microsecond=0).time())
+    feature_image = models.ImageField(upload_to='clinics/', null=True, blank=True)
     doctors = models.ManyToManyField(Doctor, related_name='clinics')
 
     def __str__(self):
         return self.name
+
+    @property
+    def working_hours(self):
+        return f"{self.opening_time.strftime('%H:%M')} - {self.closing_time.strftime('%H:%M')}"

@@ -1,0 +1,51 @@
+<!-- templates/reservations/update_reservation.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Update Reservation{% endblock title %}
+
+{% block content %}
+<div class="p-4 md:p-8 bg-white shadow rounded-lg">
+    <h1 class="text-blue-800 text-3xl font-bold mb-6">Update Reservation</h1>
+
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 gap-6">
+            <!-- Clinic Dropdown -->
+            <div>
+                <label for="clinic" class="block text-sm font-medium text-gray-700 mb-1">Clinic</label>
+                <select id="clinic" name="clinic" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    {% for clinic in clinics %}
+                        <option value="{{ clinic.id }}" {% if clinic.id == form.instance.clinic.id %}selected{% endif %}>{{ clinic.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Doctor Dropdown -->
+            <div>
+                <label for="doctor" class="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
+                <select id="doctor" name="doctor" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}" {% if doctor.id == form.instance.doctor.id %}selected{% endif %}>{{ doctor.full_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Reservation Date -->
+            <div>
+                <label for="reservation_date" class="block text-sm font-medium text-gray-700 mb-1">Reservation Date</label>
+                <input type="date" id="reservation_date" name="reservation_date" value="{{ form.instance.reservation_date|date:'Y-m-d' }}" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <!-- Reservation Time -->
+            <div>
+                <label for="reservation_time" class="block text-sm font-medium text-gray-700 mb-1">Reservation Time</label>
+                <input type="time" id="reservation_time" name="reservation_time" value="{{ form.instance.reservation_time|date:'H:i' }}" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+        </div>
+        <div class="mt-8 flex justify-end">
+            <button type="submit" class="bg-blue-800 hover:bg-blue-600 text-white font-bold rounded-lg px-4 py-2 transition duration-200">Update</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

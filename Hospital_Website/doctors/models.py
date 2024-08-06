@@ -26,7 +26,7 @@ class Doctor(models.Model):
     ('Obstetrics and Gynecology', 'Obstetrics and Gynecology'),
 ]
 
-    full_name = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=255)
     specialization = models.CharField(max_length=50, choices=SPECIALIZATIONS)
     bio = models.TextField()
     photo = models.ImageField(upload_to='doctor_photos/')

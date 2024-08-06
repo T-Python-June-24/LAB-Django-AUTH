@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %} Add Doctor {% endblock title %}
+{% block title %} Edit Doctor {% endblock title %}
 
 {% block content %}
 <section class="py-12 bg-gray-100">
     <div class="max-w-4xl mx-auto px-4">
         <div class="bg-white rounded-lg shadow-lg p-8">
             <h2 class="text-3xl font-bold text-center text-blue-800 mb-8">
-               Add Doctor
+            Edit Doctor
             </h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -16,7 +16,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-1 gap-3">
                     <div class="mb-4">
                         <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name:</label>
-                        <input type="text" id="full_name" name="full_name" placeholder="Enter full name" minlength="3" maxlength="255"  class="mt-1 p-4 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="full_name" value="{{ form.full_name.value }}" name="full_name" placeholder="Enter full name" minlength="3" maxlength="255"  class="mt-1 p-4 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
 
                     <div class="mb-4">
@@ -32,7 +32,7 @@
 
                     <div class="mb-4">
                         <label for="bio" class="block text-sm font-medium text-gray-700">Bio:</label>
-                        <textarea id="bio" name="bio" placeholder="Enter bio" class="mt-1 p-4 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        <textarea id="bio" name="bio" placeholder="Enter bio" class="mt-1 p-4 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500">{{ form.bio.value }}</textarea>
                     </div>
 
                     <div class="mb-4">
@@ -46,7 +46,7 @@
                 
                 <div class="text-center mt-8">
                     <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg w-full transition duration-300">
-                        Add Doctor
+                        Update Doctor
                     </button>
                 </div>
             </form>

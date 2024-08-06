@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Confirm Delete{% endblock title %}
+
+{% block content %}
+<div class="flex justify-start items-start min-h-screen">
+    <div class="text-center  max-w-lg mx-auto">
+        <img src="{% static 'images/delete.webp' %}" alt="Delete Icon" class="w-1/2 mx-auto mb-4"/>
+
+        <h1 class="text-4xl font-bold mb-4 text-balck">Delete Reservation</h1>
+        <p class="text-lg font-semibold mb-6 text-gray-700">Are you sure you want to delete this reservation?</p>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div class="flex justify-center space-x-4">
+                <button type="submit" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-8 rounded-lg transition duration-200">Delete</button>
+                <a href="{% url 'reservations:reservation_list' %}" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-8 rounded-lg transition duration-200">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

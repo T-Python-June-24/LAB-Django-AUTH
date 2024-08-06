@@ -7,9 +7,8 @@ class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    date = models.DateField()
-    time_slot = models.TimeField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    reservation_date = models.DateField()
+    reservation_time = models.TimeField()
 
     def __str__(self):
-        return f'Reservation by {self.user.username} at {self.clinic.name} with {self.doctor.full_name}'
+        return f"Reservation for {self.user.username} with {self.doctor.full_name} at {self.clinic.name}"
