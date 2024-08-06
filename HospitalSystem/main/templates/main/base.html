@@ -25,7 +25,7 @@
 
 <body>
 
-  <div class="container-fluid sticky-top  bg-light pt-4 pb-4">
+  <div class="container-fluid sticky-top  shadow bg-light pt-4 pb-4">
     <nav class="navbar navbar-expand-lg navbar-light top-nav" aria-label="Eighth navbar example">
       <div class="container">
         <a class="navbar-brand" href="/">
@@ -39,6 +39,9 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarsExample07">
           <ul class="navbar-nav mb-2 mb-lg-0 d-flex gap-4 align-items-center">
+            <li class="nav-item">
+              <a class="nav-link " aria-current="page" href="">home</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link " aria-current="page" href="">clinics</a>
             </li>
@@ -62,10 +65,6 @@
             </li>
 
 
-
-
-
-
             <form role="search" method="get" action="">
               <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search"
                 value="{{request.GET.search}}" required minlength="3">
@@ -75,22 +74,22 @@
             <li class="nav-item">
 
 
+              {% if request.user.is_authenticated %}
               <div class="d-flex gap-1 align-items-center">
-                <img src="" class="rounded-circle avatar" />
-                <a class="nav-link" href=""></a>
-                <a class="nav-link" href="">Log out</a>
+                <a class="nav-link" href="#">{{ request.user.username }},</a>
+                <a  class="nav-link" href="{% url 'accounts:log_out' %}?next={{request.path}}">Log out</a>
               </div>
-
+              {% else %}
               <div class="dropdown bg-transparent">
-                <a class="btn nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">
+                <a class="btn nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Sign up/ Sign in
                 </a>
-                <ul class="dropdown-menu p-3">
-                  <li><a class="dropdown-item" href="#">Sign up</a></li>
-                  <li><a class="dropdown-item" href="#">Sign in</a></li>
-                </ul>
-              </div>
+              <ul class="dropdown-menu p-3">
+                <li><a class="dropdown-item" href="{% url 'accounts:signup' %}?next={{request.path}}">Sign up</a></li>
+                <li><a class="dropdown-item" href="{% url 'accounts:signin' %}?next={{request.path}}">Sign in</a></li>
+              </ul>
+            </div>
+              {% endif %}
 
 
 
@@ -108,7 +107,7 @@
     {% if messages %}
 
     {% for message in messages %}
-    <div class="alert {{message.tags}} alert-dismissible fade show" role="alert">
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
       {{message}}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>

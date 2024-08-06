@@ -7,12 +7,13 @@
 
 h1 {
     font-size: 4rem;
+    text-transform: capitalize;
     
 }
 
 h1, h2 {
 
-
+    text-transform: capitalize;
 }
 
 .navbar-brand h2 {
@@ -103,7 +104,7 @@ input[type="search"]{
 
 
 .poster-thumb {
-    height: 250px;
+    height: 400px;
 }
 
 
@@ -118,3 +119,10 @@ a:hover {
     transition: all 0.15s ease-out;
 }
 
+.nav-link {
+    text-transform: capitalize;
+}
+
+.center-text-table td, .center-text-table th {
+    text-align: center;
+}
