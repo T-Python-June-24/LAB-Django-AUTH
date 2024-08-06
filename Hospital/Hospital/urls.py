@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("main.urls")),
     path("doctors/", include("doctors.urls")),
-    path("clincs/", include("clinics.urls")),
+    path("clinics/", include("clinics.urls")),
     path("profiels/", include("profiles.urls")),
     path("reservations/", include("reservations.urls")),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
