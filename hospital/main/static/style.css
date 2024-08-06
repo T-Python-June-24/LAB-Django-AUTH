@@ -1,0 +1,19 @@
+* {
+  font-family: "Work Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+    background-color: rgb(233, 253, 255);
+}
+
+body.dark  {
+    background-color: rgb(6, 53, 88);
+    color: rgb(220, 220, 220);
+}
+
+body.dark h1, body.dark h2, body.dark h3 {
+    color:rgb(255, 179, 0);
+} 
