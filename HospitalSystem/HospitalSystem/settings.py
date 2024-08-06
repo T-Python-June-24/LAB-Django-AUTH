@@ -85,10 +85,20 @@ WSGI_APPLICATION = 'HospitalSystem.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hospital_db',# write the name of the DB you created
+        'USER': 'postgres', 
+        'PASSWORD': '',
+        'HOST': 'localhost'
+
     }
 }
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 
 
 # Password validation
