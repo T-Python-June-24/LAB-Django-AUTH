@@ -3,9 +3,41 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-<main>
-  <h1 class="text-center text-3xl">
-    Home Page
-  </h1>
+<main class="px-32">
+  <h1 class="text-4xl font-semibold pt-12 pb-12">Welcome to Our Hospital</h1>
+  <h2 class="text-4xl font-semibold pb-10">Clinics</h2>
+  <ul class="flex flex-row gap-6">
+    {% for clinic in clinics %}
+    <div class="py-4 px-2 border rounded-md shadow-sm">
+      <li class="w-[300px] pl-2 flex flex-col gap-4">
+        <img class="w-[280px] h-[300px] rounded-sm pl-2" src="{{ clinic.feature_image.url }}">
+        <h2 class="text-xl font-medium">{{ clinic.name }}</h2>
+        <p class="text-wrap px-2 font-thin text-sm">{{ clinic.description|truncatechars:90 }}</p>
+        <p class="px-2 font-thin text-sm">{{ clinic.working_hours }}</p>
+        <a class="text-blue-600" href="{% url 'clinics:clinic_detail' clinic.id %}">View More</a>
+      </li>
+    </div>
+    {% endfor %}
+  </ul>
+  <div class="py-4 text-blue-900 text-right">
+    <a href="{% url 'clinics:clinics_list' %}">View all clinics</a>
+  </div>
+  <h2 class="text-4xl font-semibold pb-20">Doctors</h2>
+  <ul class="flex flex-row gap-6">
+      {% for doctor in doctors %}
+      <div class="py-4 px-2 border rounded-md shadow-sm">
+        <li class="w-[300px] pl-2 flex flex-col gap-4">
+          <img class="w-[280px] h-[300px] rounded-sm pl-2" src="{{ doctor.photo.url }}">
+          <h2 class="text-xl font-medium">{{ doctor.full_name }}</h2> 
+          <p class="text-wrap px-2 font-thin text-sm">{{doctor.bio|truncatechars:90}}</p>
+          <p class="px-2 font-ligth text-sm text-green-700">{{ doctor.specialization }}</p>
+          <a class="text-blue-600" href="{% url 'doctors:doctor_detail' doctor.id %}">View More</a>
+        </li>
+      </div>
+      {% endfor %}
+  </ul>
+  <div class="py-4 text-blue-900 text-right">
+    <a href="{% url 'doctors:doctors_list' %}">View all doctors</a>
+  </div>
 </main>
 {% endblock %}

@@ -1,0 +1,45 @@
+{% extends "main/base.html" %}
+
+{% block title %}Add Doctor{% endblock %}
+
+{% block content %}
+<main class="mx-32">
+  <h1 class="text-2xl font-bold mb-4">Add Doctor</h1>
+  <form method="post" enctype="multipart/form-data" class="space-y-4 w-1/2">
+    {% csrf_token %}
+    <div>
+        <label for="full_name" class="block text-sm font-medium">Full Name:</label>
+        <input type="text" id="full_name" name="full_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+    </div>
+    
+    <div>
+        <label for="specialization" class="block text-sm font-medium">Specialization:</label>
+        <select id="specialization" name="specialization" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+            <option value="">Select Specialization</option>
+            <option value="cardiologist">Cardiologist</option>
+            <option value="neurologist">Neurologist</option>
+            <option value="dermatologist">Dermatologist</option>
+            <option value="oncologist">Oncologist</option>
+            <option value="pediatrician">Pediatrician</option>
+            <option value="psychiatrist">Psychiatrist</option>
+            <option value="gynecologist">Gynecologist</option>
+            <option value="orthopedist">Orthopedist</option>
+            <option value="urologist">Urologist</option>
+            <option value="endocrinologist">Endocrinologist</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="bio" class="block text-sm font-medium">Bio:</label>
+        <textarea id="bio" name="bio" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required></textarea>
+    </div>
+
+    <div>
+        <label for="photo" class="block text-sm font-medium">Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*" class="mt-1 block w-full " required>
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Add Doctor</button>
+  </form>
+</main>
+{% endblock %}
