@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpRequest,HttpResponse
 from .models import Doctor
 from .forms import DoctorForm
+from clinics.models import Clinic
 from django.contrib import messages 
 
 
@@ -50,4 +51,8 @@ def doctor_view(request:HttpRequest):
 
     doctors = Doctor.objects.all() 
     return render(request, "doctors/doctor_view.html", {"doctors" : doctors})
-     
+
+def doctor_detail(request:HttpRequest,doctor_id:int):
+    doctor = Doctor.objects.get(pk=doctor_id)
+    return render(request, "doctors/doctor_detail.html",{"doctor": doctor})
+

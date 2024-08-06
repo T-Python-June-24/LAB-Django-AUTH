@@ -23,7 +23,7 @@
                 <th style="background-color: #E7EFF3; color: #495D69;">Delete</th>
                 <th style="background-color: #E7EFF3; color: #495D69;">Full Name</th>
                 <th style="background-color: #E7EFF3; color: #495D69;">Specialization</th>
-                <th style="background-color: #E7EFF3; color: #495D69;">Bio</th>
+                <th style="background-color: #E7EFF3; color: #495D69;">Clinics</th>
             </tr>
         </thead>
         <tbody>
@@ -40,10 +40,18 @@
                             <span class="material-symbols-outlined">delete</span>
                         </a>
                     </td>
-                    <td>{{ doctor.full_name }}</td>
+                    <td><a href="{% url 'doctors:doctor_detail' doctor.id %}">{{ doctor.full_name }}</a></td>
                     <td>{{ doctor.get_specialization_display }}</td>
-                    <td>{{ doctor.bio }}</td>
-                </tr>
+                    <td>
+                        {% with doctor.clinic_set.all as clinics %}
+                            {% for clinic in clinics %}
+                                <a href="{% url 'clinics:clinic_detail' clinic.id %}">{{ clinic.name }}{% if not forloop.last %}, {% endif %}</a>
+                            {% empty %}
+                                No clinics
+                            {% endfor %}
+                        {% endwith %}
+                    </td>
+                                </tr>
             <!-- Modal for Update Form -->
             <div class="modal fade" id="updateModal-{{ doctor.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ doctor.id }}" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">

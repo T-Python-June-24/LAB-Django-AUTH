@@ -40,7 +40,7 @@
                                 <span class="material-symbols-outlined">delete</span>
                             </a>
                         </td>
-                        <td>{{ clinic.name }}</td>
+                        <td><a href="{% url 'clinics:clinic_detail' clinic.id %}">{{ clinic.name }}</a></td>
                         <td>{{ clinic.get_working_hours_display }}</td>
                     </tr>
                     <!-- Modal for Update Form -->

@@ -1,0 +1,53 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Our Clinics{% endblock %}
+
+{% block content %}
+<style>
+    .card {
+        overflow: hidden; 
+        position: relative;
+        transition: transform .3s ease-in-out; 
+    }
+
+    .card-img-top {
+        transition: transform .3s ease-in-out; 
+    }
+
+    .card:hover .card-img-top {
+        transform: scale(1.1);
+    }
+
+    .overlay-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white; 
+        font-size: 24px; 
+        pointer-events: none;
+        opacity: 0; 
+        transition: opacity .3s ease-in-out; 
+    }
+
+    .card:hover .overlay-text {
+        opacity: 1; 
+    }
+</style>
+<div class="container mt-4">
+    <div class="row">
+        {% for clinic in clinics %}
+        <div class="col-md-4 col-sm-12 mb-4">
+            <div class="card shadow-lg">
+                <a href="{% url 'clinics:clinic_detail' clinic.id %}"><img src="{{ clinic.feature_image.url }}" class="card-img-top" alt="{{ clinic.name }}"></a>
+                <!-- <div class="overlay-text">Explore</div> -->
+                <div class="card-body">
+                    <h5 class="card-title">{{ clinic.name }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

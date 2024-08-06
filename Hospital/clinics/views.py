@@ -32,6 +32,8 @@ def delete_clinic(request,clinic_id):
              for error in errors:
                  messages.error(request, f"{field}: {error}","alert-danger")    
      return redirect('clinics:clinic_view')
+
+
 def update_clinic(request,clinic_id):
      clinic = Clinic.objects.get(pk=clinic_id)
      doctors=Doctor.objects.all()
@@ -49,6 +51,16 @@ def update_clinic(request,clinic_id):
       
 def clinic_view(request):
 
-    clinics = Clinic.objects.all() 
-    return render(request, "clinics/clinic_view.html", {"clinics" : clinics})
-     
+    clinics = Clinic.objects.all()
+    if request.user.is_staff:
+     return render(request, "clinics/clinic_view.html", {"clinics" : clinics})
+    else:
+      return render(request, "clinics/user_clinic_view.html", {"clinics" : clinics})
+
+def clinic_detail(request,clinic_id):
+     clinic = Clinic.objects.get(pk=clinic_id)
+     doctors=clinic.doctors.all()
+     return render(request, "Clinics/clinic_detail.html",{"clinic":clinic , "doctors":doctors})
+
+
+    

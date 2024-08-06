@@ -1,5 +1,4 @@
 from django.db import models
-
 class Doctor(models.Model):
    
     class Specialization(models.TextChoices):
@@ -16,6 +15,7 @@ class Doctor(models.Model):
         OPHT="OPHT","Ophthalmology"
 
     
+
 
 
     full_name = models.CharField(max_length=255)
