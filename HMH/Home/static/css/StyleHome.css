@@ -1,0 +1,213 @@
+.text-banner{
+    text-align: center;
+  }
+.bottom {
+    font-size: 1.5rem;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    border-radius: 2rem;
+}
+.affict {
+    height: 60vh;
+    position: absolute;
+    background: #54c0b873;
+    width: 30%;
+    border-radius: 50%;
+    top: 13rem;
+}
+.affict2 {
+    position: absolute;
+    height: 100vh;
+    width: 52%;
+    border-radius: 50%;
+    right: 0;
+    border: 1rem solid #12a89d36;
+    top: 10%;
+}
+.box-dr {
+    margin-top: 2rem;
+}
+
+.box {
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.img-dr {
+    max-width: 100%;
+    height: auto; 
+    border-radius: 0.5rem; 
+    transition: opacity 1s ease-in-out; 
+    opacity: 1;
+
+}
+
+.img-dr.fade {
+    opacity: 0;
+}
+.img-dr,
+.box h4,
+.box h5,
+.box p {
+    transition: opacity 1s ease-in-out;
+}
+
+
+.box h4,
+.box h5,
+.box p {
+    margin: 0; 
+}
+
+.boxx {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.box-clinics {
+    background-color: #12a89d; 
+}
+
+.box-doctors {
+    background-color: #6f3280; 
+}
+
+.boxx h4 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.boxx p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.boxx .btn {
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+}
+.clinic-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-top: 5px solid #12a89d;
+    overflow: hidden;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition:all 0.5s;
+}
+.clinic-card:hover{
+    background-color: #12a89d;
+    color: #fff !important;
+}
+
+.clinic-image img {
+    width: 150px; /* يمكنك تغيير الحجم كما تحتاج */
+    height: auto;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.clinic-info {
+    flex: 1;
+}
+
+.clinic-info h4 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+}
+
+.clinic-info p {
+    margin-bottom: 15px;
+    color: #6c757d;
+}
+
+.clinic-info .btn {
+    background-color: #6f3280;
+    color: white;
+    border: none;
+}
+
+.clinic-info .btn:hover {
+    background-color: #4b2257;
+    color: #fff;
+}
+
+.doctor-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fff;
+  }
+  .doctor-card img {
+    width: 100%;
+    height: auto;
+  }
+  .doctor-card-body {
+    padding: 15px;
+    flex: 1;
+  }
+  .doctor-card-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+  }
+ 
+  .btn-details {
+    background-color: #ffffff;
+    color: #007bff;
+    border: 1px solid #007bff !important;
+  }
+  .btn-book:hover, .btn-details:hover {
+    opacity: 0.9;
+  }
+  .btn-details:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .btn-book:hover{
+    background-color: #28a745;
+    color: #fff;
+  }
+  .btn-book {
+    background-color: #ffffff;
+    color: #28a745;
+    border: 1px solid #28a745 !important;
+}
+.animate {
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+  
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-on-scroll {
+    opacity: 0;
+  }
+  

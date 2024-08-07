@@ -2,16 +2,166 @@
 {% load static %}
 {% block title %}Home {% endblock %}
 {% block body %}
-<div class="row  h-100">
-<div class="col-6 w-100 naif h-100">
-<video autoplay muted loop playsinline id="hail_video_slide" data-video="1" class="mtz-lpcbi w-50 h-50 mt-5">
-    <source src="https://res.cloudinary.com/dvyxhy5gu/video/upload/v1722884905/Untitled_video_-_Made_with_Clipchamp_16_emwk8v.mp4" type="video/mp4">
-  </video>
+<div class="affict animate-on-scroll">
+
 </div>
-<div class="col-6 w-100">
-    <video autoplay muted loop playsinline id="hail_video_slide" data-video="1" class="mtz-lpcbi w-50 h-50 mt-5">
-        <source src="https://res.cloudinary.com/dvyxhy5gu/video/upload/v1722884905/Untitled_video_-_Made_with_Clipchamp_16_emwk8v.mp4" type="video/mp4">
-      </video>
+<div class="affict2 animate-on-scroll"></div>
+<div class="row  h-75 ">
+  <div class="col-12 w-100 col-md-6 animate-on-scroll d-flex align-items-center justify-content-center">
+    <div class="p-3 text-banner">
+      <h1 style="font-size: 4rem;">MEDINA NAATIONAL <span style="color: #12a89d;">HOSPITAL</span> </h1>
+      <h3>The first private hospital was opened in Medina
+        Where care meets experience</h3>
+      <a href="#" class="btn btn-success mt-5 bottom">Clinics</a>
     </div>
+  </div>
+
+  <div class="col-12 col-md-6 w-100 animate-on-scroll d-flex naif align-items-center justify-content-center">
+    <video autoplay muted loop playsinline id="hail_video_slide" data-video="1" class="mtz-lpcbi rounded h-50 ">
+      <source
+        src="https://res.cloudinary.com/dvyxhy5gu/video/upload/v1722884905/Untitled_video_-_Made_with_Clipchamp_16_emwk8v.mp4"
+        type="video/mp4">
+    </video>
+  </div>
+</div>
+<div class="container">
+  <div class="row box-dr align-items-center">
+    <div class="col-md-6 animate-on-scroll text-md-start text-center">
+      <div class="box">
+        <h4>
+          dr.Halah amen
+        </h4>
+        <hr>
+        <h5> Obstetrics and Gynecology Specialist </h5>
+        <p>
+          - performing natural obstetrics and repairing the perineum <br>
+          - following up on pregnancy <br>
+          - family planning <br>
+          - following up on obstetrics and gynecology
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 animate-on-scroll d-flex justify-content-center justify-content-md-end">
+      <img src="{% static 'images/maram.png' %}" class="img-dr" alt="dr.maram">
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+
+    <div class="col-md-6 animate-on-scroll col-12 mb-4">
+      <div class="boxx box-clinics">
+        <h4>Clinics</h4>
+        <p>
+          Explore our wide range of clinics offering specialized care and expert medical services.
+        </p>
+        <a href="#" class="btn btn-light">View Clinics</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 animate-on-scroll col-12 mb-4">
+      <div class="boxx box-doctors">
+        <h4>Doctors</h4>
+        <p>
+          Meet our team of highly qualified doctors dedicated to providing top-notch healthcare.
+        </p>
+        <a href="#" class="btn btn-light">View Doctors</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt-5">
+  <div class="row d-flex align-items-center justify-content-center ">
+
+    <div class="col-12 animate-on-scroll d-flex justify-content-center mb-5">
+      <h1>CLINIC</h1>
+    </div>
+      <div class="col-12 animate-on-scroll col-md-4 mb-4">
+          <div class="clinic-card d-flex flex-column justify-content-center">
+              <div class="clinic-image">
+                  <img src="{% static 'images/maram.png' %}" alt="" class="img-fluid">
+              </div>
+              <div class="clinic-info">
+                  <h4>dfgdg</h4>
+                  <p>dfgdgdfgdfgdfgdfg</p>
+                  <a href="#" class="btn btn-light">Learn More</a>
+              </div>
+          </div>
+      </div>
+      
+  </div>
+  <div class="col-12 animate-on-scroll d-flex justify-content-center">
+  <a href="#" class="btn btn-light">view more</a>
+</div>
+  </div>
+</div>
+<div class="container mt-5">
+  <div class="row d-flex align-items-stretch">
+    <!--for-->
+    <div class="col-12 animate-on-scroll d-flex justify-content-center mb-5">
+      <h1>DOCTORS</h1>
+    </div>
+    <div class="col-12 animate-on-scroll col-md-4 mb-4">
+      <div class="doctor-card">
+        <img src="{% static 'images/maram.png' %}" alt="{{ doctor.name }}">
+        <div class="doctor-card-body">
+          <h4>mna</h4>
+          <!--specialization -->
+          <p>dfdgdgdfg</p>
+        </div>
+        <div class="doctor-card-buttons">
+          <a href="#" class="btn btn-book">Book Now</a>
+          <a href="#" class="btn btn-details">View Details</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 animate-on-scroll col-md-4 mb-4">
+      <div class="doctor-card">
+        <img src="{% static 'images/maram.png' %}" alt="{{ doctor.name }}">
+        <div class="doctor-card-body">
+          <h4>mna</h4>
+          <!--specialization -->
+          <p>dfdgdgdfg</p>
+        </div>
+        <div class="doctor-card-buttons">
+          <a href="#" class="btn btn-book">Book Now</a>
+          <a href="#" class="btn btn-details">View Details</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 animate-on-scroll col-md-4 mb-4">
+      <div class="doctor-card">
+        <img src="{% static 'images/maram.png' %}" alt="{{ doctor.name }}">
+        <div class="doctor-card-body">
+          <h4>mna</h4>
+          <!--specialization -->
+          <p>dfdgdgdfg</p>
+        </div>
+        <div class="doctor-card-buttons">
+          <a href="#" class="btn btn-book">Book Now</a>
+          <a href="#" class="btn btn-details">View Details</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 animate-on-scroll col-md-4 mb-4">
+      <div class="doctor-card">
+        <img src="{% static 'images/maram.png' %}" alt="{{ doctor.name }}">
+        <div class="doctor-card-body">
+          <h4>mna</h4>
+          <!--specialization -->
+          <p>dfdgdgdfg</p>
+        </div>
+        <div class="doctor-card-buttons">
+          <a href="#" class="btn btn-book">Book Now</a>
+          <a href="#" class="btn btn-details">View Details</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 animate-on-scroll d-flex justify-content-center">
+      <a href="#" class="btn btn-light">view more</a>
+    </div>
+    <!--endfor -->
+  </div>
 </div>
 {% endblock %}
