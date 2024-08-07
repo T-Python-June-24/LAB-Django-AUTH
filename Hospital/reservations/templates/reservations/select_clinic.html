@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Select a Clinic{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Select a Clinic</h1>
+    <div class="form-container">
+        <form action="{% url 'reservations:select_doctor' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="clinicSelect" class="form-label">Clinic</label>
+                <select class="form-control" id="clinicSelect" name="clinic" required>
+                    <option value="" disabled selected>Select a clinic</option>
+                    {% for clinic in clinics %}
+                    <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Next" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

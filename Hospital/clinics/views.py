@@ -52,10 +52,11 @@ def update_clinic(request,clinic_id):
 def clinic_view(request):
 
     clinics = Clinic.objects.all()
+    doctors=Doctor.objects.all()
     if request.user.is_staff:
-     return render(request, "clinics/clinic_view.html", {"clinics" : clinics})
+     return render(request, "clinics/clinic_view.html", {"clinics" : clinics,"doctors":doctors})
     else:
-      return render(request, "clinics/user_clinic_view.html", {"clinics" : clinics})
+      return render(request, "clinics/user_clinic_view.html", {"clinics" : clinics })
 
 def clinic_detail(request,clinic_id):
      clinic = Clinic.objects.get(pk=clinic_id)

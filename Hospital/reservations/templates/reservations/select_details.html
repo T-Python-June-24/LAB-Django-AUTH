@@ -1,0 +1,54 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Make a Reservation{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Make a Reservation at {{ clinic.name }}</h1>
+    <div class="form-container">
+        <form action="{% url 'reservations:make_reservation' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="clinic" value="{{ clinic.id }}">
+            <div class="mb-3">
+                <label for="doctorSelect" class="form-label">Doctor</label>
+                <select class="form-control" id="doctorSelect" name="doctor" required>
+                    <option value="" disabled selected>Select a doctor</option>
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">{{ doctor.full_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="dateInput" class="form-label">Date</label>
+                <input type="date" class="form-control" id="dateInput" name="date" required>
+            </div>
+            <div class="mb-3">
+                <label for="timeInput" class="form-label">Time</label>
+                <select class="form-control" id="timeInput" name="time_slot" required>
+                    <option value="" disabled selected>Select a time slot</option>
+                    {% if clinic.working_hours == '08:00-12:00' %}
+                        <option value="08:00">08:00 AM</option>
+                        <option value="09:00">09:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                    {% elif clinic.working_hours == '12:00-16:00' %}
+                        <option value="12:00">12:00 PM</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        
+                    {% elif clinic.working_hours == '16:00-20:00' %}
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>                        
+                        <option value="20:00">20:00</option>                        
+                    {% endif %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Make Reservation" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
