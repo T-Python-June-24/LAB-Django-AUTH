@@ -15,7 +15,6 @@ class Profile(models.Model):
 class Bookmark(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # game = models.ForeignKey(Game, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

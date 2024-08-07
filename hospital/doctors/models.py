@@ -18,7 +18,7 @@ class Doctor(models.Model):
     specialization = models.CharField(max_length=1024, choices=SpeChoices.choices)
     bio = models.TextField()
     image = models.ImageField(upload_to="images/", default="images/default.jpg")
-    # doctors = models.ManyToManyField(Doctor)
+
 
 
     def __str__(self) -> str:
