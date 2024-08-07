@@ -7,3 +7,8 @@ class Doctor(models.Model):
     specilaization=models.CharField(max_length=100)
     bio=models.TextField()
     photo=models.ImageField(upload_to="images/",default="images/default.svg")
+    university=models.CharField(max_length=100,default="Student")
+    country=models.CharField(max_length=100,default="KSA")
+    x_link=models.URLField(null=True)
+    instagram_link=models.URLField(null=True)
+    facebook_link=models.URLField(null=True)

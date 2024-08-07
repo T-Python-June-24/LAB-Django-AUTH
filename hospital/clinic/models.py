@@ -16,7 +16,7 @@ class Clinic(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     working_hours = models.CharField(
-        max_length=100,
+        max_length=1024,
         choices=WorkingHours.choices,
         default=WorkingHours.MON_FRI_8AM_6PM
     )

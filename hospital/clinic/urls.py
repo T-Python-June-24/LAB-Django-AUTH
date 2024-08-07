@@ -1,4 +1,6 @@
 from django.urls import path
 from . import views
-
-urlpatterns = []
+app_name="clinic"
+urlpatterns = [
+    path('page/<clinic_id>',views.clinic_page,name="clinic_page"),
+]

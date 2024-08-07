@@ -23,7 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
     path('',include("main.urls")),
-    # path('registration/',include('registration.urls')),
+    path('registration/',include('registration.urls')),
     path('reservation/',include('reservation.urls')),
     path('doctor/',include('doctor.urls')),
     path('clinic/',include('clinic.urls')),
