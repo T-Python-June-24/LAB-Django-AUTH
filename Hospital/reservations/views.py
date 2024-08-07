@@ -77,3 +77,15 @@ def edit_reservation(request, reservation_id):
         'clinic': clinic,
         'doctors': doctors,
     })
+def cancle_reservation(request,reservation_id):
+    user_profile = Profile.objects.get(user=request.user)
+    reservation=Reservation.objects.get(pk=reservation_id)
+    if reservation.delete():
+             messages.success(request, 'your reservation canceld successfully!',"alert-success")
+             return redirect('profiles:user_profile_view', user_name=user_profile.user.username)
+    else:
+         for field, errors in reservation.errors.items():
+             for error in errors:
+                 messages.error(request, f"{field}: {error}","alert-danger")    
+             return redirect('profiles:user_profile_view', user_name=user_profile.user.username)
+

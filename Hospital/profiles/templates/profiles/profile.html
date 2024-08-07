@@ -60,81 +60,103 @@
         </div>
 
         <!-- Reservations -->
-        <div class="col-md-8 col-lg-9">
-            <div class="d-flex flex-column gap-3">
-                <h3>My Reservations</h3>
-                {% for reservation in profile.reservation_set.all %}
-                    <div class="card p-3 mb-3">
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <a href="{% url 'clinics:clinic_detail' reservation.clinic.id %}">{{ reservation.clinic.name }}</a> 
-                                <span class="time-slot">at {{ reservation.date }} {{ reservation.time_slot }}</span>
-                            </h4>
-                            <h5 class="card-subtitle mb-2 text-muted">
-                                with <a href="{% url 'doctors:doctor_detail' reservation.doctor.id %}">{{ reservation.doctor.full_name }}</a>
-                            </h5>
-                            <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ reservation.id }}" href="#">Update</a>
-                        </div>
+<div class="col-md-8 col-lg-9">
+    <div class="d-flex flex-column gap-3">
+        <h3>My Reservations</h3>
+        {% for reservation in profile.reservation_set.all %}
+            <div class="card p-3 mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="{% url 'clinics:clinic_detail' reservation.clinic.id %}">{{ reservation.clinic.name }}</a> 
+                        <span class="time-slot">at {{ reservation.date }} {{ reservation.time_slot }}</span>
+                    </h4>
+                    <h5 class="card-subtitle mb-2 text-muted">
+                        with <a href="{% url 'doctors:doctor_detail' reservation.doctor.id %}">{{ reservation.doctor.full_name }}</a>
+                    </h5>
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ reservation.id }}" href="#">Update</a>
+                        <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ reservation.id }}" href="#">Cancel</a>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Modal for Update Form -->
-                    
-                    <div class="modal fade" id="updateModal-{{ reservation.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ reservation.id }}" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="updateModalLabel-{{ reservation.id }}">Update Reservation</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="post" action="{% url 'reservations:edit_reservation' reservation.id %}">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="clinic" value="{{ clinic.id }}">
-                                        <div class="mb-3">
-                                            <label for="doctorSelect-{{ reservation.id }}" class="form-label">Doctor</label>
-                                            <select class="form-control" id="doctorSelect-{{ reservation.id }}" name="doctor" required>
-                                                <option value="" disabled selected>Select a doctor</option>
-                                                {% for doctor in reservation.clinic.doctors.all %}
-                                                <option value="{{ doctor.id }}">{{ doctor.full_name }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="dateInput-{{ reservation.id }}" class="form-label">Date</label>
-                                            <input type="date" class="form-control" id="dateInput-{{ reservation.id }}" name="date" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="timeInput-{{ reservation.id }}" class="form-label">Time</label>
-             <select class="form-control" id="timeInput" name="time_slot" required>
-                    <option value="" disabled selected>Select a time slot</option>
-                    {% if reservation.clinic.working_hours == '08:00-12:00' %}
-                        <option value="08:00">08:00 AM</option>
-                        <option value="09:00">09:00 AM</option>
-                        <option value="10:00">10:00 AM</option>
-                        <option value="11:00">11:00 AM</option>
-                    {% elif reservation.clinic.working_hours == '12:00-16:00' %}
-                        <option value="12:00">12:00 PM</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        
-                    {% elif reservation.clinic.working_hours == '16:00-20:00' %}
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>                        
-                        <option value="20:00">20:00</option>                        
-                    {% endif %}
-                </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <input type="submit" value="Update Reservation" class="btn btn-primary">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
+<!-- Modal for Update Form -->
+<div class="modal fade" id="updateModal-{{ reservation.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ reservation.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel-{{ reservation.id }}">Update Reservation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'reservations:edit_reservation' reservation.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="clinic" value="{{ clinic.id }}">
+                    <div class="mb-3">
+                        <label for="doctorSelect-{{ reservation.id }}" class="form-label">Doctor</label>
+                        <select class="form-control" id="doctorSelect-{{ reservation.id }}" name="doctor" required>
+                            <option value="" disabled>Select a doctor</option>
+                            {% for doctor in reservation.clinic.doctors.all %}
+                            <option value="{{ doctor.id }}" {% if doctor.id == reservation.doctor.id %}selected{% endif %}>
+                                {{ doctor.full_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dateInput-{{ reservation.id }}" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="dateInput-{{ reservation.id }}" name="date" value="{{ reservation.date|date:'Y-m-d' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="timeInput-{{ reservation.id }}" class="form-label">Time</label>
+                        <select class="form-control" id="timeInput-{{ reservation.id }}" name="time_slot" required>
+                            <option value="" disabled>Select a time slot</option>
+                            {% if reservation.clinic.working_hours == '08:00-12:00' %}
+                                <option value="08:00" {% if reservation.time_slot == '08:00' %}selected{% endif %}>08:00 AM</option>
+                                <option value="09:00" {% if reservation.time_slot == '09:00' %}selected{% endif %}>09:00 AM</option>
+                                <option value="10:00" {% if reservation.time_slot == '10:00' %}selected{% endif %}>10:00 AM</option>
+                                <option value="11:00" {% if reservation.time_slot == '11:00' %}selected{% endif %}>11:00 AM</option>
+                            {% elif reservation.clinic.working_hours == '12:00-16:00' %}
+                                <option value="12:00" {% if reservation.time_slot == '12:00' %}selected{% endif %}>12:00 PM</option>
+                                <option value="13:00" {% if reservation.time_slot == '13:00' %}selected{% endif %}>13:00</option>
+                                <option value="14:00" {% if reservation.time_slot == '14:00' %}selected{% endif %}>14:00</option>
+                                <option value="15:00" {% if reservation.time_slot == '15:00' %}selected{% endif %}>15:00</option>
+                            {% elif reservation.clinic.working_hours == '16:00-20:00' %}
+                                <option value="16:00" {% if reservation.time_slot == '16:00' %}selected{% endif %}>16:00</option>
+                                <option value="17:00" {% if reservation.time_slot == '17:00' %}selected{% endif %}>17:00</option>
+                                <option value="18:00" {% if reservation.time_slot == '18:00' %}selected{% endif %}>18:00</option>
+                                <option value="19:00" {% if reservation.time_slot == '19:00' %}selected{% endif %}>19:00</option>
+                                <option value="20:00" {% if reservation.time_slot == '20:00' %}selected{% endif %}>20:00</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <input type="submit" value="Update Reservation" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- Modal for Deletion Confirmation -->
+            <div class="modal fade" id="deleteModal-{{reservation.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ reservation.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel-{{ reservation.id }}">Confirm cancle</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to cancle your reservation with {{reservation.doctor.full_name }} on {{reservation.date}} ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="{% url 'reservations:cancle_reservation' reservation.id %}" class="btn btn-danger">Yes</a>
                         </div>
                     </div>
+                </div>
+            </div>
                 {% empty %}
                     <p>No reservations found.</p>
                 {% endfor %}
