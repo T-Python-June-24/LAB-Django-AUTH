@@ -4,6 +4,7 @@ from .models import Clinic
 from .forms import ClinicForm
 from django.contrib import messages 
 from doctors.models import Doctor
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -53,6 +54,12 @@ def clinic_view(request):
 
     clinics = Clinic.objects.all()
     doctors=Doctor.objects.all()
+
+
+    page_number = request.GET.get("page", 1)
+    paginator = Paginator(clinics, 9)
+    clinics = paginator.get_page(page_number)
+
     if request.user.is_staff:
      return render(request, "clinics/clinic_view.html", {"clinics" : clinics,"doctors":doctors})
     if not request.user.is_staff:

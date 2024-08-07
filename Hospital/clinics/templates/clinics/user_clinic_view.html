@@ -50,4 +50,23 @@
         {% endfor %}
     </div>
 </div>
+<!-- pagination -->
+<div class="pagination d-flex justify-content-center align-items-center mt-5 gap-4">
+    {% if clinics.has_previous %}
+        <div class="d-flex gap-1">
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ clinics.previous_page_number }}">&laquo; previous</a>
+        </div>
+    {% endif %}
+
+    <div class="current">
+        Page {{ clinics.number }} of {{ clinics.paginator.num_pages }}
+    </div>
+    {% if clinics.has_next %}
+    <div class="d-flex gap-1">
+        <a href="?page={{ clinics.next_page_number }}">next &raquo;</a>
+        <a href="?page={{ clinics.paginator.num_pages }}">last &raquo;</a>
+    </div>
+{% endif %}
+
 {% endblock %}
