@@ -57,6 +57,11 @@
             </div>
 
             </div>
+            <br>
+            <br>
+            {% if request.user == user %}
+            <a href="{% url 'profiles:update_user_profile' %}">update your profile </a>
+            {% endif %}
         </div>
 
         <!-- Reservations -->

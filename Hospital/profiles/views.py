@@ -89,3 +89,32 @@ def user_profile_view(request, user_name):
         profile.save()
 
     return render(request, 'profiles/profile.html', {"user": user, "profile": profile})
+
+def update_user_profile(request: HttpRequest):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Only registered users can update their profile", "alert-warning")
+        return redirect("profiles:sign_in")
+
+    if request.method == "POST":
+        try:
+            with transaction.atomic():
+                user = request.user
+
+                user.first_name = request.POST["first_name"]
+                user.last_name = request.POST["last_name"]
+                user.email = request.POST["email"]
+                user.save()
+
+                profile = user.profile
+                profile.phone_number = request.POST.get("phone_number")
+                profile.address = request.POST.get("address")
+                profile.save()
+
+                messages.success(request, "Profile updated successfully", "alert-success")
+                return redirect("profiles:user_profile_view", user_name=user.username)
+
+        except Exception as e:
+            messages.error(request, "Couldn't update profile", "alert-danger")
+            print(e)
+
+    return render(request, "profiles/update_profile.html")
