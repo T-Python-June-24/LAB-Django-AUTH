@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from .forms import ReservationForm
 from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Clinic, Doctor,Reservation,Profile
 
@@ -43,3 +44,29 @@ def make_reservation(request:HttpRequest):
         return redirect("main:home_view")
 
     return render(request, "reservations/make_reservation.html")
+
+def edit_reservation(request, reservation_id):
+    reservation = Reservation.objects.get(pk=reservation_id) 
+    clinic = reservation.clinic  
+    doctors = Doctor.objects.filter(clinic=clinic)
+    
+    if request.method == 'POST':
+        user_profile = Profile.objects.get(user=request.user)
+        doctor_id = request.POST.get("doctor")  
+        doctor = Doctor.objects.get(id=doctor_id)  
+
+        reservation.user = user_profile
+        reservation.time_slot = request.POST.get("time_slot")
+        reservation.date = request.POST.get("date")
+        reservation.doctor = doctor  
+
+        reservation.save()  
+
+        messages.success(request, 'Reservation updated successfully!', 'alert-success')
+        return redirect('clinics:clinic_view')
+
+    return render(request, 'profiles/profile.html', {
+        'reservation': reservation,
+        'clinic': clinic,
+        'doctors': doctors,
+    })

@@ -8,5 +8,5 @@ urlpatterns = [
     path('select_clinic/', views.select_clinic, name='select_clinic'),
     path('select_doctor/<int:clinic_id>', views.select_doctor, name='select_doctor'),
     path("add/",views.make_reservation,name="make_reservation"),
-
+    path("edit/<int:reservation_id>",views.edit_reservation,name="edit_reservation")
 ]
