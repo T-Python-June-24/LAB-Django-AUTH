@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+{% block content %}
+<h2>Your Reservations</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Clinic</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time Slot</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.clinic.name }}</td>
+                <td>{{ reservation.doctor.full_name }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.time_slot }}</td>
+                <td>{{ reservation.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

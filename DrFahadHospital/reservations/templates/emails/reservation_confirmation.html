@@ -1,0 +1,52 @@
+<!-- templates/emails/reservation_confirmation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 600px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Reservation Confirmation</h1>
+        </div>
+        <div class="content">
+            <p>Dear {{ user.username }},</p>
+            <p>Your reservation at Dr. Fahad Hospital has been confirmed. Below are your reservation details:</p>
+            <p><strong>Clinic:</strong> {{ reservation.clinic.name }}</p>
+            <p><strong>Doctor:</strong> {{ reservation.doctor.full_name }}</p>
+            <p><strong>Date:</strong> {{ reservation.date }}</p>
+            <p><strong>Time Slot:</strong> {{ reservation.time_slot }}</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Dr. Fahad Hospital. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

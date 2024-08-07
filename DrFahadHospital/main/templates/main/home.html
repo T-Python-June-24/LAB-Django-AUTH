@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Dr. Fahad Hospital</h1>
+    <p class="lead">Your health is our priority. Explore our clinics and doctors, and make a reservation today.</p>
+    <hr class="my-4">
+    <p>To learn more about our clinics and doctors, click the buttons below.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'clinics' %}" role="button">View Clinics</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'doctors' %}" role="button">View Doctors</a>
+</div>
+{% endblock %}
