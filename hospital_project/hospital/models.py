@@ -8,8 +8,8 @@ SPECIALIZATIONS_CHOICES = [
     ('cardiology', 'Cardiology'),
     ('neurology', 'Neurology'),
     ('orthopedics', 'Orthopedics'),
-    ('pediatrics', 'Pediatrics'),
-    ('general_practice', 'General Practice'),
+    ('dermatologist', 'Dermatologist'),
+    ('dentist', 'Dentist'),
 ]
 
 WORKING_HOURS_CHOICES = [
@@ -21,11 +21,12 @@ WORKING_HOURS_CHOICES = [
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default='Default Name')
     phone_number = models.CharField(max_length=20)
     address = models.TextField()
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return self.user.username
     
 class Doctor(models.Model):
     full_name = models.CharField(max_length=100)

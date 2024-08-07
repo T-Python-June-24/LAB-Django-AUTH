@@ -2,13 +2,19 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Clinic, Doctor, Reservation
-from .forms import ReservationForm, ProfileForm
+from .forms import ReservationForm, ProfileForm, ClinicForm, DoctorForm
+from django.views.generic.edit import UpdateView, DeleteView
 from django.core.paginator import Paginator
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView as BaseLoginView, LogoutView as BaseLogoutView
 from django.contrib.auth import authenticate, login
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Profile
+from django.contrib import messages
+
 
 # Create your views here.
 def home(request):
@@ -29,6 +35,8 @@ def clinic_list(request):
     }
     return render(request, 'clinic_list.html', context)
 
+from django.contrib import messages
+
 def clinic_detail(request, clinic_id):
     clinic = get_object_or_404(Clinic, pk=clinic_id)
     doctors = clinic.doctors.all()
@@ -41,7 +49,22 @@ def clinic_detail(request, clinic_id):
             reservation.user = request.user
             reservation.clinic = clinic
             reservation.save()
-            messages.success(request, 'Reservation successfully made!')
+            
+            # Build a custom success message with reservation details
+            doctor = reservation.doctor
+            date = reservation.date
+            time_slot = reservation.time_slot
+            
+            # Create a custom success message
+            success_message = (
+                f'Reservation successfully made for {date} at {time_slot} '
+                f'with Dr. {doctor.full_name}. We look forward to seeing you!'
+            )
+            
+            # Add the success message to the Django messages framework
+            messages.success(request, success_message)
+            
+            # Redirect to the clinic detail page with a success message
             return redirect('clinic-detail', clinic_id=clinic_id)
     
     return render(request, 'clinic_detail.html', {
@@ -50,11 +73,33 @@ def clinic_detail(request, clinic_id):
         'reservation_form': reservation_form,
     })
 
+class ClinicUpdateView(LoginRequiredMixin, UpdateView):
+    model = Clinic
+    form_class = ClinicForm
+    template_name = 'clinic_form.html'
+    success_url = reverse_lazy('staff-dashboard')
+
+class ClinicDeleteView(LoginRequiredMixin, DeleteView):
+    model = Clinic
+    template_name = 'clinic_confirm_delete.html'
+    success_url = reverse_lazy('staff-dashboard')
+
+class DoctorUpdateView(LoginRequiredMixin, UpdateView):
+    model = Doctor
+    form_class = DoctorForm
+    template_name = 'doctor_form.html'
+    success_url = reverse_lazy('staff-dashboard')
+
+class DoctorDeleteView(LoginRequiredMixin, DeleteView):
+    model = Doctor
+    template_name = 'doctor_confirm_delete.html'
+    success_url = reverse_lazy('staff-dashboard')
+
 @login_required
 def profile(request):
     profile = request.user.profile
     if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, instance=profile)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, 'Profile updated successfully!')
@@ -63,11 +108,24 @@ def profile(request):
         profile_form = ProfileForm(instance=profile)
     
     return render(request, 'profile.html', {'profile_form': profile_form})
+@login_required
+def edit_profile(request):
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+    
+    return render(request, 'edit_profile.html', {'form': form})
 
 @login_required
 def reservations(request):
     user_reservations = Reservation.objects.filter(user=request.user)
-    return render(request, 'reservations.html', {'user_reservations': user_reservations})
+    return render(request, 'reservation.html', {'user_reservations': user_reservations})
 
 @user_passes_test(lambda u: u.is_staff)
 def staff_dashboard(request):
@@ -102,6 +160,11 @@ class DoctorCreateView(CreateView):
     fields = ['full_name', 'specialization', 'bio', 'photo']
     template_name = 'doctor_form.html'
     success_url = reverse_lazy('staff-dashboard')
+class ClinicCreateView(CreateView):
+    model = Clinic
+    form_class = ClinicForm
+    template_name = 'clinic_form.html'
+    success_url = reverse_lazy('staff-dashboard')
 
 def signup(request):
     if request.method == 'POST':
@@ -119,3 +182,4 @@ class LoginView(BaseLoginView):
 
 class LogoutView(BaseLogoutView):
     next_page = reverse_lazy('home')
+
