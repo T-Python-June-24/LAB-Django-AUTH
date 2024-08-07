@@ -4,13 +4,12 @@
 {% block title %}Doctor Detail{% endblock title %}
 
 {% block content %}
-
 <script>
     AOS.init();
 </script>
 
 <div class="container p-4 mx-10">
-    <div class="flex flex-col md:flex-row">
+    <div class="flex flex-col md:flex-row mb-8">
         <!-- Image Section -->
         <div class="w-full md:w-1/2 mb-6 md:mb-0">
             <img src="{{ doctor.photo.url }}" alt="{{ doctor.full_name }}'s Photo"
@@ -22,19 +21,8 @@
             <h1 class="text-3xl font-bold mb-4 text-blue-800">{{ doctor.full_name }}</h1>
             <p class="text-gray-600 text-lg mb-4"><strong>Specialization:</strong> {{ doctor.specialization }}</p>
             <p class="text-gray-600 text-lg mb-4"><strong>Bio:</strong> {{ doctor.bio }}</p>
-            <p class="text-gray-600 text-lg mb-4"><strong>Clinics:</strong>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {% for clinic in doctor.clinic_set.all %}
-                    <div class="p-4 bg-white rounded-lg shadow-md">
-                        <h4 class="text-xl font-semibold text-blueGray-700">{{ clinic.name }}</h4>
-                        <a class="text-teal-500 hover:text-teal-600" href="{% url 'clinics:clinic_detail' clinic.pk %}">View Details</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </p>
-
-            <!-- Action Buttons -->
             
+            <!-- Action Buttons -->
             {% if user.is_superuser %}
             <div class="mt-6 mb-6 flex justify-center items-center">
                 <a href="{% url 'doctors:doctor_update' doctor.pk %}" class="bg-teal-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-teal-600">Edit</a>
@@ -46,10 +34,21 @@
             {% endif %}
         </div>
     </div>
+
+    <!-- Clinics Section -->
+    <div class="mt-8">
+        <h2 class="text-2xl font-bold mb-4 text-blue-800">Clinics where {{ doctor.full_name }} works</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for clinic in doctor.clinic_set.all %}
+            <div class="border rounded-lg p-4 shadow-lg bg-white">
+                <h4 class="text-lg font-bold">{{ clinic.name }}</h4>
+                <p>{{ clinic.description|truncatewords:20 }}</p>
+                <a href="{% url 'clinics:clinic_detail' clinic.pk %}" class="text-blue-600 hover:underline mt-2 block">View Clinic</a>
+            </div>
+            {% empty %}
+            <p>No clinics found.</p>
+            {% endfor %}
+        </div>
+    </div>
 </div>
-<br><br>
-
 {% endblock content %}
-
-
-
