@@ -1,10 +1,26 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
-from clinics.models import Clinic
-from doctors.models import Doctor
+from django.shortcuts import render, redirect
+from clinic.forms import ClinicForm
+from doctor.forms import DoctorForm
 
-@user_passes_test(lambda u: u.is_staff)
-def staff_dashboard(request):
-    clinics = Clinic.objects.all()
-    doctors = Doctor.objects.all()
-    return render(request, 'staff/staff_dashboard.html', {'clinics': clinics, 'doctors': doctors})
+def dashboard(request):
+    return render(request, 'staff/dashboard.html')
+
+def clinic_create(request):
+    if request.method == 'POST':
+        form = ClinicForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = ClinicForm()
+    return render(request, 'staff/clinic_form.html', {'form': form})
+
+def doctor_create(request):
+    if request.method == 'POST':
+        form = DoctorForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = DoctorForm()
+    return render(request, 'staff/doctor_form.html', {'form': form})

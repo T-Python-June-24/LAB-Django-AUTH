@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ doctor.full_name }}</h2>
+<img src="{{ doctor.photo.url }}" class="img-fluid" alt="{{ doctor.full_name }}">
+<p>{{ doctor.bio }}</p>
+<p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+
+<h3>Clinics</h3>
+<ul>
+    {% for clinic in doctor.clinic_set.all %}
+        <li><a href="{% url 'clinic_detail' clinic.id %}">{{ clinic.name }}</a></li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <h3>Make a Reservation</h3>
+    <form method="post" action="{% url 'reservation_create' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Reserve</button>
+    </form>
+{% else %}
+    <p>Please <a href="{% url 'login' %}">log in</a> to make a reservation.</p>
+{% endif %}
+{% endblock %}

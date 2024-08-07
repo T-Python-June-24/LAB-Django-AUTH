@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Staff Dashboard</h2>
+<a href="{% url 'clinic_create' %}" class="btn btn-primary">Add New Clinic</a>
+<a href="{% url 'doctor_create' %}" class="btn btn-primary">Add New Doctor</a>
+
+<h3>Clinics</h3>
+<ul>
+    {% for clinic in clinics %}
+        <li>{{ clinic.name }} - <a href="{% url 'clinic_update' clinic.id %}">Edit</a></li>
+    {% endfor %}
+</ul>
+
+<h3>Doctors</h3>
+<ul>
+    {% for doctor in doctors %}
+        <li>{{ doctor.full_name }} - <a href="{% url 'doctor_update' doctor.id %}">Edit</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
