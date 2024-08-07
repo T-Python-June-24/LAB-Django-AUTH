@@ -5,6 +5,20 @@
 
 {% block content %}
 <style>
+    h1{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    color: #d3392b;
+}
+.section-text {
+    
+    margin-top: 2rem;
+    padding: 20px; 
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+}
     .card {
         overflow: hidden; 
         position: relative;
@@ -34,11 +48,25 @@
     .card:hover .overlay-text {
         opacity: 1; 
     }
+    @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <div class="container mt-4">
     <div class="row">
+        <div class="section-text mt-4">
+        <h1>Meet Our Dedicated Team of Health Professionals</h1>
+        <br>
+        <hr>
+    </div>
+
         {% for doctor in doctors %}
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="card shadow-lg">

@@ -50,7 +50,7 @@ def update_doctor(request:HttpRequest,doctor_id):
 def doctor_view(request:HttpRequest):
     doctors = Doctor.objects.all() 
     page_number = request.GET.get("page", 1)
-    paginator = Paginator(doctors, 9)
+    paginator = Paginator(doctors, 6)
     doctors = paginator.get_page(page_number)
     if request.user.is_staff:
      return render(request, "doctors/doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices})

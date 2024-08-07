@@ -57,7 +57,7 @@ def clinic_view(request):
 
 
     page_number = request.GET.get("page", 1)
-    paginator = Paginator(clinics, 9)
+    paginator = Paginator(clinics, 6)
     clinics = paginator.get_page(page_number)
 
     if request.user.is_staff:

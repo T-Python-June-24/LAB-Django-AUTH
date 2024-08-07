@@ -16,57 +16,76 @@ p ,h1{
     font-optical-sizing: auto;
     font-weight: 700;
     font-style: normal;
-  }
-  .section-text {
+    
+}
+.section-text {
     background-color: #f8f9fa; 
     padding: 20px; 
     text-align: center;
-  }
-  h2{
-      font-family: "Rubik", sans-serif;
+    animation: fadeIn 1s ease-in;
+}
+h2{
+    font-family: "Rubik", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;  
-  }
-  .card {
-        overflow: hidden; 
-        position: relative;
-        transition: transform .3s ease-in-out; 
-    }
+    color: #d3392b;
 
-    .card-img-top {
-        transition: transform .3s ease-in-out; 
-    }
+}
+h3{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;  
+}
+.card {
+    overflow: hidden; 
+    position: relative;
+    transition: transform .3s ease-in-out; 
+    animation: fadeIn 1s ease-in;
+}
 
-    .card:hover .card-img-top {
-        transform: scale(1.1);
-    }
+.card-img-top {
+    transition: transform .3s ease-in-out; 
+}
 
-    .overlay-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white; 
-        font-size: 24px; 
-        pointer-events: none;
-        opacity: 0; 
-        transition: opacity .3s ease-in-out; 
-    }
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
 
-    .card:hover .overlay-text {
-        opacity: 1; 
-    }
-    a{
-        text-decoration: none;
-        color: black;
-    }
-    a:hover{
-        color:#d3392b;
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white; 
+    font-size: 24px; 
+    pointer-events: none;
+    opacity: 0; 
+    transition: opacity .3s ease-in-out; 
+}
 
+.card:hover .overlay-text {
+    opacity: 1; 
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+a:hover{
+    color:#d3392b;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
     }
+    to {
+        opacity: 1;
+    }
+}
 </style>
-<div class="position-relative text-white">
+
+<div class="position-relative text-white" style="animation: fadeIn 2s;">
     <img src="{% static 'images/alhabib.jpg' %}" alt="Descriptive Alt Text" class="img-fluid">
     <div class="position-absolute top-50 start-0 translate-middle-y ps-3">
         <p class="fs-1 fs-md-2 fs-lg-3 fs-xl-4 fs-xxl-5">Leading the Way<br>
@@ -79,11 +98,11 @@ p ,h1{
     <br>
     <br>
     <br>
-     <h2>Our Clinics</h2>
-     <br>
-     <br>
+    <h2>Our Clinics</h2>
+    <br>
+    <br>
 
-     <div class="container mt-4">
+    <div class="container mt-4">
         <div class="row">
             {% for clinic in clinics %}
             <div class="col-md-4 col-sm-12 mb-4">
@@ -96,14 +115,15 @@ p ,h1{
             </div>
             {% endfor %}
         </div>
-        <a href="{% url 'clinics:clinic_view'%}"><h2>More Clinics</h2></a>
+        <br>
+        <a href="{% url 'clinics:clinic_view'%}"><h3>More Clinics</h3></a>
         <br>
         <br>
 
-<br>
-<br>
+        <br>
+        <br>
         <h2>Our Experts</h2>
-          <div class="container mt-4">
+        <div class="container mt-4">
             <div class="row">
                 {% for doctor in doctors %}
                 <div class="col-md-4 col-sm-6 mb-4">
@@ -113,16 +133,19 @@ p ,h1{
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">{{ doctor.full_name }}</h5>
-                            <hp class="align-items-center d-flex ">
-                                <span class="material-symbols-outlined me-4"> stethoscope</span>
+                            <p class="align-items-center d-flex">
+                                <span class="material-symbols-outlined me-4">stethoscope</span>
                                 {{ doctor.get_specialization_display }}
-                            </p>         
-                               </div>
-        
+                            </p>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
-                <a href="{%url 'doctors:doctor_view'%}"><h2>More Experts</h2></a>
+                <br>
+
+                <a href="{% url 'doctors:doctor_view'%}"><h3>More Experts</h3></a>
+                <br>
+
             </div>
         </div>
     </div>

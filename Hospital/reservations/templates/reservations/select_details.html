@@ -2,8 +2,29 @@
 {% load static %}
 {% block title %}Make a Reservation{% endblock %}
 {% block content %}
+<style>
+        h1{
+        color: #d3392b;
+        }
+    .container {
+        background-color: #F3F9FB;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        border-radius: 8px; 
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .form-container {
+        padding: 20px;
+        background-color: white; 
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); 
+        border-radius: 5px; 
+    }
+</style>
 <div class="container mt-4">
     <h1>Make a Reservation at {{ clinic.name }}</h1>
+    <br>
+    <br>
     <div class="form-container">
         <form action="{% url 'reservations:make_reservation' %}" method="post">
             {% csrf_token %}
@@ -17,10 +38,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="dateInput" class="form-label">Date</label>
-                <input type="date" class="form-control" id="dateInput" name="date" required>
-            </div>
+            <input type="date" class="form-control" id="dateInput" name="date" min="{{ now|date:"Y-m-d" }}" required>
             <div class="mb-3">
                 <label for="timeInput" class="form-label">Time</label>
                 <select class="form-control" id="timeInput" name="time_slot" required>
@@ -46,7 +64,7 @@
                 </select>
             </div>
             <div class="mb-3">
-                <input type="submit" value="Make Reservation" class="btn btn-primary">
+                <input type="submit" value="Make Reservation" style="background-color: #d74a3deb" class="btn ">
             </div>
         </form>
     </div>
