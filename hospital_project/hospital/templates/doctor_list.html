@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Doctors - Hospital Website
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Our Doctors</h1>
+    <div class="row">
+        {% for doctor in doctors %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ doctor.photo.url }}" class="card-img-top" alt="{{ doctor.full_name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ doctor.full_name }}</h5>
+                    <p class="card-text">{{ doctor.specialization }}</p>
+                    <a href="{% url 'doctor-detail' doctor.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        {% if is_paginated %}
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&lsaquo; previous</a>
+                    </li>
+                {% endif %}
+
+                {% for i in paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ i }}</a>
+                        </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">next &rsaquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ paginator.num_pages }}">last &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

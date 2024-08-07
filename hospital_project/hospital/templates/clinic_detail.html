@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ clinic.name }}</h1>
+    <p>{{ clinic.description }}</p>
+    <p>Working Hours: {{ clinic.working_hours }}</p>
+    <img src="{{ clinic.feature_image.url }}" alt="{{ clinic.name }} Image">
+    
+    <h2>Doctors:</h2>
+    <ul>
+    {% for doctor in doctors %}
+        <li>{{ doctor.full_name }} - {{ doctor.specialization }}</li>
+    {% endfor %}
+    </ul>
+
+    {% if user.is_authenticated %}
+    <h2>Make a Reservation</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ reservation_form.as_p }}
+        <button type="submit">Make Reservation</button>
+    </form>
+    {% endif %}
+{% endblock %}
