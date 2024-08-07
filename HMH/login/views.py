@@ -27,7 +27,7 @@ def sign_in(request:HttpRequest):
         if Verification:
             login(request ,Verification )
             messages.success(request , f'welocome {username}')
-            return redirect('login:sign_up')
+            return redirect('Home:Home')
         else:
             messages.error(request , 'The email or password is incorrect')
             return redirect('login:sign_in')

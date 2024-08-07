@@ -1,0 +1,42 @@
+{% extends "base_Home/base_home.html" %}
+{% load static %}
+{% block title %}Clinics{% endblock %}
+{% block body %}
+
+<div class="container margin">
+    <div class="row">
+        <div class="col-12 text-center animate-on-scroll mb-5">
+            <h1>Our Clinics</h1>
+            <p>Explore our various clinics that offer specialized medical care and services.</p>
+        </div>
+    </div>
+</div>
+{% include 'base_Home/search.html' %}
+<section style="background: url('{% static 'images/back2.png' %}') no-repeat left top #ffffff;" class="animate-on-scroll">
+    <div class="container margin">
+        <div class="row">
+            <!-- Example Clinic Card -->
+            
+            <!-- Repeat Clinic Card for more clinics -->
+            <div class="col-md-4 mb-4 animate-on-scroll">
+                
+                    <div class="clinic-card d-flex flex-column justify-content-center">
+                      <div class="clinic-image">
+                        <img src="{% static 'images/maram.png' %}" alt="" class="img-fluid">
+                      </div>
+                      <div class="clinic-info text-center mt-2">
+                        <h4>dfgdg</h4>
+                        <p>dfgdgdfgdfgdfgdfg</p>
+                        <a href="#" class="btn btn-light">Learn More</a>
+                      </div>
+                    </div>
+                  
+            </div>
+
+            
+
+            <!-- Add more clinic cards as needed -->
+        </div>
+    </div>
+</section>
+{% endblock %}

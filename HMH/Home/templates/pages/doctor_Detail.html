@@ -1,0 +1,62 @@
+{% extends "base_Home/base_home.html" %}
+{% load static %}
+{% block title %}Clinics{% endblock %}
+{% block body %}
+
+<div class="container margin">
+    <div class="row shadow  rounded">
+        <div class="col-lg-4 col-md-12">
+            <div class="filter_cont_sec_left">
+                <div class="filter_cont_sec_left_img">
+
+                    <picture>
+                        <source type="image/webp" srcset="{% static 'images/maram.png' %}"><img class=""
+                            src="{% static 'images/mna.jpg' %}" width="444" height="430" alt="د. اسماعيل المنسي"
+                            loading="lazy">
+                    </picture>
+                </div>
+                <div class="filter_cont_sec_left_cont mt-3">
+                    <h3>Dr. Ismail El-Mansy</h3>
+                    <h6>Consultant in Internal Medicine</h6>
+                    <p>Internal Medicine</p>
+                </div>
+                <hr class="spacer20px">
+
+            </div>
+    </div>
+    <div class="col-lg-7 col-md-12 d-flex align-items-center justify-content-center">
+        <div class="filter_cont_sec_right page_module text-center">
+            <strong><span style="font-size: 200%; color: #0d7c74;">Bio:</span></strong>
+            <div><span style="font-size: 18.6667px;"><strong><br></strong></span>
+                <div>
+                    <p>Dr. Alex Johnson is a renowned cardiologist with over 15 years of experience in diagnosing and treating heart conditions. He completed his medical education at Harvard Medical School and went on to complete his residency in cardiology at Mayo Clinic. Dr. Johnson is board-certified in internal medicine and cardiology, with a focus on advanced cardiac imaging and interventional procedures.
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    
+    <div class="row shadow p-5 rounded">
+        <div class="col-12">
+            <h1>Clinic :</h1>
+        </div>
+        <div class="col-4">
+            <div class="card text-secondary">
+                <a href="" class="link-clinic">
+                    <img src="{% static 'images/maram.jpg' %}" class="card-img-top" alt="Clinic Name">
+                    <div class="card-body text-secondary">
+                        <h5 class="card-title text-secondary">Clinic Name 1</h5>
+                        <p class="card-text text-secondary">A brief description of the clinic, its services, and
+                            specialties. This clinic provides excellent care in various fields.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
