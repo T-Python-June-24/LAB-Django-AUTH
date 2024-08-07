@@ -5,8 +5,8 @@ from doctors.models import Doctor
 
 class Clinic(models.Model):
     WORKING_HOURS_CHOICES = [
-        ('9am-5pm', '9 AM - 5 PM'),
-        ('10am-6pm', '10 AM - 6 PM'),
+        ('8am-4pm', '8 AM - 4 PM'),
+        ('4pm-11pm', '4 AM - 11 PM'),
     ]
 
     name = models.CharField(max_length=100)
