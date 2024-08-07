@@ -6,11 +6,14 @@ from .forms import ReservationForm
 from django.core.paginator import Paginator
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
 
+from Notifications.utils import send_reservation_email  
 
+@login_required
 def reservation_list(request):
-    reservations = Reservation.objects.all()  # Correct variable name
-    paginator = Paginator(reservations, 10)  # Show 10 reservations per page.
+    reservations = Reservation.objects.all() 
+    paginator = Paginator(reservations, 10)  
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -18,21 +21,36 @@ def reservation_list(request):
         'page_obj': page_obj,
         'clinics': Clinic.objects.all(),
         'doctors': Doctor.objects.all(),
-        'form': ReservationForm(),  # Assuming you want to pass an empty form here.
+        'form': ReservationForm(), 
     }
 
     return render(request, 'reservations/reservation_list.html', context)
 
 
+@login_required
 def reservation_create(request):
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
-            reservation = form.save(commit=False)
-            reservation.user = request.user
-            reservation.save()
-            messages.success(request, 'Reservation created successfully!')
-            return redirect('reservations:reservation_list')
+            reservation_date = form.cleaned_data['reservation_date']
+            clinic = form.cleaned_data['clinic']
+            doctor = form.cleaned_data['doctor']
+
+            # Check if there is an existing reservation with the same clinic, doctor, and reservation date
+            existing_reservation = Reservation.objects.filter(clinic=clinic, doctor=doctor, reservation_date=reservation_date).exists()
+
+            if existing_reservation:
+                messages.error(request, 'There is already a reservation for this clinic and doctor at the selected time.')
+            else:
+                reservation = form.save(commit=False)
+                reservation.user = request.user
+                reservation.save()
+
+                # Send email notification
+                send_reservation_email(reservation)
+
+                messages.success(request, 'Reservation created successfully!')
+                return redirect('reservations:reservation_list')
         else:
             messages.error(request, 'There was an error with your submission. Please correct the errors below.')
     else:
@@ -59,7 +77,7 @@ def reservation_update(request, pk):
     context = {
         'clinics': Clinic.objects.all(),
         'doctors': Doctor.objects.all(),
-        'form': form,  # Pass the form instance with current reservation data
+        'form': form, 
     }
     return render(request, 'reservations/update_reservation.html', context)
 

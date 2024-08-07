@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+
+{% if request.user.is_authenticated %}
+
+
+<div class="grid grid-cols-1 gap-4 px-4 mt-8 mb-8 sm:grid-cols-4 sm:px-8">
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-green-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
+            </svg>
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">Total clinics</h3>
+            <p class="text-3xl">{{ total_clinics }}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-blue-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider"> total_doctors</h3>
+            <p class="text-3xl">{{ total_doctors }}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-indigo-400">
+            <img src="{% static 'images/catgory.png' %}" alt="Image" class="h-12 w-12">
+
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">total_reservations</h3>
+            <p class="text-3xl">{{ total_reservations }}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-blue-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider"> Total Users</h3>
+            <p class="text-3xl">{{ total_admins }}</p>
+        </div>
+    </div>
+    
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-yellow-300">
+            <img src="{% static 'images/money.png' %}" alt="Image" class="h-12 w-12">
+
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">most_popular_clinic</h3>
+            <p class="text-xl text-teal-500">{{ most_popular_clinic }}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-purple-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 3h2M5 6h14M7 9h10M9 12h6M11 15h2M13 18h-2"></path>
+            </svg>
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">least_popular_clinic</h3>
+            <p class="text-xl text-red-500">{{ least_popular_clinic }}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-teal-400">
+            <img src="{% static 'images/trending_up.png' %}" alt="Image" class="h-12 w-12">
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">most_popular_doctor</h3>
+            <p class="text-xl text-teal-500">{{ most_popular_doctor }}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-pink-400">
+            <img src="{% static 'images/down.png' %}" alt="Image" class="h-12 w-12">
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider">least_popular_doctor</h3>
+            <p class="text-xl text-red-500">{{ least_popular_doctor }}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-blue-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider"> Total Users</h3>
+            <p class="text-3xl">{{ total_admins }}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-red-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider"> Total Admins</h3>
+            <p class="text-3xl">{{ total_admins }}</p>
+        </div>
+    </div>
+
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+        <div class="p-4 bg-purple-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+        </div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider"> Total Staff</h3>
+            <p class="text-3xl">{{ total_staff }}</p>
+        </div>
+    </div>
+</div>
+
+{% include 'Reports/charts.html' %}
+
+    {% else %}
+
+        {% include "auth.html" %}
+
+    {% endif %}
+
+{% endblock %}

@@ -9,5 +9,5 @@ class ReservationForm(forms.ModelForm):
         fields = ['clinic', 'doctor', 'reservation_date', 'reservation_time']
         widgets = {
             'reservation_date': forms.DateInput(attrs={'type': 'date'}),
-            'reservation_time': forms.TimeInput(attrs={'type': 'time', 'format': '%H:%M:%S'}),
+            'reservation_time': forms.TimeInput(attrs={'type': 'time'}),
         }

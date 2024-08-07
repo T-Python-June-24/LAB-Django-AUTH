@@ -1,0 +1,206 @@
+{% load static %}
+<head>
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+        .chart-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            justify-items: center;
+            align-items: center;
+            max-width: 400px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        .chart {
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .chart-card img {
+            display: inline;
+            margin-right: 10px;
+        }
+        .chart-card p {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #333;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .chart-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-card">
+            <div class="text-center">
+                <p><img src="{% static 'images/d.png' %}" alt="Total Count Icon" class="h-8 w-8"> Total Count </p>
+            </div>
+            <canvas id="total-products-chart" class="chart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <div class="text-center">
+                <p><img src="{% static 'images/d.png' %}" alt="Monthly Reservations Icon" class="h-12 w-12"> Monthly Reservations </p>
+            </div>
+            <canvas id="monthly-reservations-chart" class="chart"></canvas>
+        </div>
+
+        <div class="chart-card ">
+            <div class="text-center">
+                <p><img src="{% static 'images/d.png' %}" alt="Category Distribution Icon" class="h-8 w-8"> Category Distribution </p>
+            </div>
+            <canvas id="category-distribution-chart" class="chart flex justify-center items-center "></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Data for total products chart
+        var totalProductsData = JSON.parse('{{ total_data|escapejs }}');
+        var labels = ['Clinics', 'Doctors', 'Reservations'];
+        var data = totalProductsData[0].y;
+
+        var ctx = document.getElementById('total-products-chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total Count',
+                    data: data,
+                    backgroundColor: ['#007bff', '#6610f2', '#6f42c1']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#666',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#666',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#333'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Data for monthly reservations chart
+        var monthlySalesLabels = JSON.parse('{{ monthly_reservations_labels|escapejs }}');
+        var monthlySalesData = JSON.parse('{{ monthly_reservations_data|escapejs }}');
+
+        var ctxLine = document.getElementById('monthly-reservations-chart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: monthlySalesLabels,
+                datasets: [{
+                    label: 'Monthly Reservations',
+                    data: monthlySalesData,
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            color: '#666',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#666',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#333'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Data for category distribution pie chart
+        var categoryLabels = JSON.parse('{{ category_labels|escapejs }}');
+        var categoryData = JSON.parse('{{ category_data|escapejs }}');
+
+        var ctxPie = document.getElementById('category-distribution-chart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryData,
+                    backgroundColor: ['#007bff', '#6610f2', '#6f42c1']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#333'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
