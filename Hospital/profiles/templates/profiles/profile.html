@@ -7,62 +7,68 @@
     .icon-text {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 20px; 
     }
-    svg {
-        flex-shrink: 0; 
-    }
+ 
     .card {
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
-</style>
+    a{
+        color: black;
+    }
+    a:hover{
+        color:#d3392b;
 
-<div class="container mt-3">
+    }
+    .container{
+        padding-top: 4rem;
+    }
+</style>
+<div class="d-flex align-items-center gap-3">
+<svg xmlns="http://www.w3.org/2000/svg " width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+  </svg>
+<h1>{{ user.first_name }} {{ user.last_name }} </h1>
+</div>
+
+<div class="container mt-2">
     <div class="row">
         <!-- Profile -->
+        
         <div class="col-md-4 col-lg-3">
             <div class="card-body">
-<div class="icon-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                      </svg>
-                <h3 class="card-title mb-3">{{ user.first_name }} {{ user.last_name }}</h3>
-</div>
-
                 <div class="icon-text">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
                         <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
                       </svg>
-                <h5 class="card-subtitle mb-2 text-muted">{{ profile.phone_number }}</h5>
-</div>
+                      <h5 class="card-subtitle mb-2 text-muted">{{ profile.phone_number }}</h5>
+                </div>
+                <br> 
 
                 <div class="icon-text">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
                         <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
                         <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                       </svg>
                 <p class="card-text">{{ profile.address }}</p>
-</div>
+            </div>
 
-                {% if request.user == user %}
-                    <a href="#" class="card-link">Edit Profile</a>
-                {% endif %}
             </div>
         </div>
 
         <!-- Reservations -->
         <div class="col-md-8 col-lg-9">
             <div class="d-flex flex-column gap-3">
-                <hr />
-                <h3>{{ user.first_name }}'s Reservations</h3>
+                <h3>My Reservations</h3>
                 {% for reservation in profile.reservation_set.all %}
                     <div class="card p-3 mb-3">
                         <div class="card-body">
                             <h4 class="card-title">
-                                <a href="{% url 'clinics:clinic_detail' reservation.clinic.id %}">{{ reservation.clinic.name }}</a> at {{ reservation.date }} {{ reservation.time_slot }}
+                                <a href="{% url 'clinics:clinic_detail' reservation.clinic.id %}">{{ reservation.clinic.name }}</a> 
+                                <span class="time-slot">at {{ reservation.date }} {{ reservation.time_slot }}</span>
                             </h4>
                             <h5 class="card-subtitle mb-2 text-muted">
                                 with <a href="{% url 'doctors:doctor_detail' reservation.doctor.id %}">{{ reservation.doctor.full_name }}</a>
@@ -70,13 +76,8 @@
                             <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ reservation.id }}" href="#">Update</a>
                         </div>
                     </div>
+
                     <!-- Modal for Update Form -->
-                    {% for doctor in reservation.clinic.doctors.all %}
-                        {{ doctor.full_name }}
-                    {% endfor %}
-
-
-              
                     
                     <div class="modal fade" id="updateModal-{{ reservation.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ reservation.id }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">

@@ -47,9 +47,12 @@ def update_doctor(request:HttpRequest,doctor_id):
      return render(request, "doctors/doctor_view.html", {'doctorForm': doctorForm, 'doctor': doctor, 'specialization': Doctor.Specialization.choices})
       
 def doctor_view(request:HttpRequest):
-
     doctors = Doctor.objects.all() 
-    return render(request, "doctors/doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices})
+    if request.user.is_staff:
+     return render(request, "doctors/doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices})
+    else:
+     return render(request, "doctors/user_doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices})
+
 
 def doctor_detail(request:HttpRequest,doctor_id:int):
     doctor = Doctor.objects.get(pk=doctor_id)

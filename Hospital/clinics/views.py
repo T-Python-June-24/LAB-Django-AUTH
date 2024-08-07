@@ -55,7 +55,8 @@ def clinic_view(request):
     doctors=Doctor.objects.all()
     if request.user.is_staff:
      return render(request, "clinics/clinic_view.html", {"clinics" : clinics,"doctors":doctors})
-    else:
+    if not request.user.is_staff:
+
       return render(request, "clinics/user_clinic_view.html", {"clinics" : clinics })
 
 def clinic_detail(request,clinic_id):

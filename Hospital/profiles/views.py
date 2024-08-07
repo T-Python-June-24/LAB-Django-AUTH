@@ -6,6 +6,7 @@ from django.db import IntegrityError, transaction
 from django.contrib import messages
 from .models import Profile
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 def sign_up(request: HttpRequest):
     if request.method == "POST":
@@ -71,15 +72,19 @@ def log_out(request: HttpRequest):
     logout(request)
     messages.success(request, "logged out successfully", "alert-warning")
 
-    return redirect(request.GET.get("next", "/"))
+    return redirect("main:home_view")
 
 
 
 
+@login_required
 def user_profile_view(request, user_name):
+    # Check if the requested username is the same as the logged-in user's username
+    if request.user.username != user_name:
+        return HttpResponse("Unauthorized", status=401)
+
     user = get_object_or_404(User, username=user_name)
     profile, created = Profile.objects.get_or_create(user=user)
-
     if created:
         profile.save()
 

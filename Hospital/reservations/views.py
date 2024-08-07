@@ -7,19 +7,26 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Clinic, Doctor,Reservation,Profile
 
 def select_clinic(request:HttpRequest):
+    if not request.user.is_authenticated:
+        messages.error(request, "You need to be logged in to make a reservation", "alert-danger")
+        return redirect("profiles:sign_in")    
     clinics = Clinic.objects.all()
     return render(request, 'reservations/select_clinic.html', {'clinics': clinics})
 
 def select_doctor(request:HttpRequest,clinic_id):
+    if not request.user.is_authenticated:
+        messages.error(request, "You need to be logged in to make a reservation", "alert-danger")
+        return redirect("profiles:sign_in")
     clinic = Clinic.objects.get(pk=clinic_id)
     doctors = Doctor.objects.filter(clinic=clinic)
     return render(request, 'reservations/select_details.html', {'clinic': clinic, 'doctors': doctors})
 
 
 def make_reservation(request:HttpRequest):
+
     if not request.user.is_authenticated:
         messages.error(request, "You need to be logged in to make a reservation", "alert-danger")
-        return redirect("accounts:sign_in")
+        return redirect("profiles:sign_in")
 
     if request.method == "POST":
         user_profile = Profile.objects.get(user=request.user)
@@ -63,7 +70,7 @@ def edit_reservation(request, reservation_id):
         reservation.save()  
 
         messages.success(request, 'Reservation updated successfully!', 'alert-success')
-        return redirect('clinics:clinic_view')
+        return redirect('profiles:user_profile_view', user_name=user_profile.user.username)
 
     return render(request, 'profiles/profile.html', {
         'reservation': reservation,
