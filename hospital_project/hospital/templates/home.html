@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .hero {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .hero img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+        margin: 0;
+    }
+
+    .hero-text {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: #fff;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        max-width: 80%;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    /* -----------------------------------------*/
+    .services {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .service-box {
+        padding: 50px;
+        flex: 1;
+        margin: 0 10px;
+    }
+
+    .service-box:not(:last-child) {
+        border-right: 2px solid #ddd;
+    }
+
+    .btn-light {
+        background-color: #f8f9fa;
+    }
+
+    /* -------------------------------------- */
+    .about-us {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .about-us img {
+        flex: 1;
+        max-width: 600px;
+        height: auto;
+        object-fit: cover;
+        margin-right: 20px;
+    }
+
+    .about-us-content {
+        flex: 1;
+        padding: 20px;
+        color: black;
+        border-radius: 10px;
+        max-width: 80%;
+    }
+
+    /* ------------------------------------ */
+    .get-in-touch {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .get-in-touch img {
+        flex: 1;
+        max-width: 600px;
+        height: auto;
+        object-fit: cover;
+        margin-left: 20px;
+    }
+
+    .get-in-touch-content {
+        flex: 1;
+        padding: 20px;
+        color: black;
+        border-radius: 10px;
+        max-width: 80%;
+    }
+
+    
+    @media (max-width: 768px) {
+        .hero {
+            height: auto;
+            padding: 50px 0;
+        }
+
+        .services {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .service-box {
+            margin: 10px 0;
+            border-right: none;
+        }
+
+        .about-us,
+        .get-in-touch {
+            flex-direction: column;
+        }
+
+        .about-us img,
+        .get-in-touch img {
+            margin: 20px 0;
+        }
+
+        .about-us-content,
+        .get-in-touch-content {
+            max-width: 100%;
+            margin: 0;
+        }
+    }
+</style>
+
+
+<div class="hero">
+    <img src="{% static 'doctors-ready-3500x1571.jpeg' %}" alt="Doctors Ready">
+    <div class="hero-text">
+        <h1 class="display-4">Welcome to Noor's Hospitals</h1>
+        <p class="lead">Providing top-notch medical care and services for you and your loved ones.</p>
+        <a href="{% url 'clinic-list' %}" class="btn btn-lg btn-primary">Explore Our Clinics</a>
+    </div>
+</div>
+
+<br>
+<hr>
+
+<section class="my-5 py-5">
+    <div class="container">
+        <div class="services">
+            <div class="service-box">
+                <h3 class="h4">General Medicine</h3>
+                <p>Comprehensive care for general health issues and preventative medicine.</p>
+            </div>
+            <div class="service-box">
+                <h3 class="h4">Pediatrics</h3>
+                <p>Specialized care for infants, children, and adolescents.</p>
+            </div>
+            <div class="service-box">
+                <h3 class="h4">Emergency Care</h3>
+                <p>24/7 emergency services for urgent medical needs.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr>
+
+<section class="about-us">
+    <img src="{% static 'R.jpeg' %}" alt="Doctors Ready">
+
+    <div class="about-us-content">
+        <h2 class="display-4">About Us</h2>
+        <p class="lead">At Noor's Hospital, we are dedicated to offering comprehensive healthcare services with compassion and excellence. Our team of experienced professionals is here to support your health and well-being.</p>
+        <a href="#" class="btn btn-light btn-lg">About Us</a>
+    </div>
+</section>
+
+<hr>
+
+<section class="get-in-touch">
+    <div class="get-in-touch-content">
+        <h2 class="display-4">Get in Touch</h2>
+        <p class="lead">Have questions or need assistance? Contact us today!</p>
+        <a href="#" class="btn btn-light btn-lg">Contact Us</a>
+    </div>
+    <img src="{% static 'doctor.jpg' %}" alt="Doctors Ready">
+</section>
+{% endblock %}
