@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError, transaction
 from django.contrib import messages
 from .models import Profile
+from django.shortcuts import render, get_object_or_404
 
 def sign_up(request: HttpRequest):
     if request.method == "POST":
@@ -36,45 +37,12 @@ def sign_up(request: HttpRequest):
             messages.success(request, "Registered User Successfully", extra_tags="alert-success")
             return redirect("profiles:sign_in")
 
-        except IntegrityError as e:
-            messages.error(request, "Please choose another username", extra_tags="alert-danger")
+
         except Exception as e:
             messages.error(request, "Couldn't register user. Try again", extra_tags="alert-danger")
             print(e)
 
     return render(request, "profiles/signup.html", {})
-
-
-def update_user_profile(request:HttpRequest):
-
-    if not request.user.is_authenticated:
-        messages.warning(request, "Only registered users can update their profile", "alert-warning")
-        return redirect("profiles:sign_in")
-    
-
-    if request.method == "POST":
-
-        try:
-            with transaction.atomic():
-                user:User = request.user
-
-                user.first_name = request.POST["first_name"]
-                user.last_name = request.POST["last_name"]
-                user.email = request.POST["email"]
-                user.save()
-
-                profile:Profile = user.profile
-                profile.about = request.POST["about"]
-                profile.twitch_link = request.POST["twitch_link"]
-                if "avatar" in request.FILES: profile.avatar = request.FILES["avatar"]
-                profile.save()
-
-            messages.success(request, "updated profile successfuly", "alert-success")
-        except Exception as e:
-            messages.error(request, "Couldn't update profile", "alert-danger")
-            print(e)
-
-    return render(request, "profiles/update_profile.html")
 
 
 
@@ -107,3 +75,12 @@ def log_out(request: HttpRequest):
 
 
 
+
+def user_profile_view(request, user_name):
+    user = get_object_or_404(User, username=user_name)
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    if created:
+        profile.save()
+
+    return render(request, 'profiles/profile.html', {"user": user, "profile": profile})

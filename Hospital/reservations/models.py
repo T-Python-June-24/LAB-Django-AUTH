@@ -13,4 +13,4 @@ class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.date} at {self.time_slot}"
+        return f"{self.user.user.username} - {self.date} at {self.time_slot}"
