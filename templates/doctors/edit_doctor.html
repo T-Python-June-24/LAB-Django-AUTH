@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Doctor: {{ doctor.full_name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Edit Doctor: {{ doctor.full_name }}</h1>
+
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-control">
+          <label for="{{ form.full_name.id_for_label }}" class="label">
+            <span class="label-text">Full Name</span>
+          </label>
+          {{ form.full_name }}
+        </div>
+        <div class="form-control mt-4">
+          <label for="{{ form.specialization.id_for_label }}" class="label">
+            <span class="label-text">Specialization</span>
+          </label>
+          {{ form.specialization }}
+        </div>
+        <div class="form-control mt-4">
+          <label for="{{ form.bio.id_for_label }}" class="label">
+            <span class="label-text">Bio</span>
+          </label>
+          {{ form.bio }}
+        </div>
+        <div class="form-control mt-4">
+          <label for="{{ form.photo.id_for_label }}" class="label">
+            <span class="label-text">Photo</span>
+          </label>
+          {% if doctor.photo %}
+            <img src="{{ doctor.photo.url }}" alt="{{ doctor.full_name }}" class="w-64 h-64 object-cover mb-2">
+          {% endif %}
+          {{ form.photo }}
+        </div>
+        <div class="form-control mt-6">
+          <button type="submit" class="btn btn-primary">Update Doctor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

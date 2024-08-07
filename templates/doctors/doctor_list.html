@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Doctors{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Our Doctors</h1>
+
+  {% if user.is_staff %}
+  <div class="mb-6">
+    <a href="{% url 'add_doctor' %}" class="btn btn-primary">Add New Doctor</a>
+  </div>
+  {% endif %}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for doctor in doctors %}
+      <div class="card bg-base-100 shadow-xl">
+        {% if doctor.photo %}
+          <figure><img src="{{ doctor.photo.url }}" alt="{{ doctor.full_name }}" class="w-full h-64 object-cover" /></figure>
+        {% endif %}
+        <div class="card-body">
+          <h2 class="card-title">{{ doctor.full_name }}</h2>
+          <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+          <div class="card-actions justify-end">
+            <a href="{% url 'doctor_detail' doctor.id %}" class="btn btn-primary">View Profile</a>
+            {% if user.is_staff %}
+              <a href="{% url 'edit_doctor' doctor.id %}" class="btn btn-secondary">Edit</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center col-span-full">No doctors available at the moment.</p>
+    {% endfor %}
+  </div>
+
+  {% if doctors.has_other_pages %}
+  <div class="btn-group mt-6 justify-center">
+    {% if doctors.has_previous %}
+      <a href="?page={{ doctors.previous_page_number }}" class="btn">«</a>
+    {% else %}
+      <button class="btn btn-disabled">«</button>
+    {% endif %}
+
+    {% for num in doctors.paginator.page_range %}
+      {% if doctors.number == num %}
+        <button class="btn btn-active">{{ num }}</button>
+      {% elif num > doctors.number|add:'-3' and num < doctors.number|add:'3' %}
+        <a href="?page={{ num }}" class="btn">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if doctors.has_next %}
+      <a href="?page={{ doctors.next_page_number }}" class="btn">»</a>
+    {% else %}
+      <button class="btn btn-disabled">»</button>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

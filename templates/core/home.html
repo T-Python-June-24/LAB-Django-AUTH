@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to MediConnect{% endblock %}
+
+{% block content %}
+<div class="hero min-h-[60vh] bg-base-200">
+  <div class="hero-content flex-col lg:flex-row-reverse space-x-10">
+    <div class="text-center flex flex-col justify-center items-center">
+      <h1 class="text-5xl font-bold">Welcome to MediConnect</h1>
+      <p class="py-6">Connecting you with quality healthcare services in your community. Experience modern healthcare at your fingertips.</p>
+      <div class="flex space-x-4">
+        <a href="{% url 'clinic_list' %}" class="btn btn-primary">Our Clinics</a>
+        <a href="{% url 'doctor_list' %}" class="btn btn-secondary">Our Doctors</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add search form -->
+<div class="py-8 bg-base-100">
+  <div class="container mx-auto px-4">
+    <form action="{% url 'search' %}" method="GET" class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
+      <div class="form-control w-full max-w-xs">
+        <input type="text" name="q" placeholder="Search doctors or clinics" class="input input-bordered w-full" required>
+      </div>
+      <select name="type" class="select select-bordered w-full max-w-xs">
+        <option value="all">All</option>
+        <option value="doctors">Doctors</option>
+        <option value="clinics">Clinics</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+</div>
+
+<div class="py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold mb-8 text-center">Featured Clinics</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for clinic in clinics %}
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <figure class="px-10 pt-10">
+                    {% if clinic.feature_image %}
+                    <img src="{{ clinic.feature_image.url }}" alt="{{ clinic.name }}"
+                        class="rounded-xl w-full h-48 object-cover" />
+                    {% else %}
+                    <img src="https://placehold.co/400x225?text=No+Image" alt="{{ clinic.name }}"
+                        class="rounded-xl w-full h-48 object-cover" />
+                    {% endif %}
+                </figure>
+                <div class="card-body items-center text-center">
+                    <h2 class="card-title">{{ clinic.name }}</h2>
+                    <p>{{ clinic.description|truncatewords:20 }}</p>
+                    <div class="card-actions">
+                        <a href="{% url 'clinic_detail' clinic.id %}" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center col-span-3">No clinics available at the moment.</p>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-8">
+            <a href="{% url 'clinic_list' %}" class="btn btn-primary">View All Clinics</a>
+        </div>
+    </div>
+</div>
+
+<div class="py-16 bg-base-200">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold mb-8 text-center">Our Doctors</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for doctor in doctors %}
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                <figure class="px-10 pt-10">
+                    {% if doctor.photo %}
+                    <img src="{{ doctor.photo.url }}" alt="{{ doctor.full_name }}"
+                        class="rounded-xl w-full h-48 object-cover" />
+                    {% else %}
+                    <img src="https://placehold.co/400x225?text=No+Image" alt="{{ doctor.full_name }}"
+                        class="rounded-xl w-full h-48 object-cover" />
+                    {% endif %}
+                </figure>
+                <div class="card-body items-center text-center">
+                    <h2 class="card-title">{{ doctor.full_name }}</h2>
+                    <p class="text-primary font-semibold">{{ doctor.specialization }}</p>
+                    <div class="card-actions">
+                        <a href="{% url 'doctor_detail' doctor.id %}" class="btn btn-primary">View Profile</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center col-span-3">No doctors available at the moment.</p>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-8">
+            <a href="{% url 'doctor_list' %}" class="btn btn-primary">View All Doctors</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

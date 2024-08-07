@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Reservation Details{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Reservation Details</h1>
+
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">Appointment Information</h2>
+      <p><strong>Clinic:</strong> {{ reservation.clinic.name }}</p>
+      <p><strong>Doctor:</strong> {{ reservation.doctor.full_name }}</p>
+      <p><strong>Date:</strong> {{ reservation.date }}</p>
+      <p><strong>Time:</strong> {{ reservation.time_slot }}</p>
+      <p><strong>Created at:</strong> {{ reservation.created_at }}</p>
+
+      <div class="card-actions justify-end mt-4">
+        <a href="{% url 'cancel_reservation' reservation.id %}" class="btn btn-error">Cancel Reservation</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
