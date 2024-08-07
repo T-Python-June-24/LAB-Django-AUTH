@@ -5,15 +5,14 @@ from .models import Reservation
 from .forms import ReservationForm
 from django.core.paginator import Paginator
 from django.contrib import messages
-
 from django.contrib.auth.decorators import login_required
-
 from Notifications.utils import send_reservation_email  
+from django.utils.timezone import now
 
 @login_required
 def reservation_list(request):
     reservations = Reservation.objects.all() 
-    paginator = Paginator(reservations, 10)  
+    paginator = Paginator(reservations, 9)  
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -25,7 +24,6 @@ def reservation_list(request):
     }
 
     return render(request, 'reservations/reservation_list.html', context)
-
 
 @login_required
 def reservation_create(request):
@@ -46,8 +44,18 @@ def reservation_create(request):
                 reservation.user = request.user
                 reservation.save()
 
+                # Prepare email parameters
+                subject = 'Your Reservation Confirmation'
+                html_template = 'Notifications/reservation_email.html' 
+                context = {
+                    'username': request.user.username,
+                    'clinic_name': clinic.name,
+                    'reservation_date': reservation_date,
+                }
+                recipient_list = [request.user.email]
+
                 # Send email notification
-                send_reservation_email(reservation)
+                send_reservation_email(subject, html_template, context, recipient_list)
 
                 messages.success(request, 'Reservation created successfully!')
                 return redirect('reservations:reservation_list')
@@ -60,6 +68,7 @@ def reservation_create(request):
         'clinics': Clinic.objects.all(),
         'doctors': Doctor.objects.all(),
         'form': form,
+        'today': now().date(),
     }
     return render(request, 'reservations/add_reservation.html', context)
 

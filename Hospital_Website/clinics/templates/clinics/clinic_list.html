@@ -7,11 +7,34 @@
 <div class="content-home-padding pr-4 md:pr-16">
     <h1 class="bold-font-prop tilt-in-fwd-bl text-blue-800 text-3xl font-bold mb-8">Clinic List</h1>
 
+    {% if messages %}
+    <div class="max-w-4xl mx-auto px-4">
+        {% for message in messages %}
+            <div class="bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3 shadow-md mb-4 relative" role="alert">
+                <div class="flex justify-between">
+                    <div>
+                        <strong class="font-bold">{{ message.tags|title }}</strong>
+                        <span class="block sm:inline">{{ message }}</span>
+                    </div>
+                    <div class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                        <svg class="fill-current h-6 w-6 text-blue-500 cursor-pointer" role="button" onclick="this.parentElement.parentElement.parentElement.style.display='none'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <title>Close</title>
+                            <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if request.user.is_staff %}
     <div class="mb-8 flex flex-wrap justify-end items-center">
         <a href="{% url 'clinics:clinic_create' %}" class="bg-blue-800 hover:bg-blue-600 text-white font-bold rounded-lg px-4 py-2 transition duration-200 flex items-center">
             <i class="fa fa-plus mr-2" aria-hidden="true"></i>Add Clinic
         </a>
     </div>
+    {% endif %}
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for clinic in clinics %}

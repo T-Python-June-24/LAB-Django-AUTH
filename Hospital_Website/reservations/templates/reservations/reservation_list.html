@@ -6,12 +6,15 @@
 {% block content %}
 <div class="content-home-padding pr-4 md:pr-16">
     <h1 class="bold-font-prop tilt-in-fwd-bl text-blue-800 text-3xl font-bold mb-8">Reservation List</h1>
+    
 
+    {% if user.is_superuser %}
     <div class="mb-8 flex flex-wrap justify-end items-center">
         <a href="{% url 'reservations:reservation_create' %}" class="bg-blue-800 hover:bg-blue-600 text-white font-bold rounded-lg px-4 py-2 transition duration-200 flex items-center">
             <i class="fa fa-plus mr-2" aria-hidden="true"></i>Add Reservation
         </a>
     </div>
+    {% endif %}
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for reservation in page_obj %}
@@ -22,10 +25,12 @@
                 <p class="text-gray-600 text-sm">{{ reservation.doctor.name }}</p>
                 <p class="text-teal-600 text-sm">{{ reservation.reservation_date }}</p>
                 <p class="text-red-600 text-sm">{{ reservation.reservation_time }}</p>
+                {% if user.is_staff %}
                 <div class="flex justify-end space-x-2 mt-4">
                     <a href="{% url 'reservations:reservation_update' reservation.id %}" class="bg-blue-600 text-white font-bold rounded-lg px-4 py-2 transition duration-200 hover:bg-blue-800">Edit</a>
                     <a href="{% url 'reservations:reservation_delete' reservation.id %}" class="bg-red-600 text-white font-bold rounded-lg px-4 py-2 transition duration-200 hover:bg-red-800">Delete</a>
                 </div>
+                {% endif %}
             </div>
         </div>
         {% empty %}

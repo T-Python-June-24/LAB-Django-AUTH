@@ -56,6 +56,7 @@
       </div>
       <ul
          class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6">
+         {% if request.user.is_superuser %}
          <li>
             <a class="text-sm text-blue-700 font-bold hover:text-blue-900 transition duration-200" href="{% url 'Reports:dashboard' %}">Dashboard</a>
          </li>
@@ -66,6 +67,8 @@
                   d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
             </svg>
          </li>
+         {% endif %}
+         {% if user.is_staff %}
          <li>
             <a class="text-sm text-blue-700 font-bold hover:text-blue-900 transition duration-200"
                href="{% url 'reservations:reservation_list' %}">Reservations</a>
@@ -77,6 +80,8 @@
                   d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
             </svg>
          </li>
+         {% endif %}
+
          <li>
             <a class="text-sm text-blue-700 font-bold hover:text-blue-900 transition duration-200" 
             href="{% url 'clinics:clinic_list' %}">Clinics</a>
@@ -91,24 +96,20 @@
          <li>
             <a class="text-sm text-blue-700 font-bold hover:text-blue-900 transition duration-200" href="{% url 'doctors:doctor_list' %}">Doctors</a>
          </li>
-         <li class="text-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill"
-               viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-            </svg>
-         </li>
-         <li>
-            <a class="text-sm text-blue-700 font-bold hover:text-blue-900 transition duration-200" href="">Reports</a>
-         </li>
+
       </ul>
 
 
 
 
-      {% if request.user.is_authenticated %}
-      <a class="hidden lg:inline-block py-2 px-6 bg-blue-800 hover:bg-blue-900 text-sm text-white font-bold rounded-xl transition duration-200"
-         href="{% url 'accounts:log_out' %}">Log out 👋</a>
+      <div class="flex space-x-2">
+         {% if request.user.is_authenticated %}
+            <a href="{% url 'reservations:reservation_create' %}" class="hidden lg:inline-block py-2 px-6 bg-blue-800 hover:bg-blue-900 text-xs text-white text-center font-bold rounded-xl transition duration-200">
+               <i class="fa fa-plus mr-2" aria-hidden="true"></i>Add Reservation
+            </a>
+            <a class="hidden lg:inline-block py-2 px-6 bg-blue-800 hover:bg-blue-900 text-xs text-white font-bold rounded-xl transition duration-200"
+               href="{% url 'accounts:log_out' %}">Log out 👋</a>
+      </div>
       {% else %}
       <div class="lg:inline-block ">
          <a class="hidden lg:inline-block mr-2 py-2 px-6 bg-blue-800 hover:bg-blue-900 text-sm text-white font-bold rounded-xl transition duration-200"
@@ -144,35 +145,34 @@
          </div>
          <div>
             <ul class="space-y-1">
+               {% if request.user.is_superuser %}
                <li>
                   <a class="block p-4 text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded"
-                     href="">Dashboard</a>
+                     href="{% url 'Reports:dashboard' %}">Dashboard</a>
                </li>
-               <li>
-                  <a class="block p-4 text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded"
-                     href="">Search</a>
-               </li>
+               {% endif %}
+               {% if request.user.is_superuser %}
                <li>
                   <a class="block p-4 text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded"
                      href="{% url 'reservations:reservation_list' %}">Reservations</a>
                </li>
+               {% endif %}
                <li>
                   <a class="block p-4 text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded"
-                     href="">Clinics</a>
+                     href="{% url 'clinics:clinic_list' %}">Clinics</a>
                </li>
                <li>
                   <a class="block p-4 text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded"
                      href="{% url 'doctors:doctor_list' %}">Doctors</a>
                </li>
-               <li>
-                  <a class="block p-4 text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded"
-                     href="">Reports</a>
-               </li>
+
             </ul>
          </div>
          <div class="mt-auto">
             <div class="pt-6">
                {% if request.user.is_authenticated %}
+               <a class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold bg-blue-800 text-gray-100 hover:text-blue-900 hover:bg-gray-100 rounded-xl"
+               href="{% url 'reservations:reservation_create' %}">Add Reservation</a>
                <a class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold bg-gray-50 hover:bg-gray-100 rounded-xl"
                   href="{% url 'accounts:log_out' %}">Log out</a>
                {% else %}

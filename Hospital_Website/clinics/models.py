@@ -8,7 +8,7 @@ class Clinic(models.Model):
     opening_time = models.TimeField(default=timezone.now().replace(hour=9, minute=0, second=0, microsecond=0).time())
     closing_time = models.TimeField(default=timezone.now().replace(hour=17, minute=0, second=0, microsecond=0).time())
     feature_image = models.ImageField(upload_to='clinics/', null=True, blank=True)
-    doctors = models.ManyToManyField(Doctor, related_name='clinics')
+    doctors = models.ManyToManyField(Doctor)
 
     def __str__(self):
         return self.name

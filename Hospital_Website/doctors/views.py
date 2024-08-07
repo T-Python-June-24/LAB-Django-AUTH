@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .models import Doctor
 from .forms import DoctorForm
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+
 
 def doctor_list(request):
     doctors = Doctor.objects.all()
@@ -19,8 +21,9 @@ def doctor_list(request):
 
 
 def doctor_detail(request, pk):
-    doctor = Doctor.objects.get(pk=pk)
+    doctor = get_object_or_404(Doctor, pk=pk)
     return render(request, 'doctors/doctor_detail.html', {'doctor': doctor})
+
 
 def doctor_create(request):
     if request.method == 'POST':
@@ -34,6 +37,7 @@ def doctor_create(request):
     specializations = Doctor.SPECIALIZATIONS
     return render(request, 'doctors/doctor_form.html', {'form': form, 'specializations': specializations})
 
+@login_required
 def doctor_update(request, pk):
     doctor = Doctor.objects.get(pk=pk)
     if request.method == 'POST':
@@ -49,6 +53,7 @@ def doctor_update(request, pk):
 
     return render(request, 'doctors/doctor_update.html', {'form': form, 'specializations': specializations})
 
+@login_required
 def doctor_delete(request, pk):
     doctor = Doctor.objects.get(pk=pk)
     if request.method == 'POST':

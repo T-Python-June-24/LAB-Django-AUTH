@@ -22,8 +22,20 @@
         <div class="w-full md:w-1/2 pl-0 md:pl-6">
             <h1 class="text-3xl font-bold mb-4">{{ doctor.full_name }}</h1>
             <p class="text-gray-600 text-lg mb-2"><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+            <p class="text-gray-600 text-lg mb-2"><strong>Clinics:</strong>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for clinic in doctor.clinic_set.all %}
+                    <div class="p-4 bg-white rounded-lg shadow-md">
+                        <h4 class="text-xl font-semibold text-blueGray-700">{{ clinic.name }}</h4>
+                        <a class="text-teal-500 hover:text-teal-600" href="{% url 'clinics:clinic_detail' clinic.pk %}">View Details</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </p>
 
             <!-- Action Buttons -->
+            
+            {% if user.is_superuser %}
             <div class="mt-6 mb-6 flex justify-center items-center">
                 <a href="{% url 'doctors:doctor_update' doctor.pk %}" class="bg-teal-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-teal-600">Edit</a>
                 <form method="post" action="{% url 'doctors:doctor_delete' doctor.pk %}" class="ml-4">
@@ -31,9 +43,13 @@
                     <button type="submit" class="bg-red-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-red-600">Delete</button>
                 </form>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
 <br><br>
 
 {% endblock content %}
+
+
+

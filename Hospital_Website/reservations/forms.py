@@ -1,13 +1,24 @@
-
-
 from django import forms
 from .models import Reservation
+from django.core.exceptions import ValidationError
+from datetime import datetime
 
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = ['clinic', 'doctor', 'reservation_date', 'reservation_time']
-        widgets = {
-            'reservation_date': forms.DateInput(attrs={'type': 'date'}),
-            'reservation_time': forms.TimeInput(attrs={'type': 'time'}),
-        }
+
+    def clean_reservation_date(self):
+        reservation_date = self.cleaned_data.get('reservation_date')
+        if reservation_date < datetime.now().date():
+            raise ValidationError('Reservation date must be in the future.')
+        return reservation_date
+
+    def clean(self):
+        cleaned_data = super().clean()
+        reservation_date = cleaned_data.get('reservation_date')
+        reservation_time = cleaned_data.get('reservation_time')
+
+        if reservation_date == datetime.now().date() and reservation_time <= datetime.now().time():
+            raise ValidationError('Reservation time must be in the future.')
+        return cleaned_data

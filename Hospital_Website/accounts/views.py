@@ -1,4 +1,6 @@
 from django.db import transaction, IntegrityError
+
+from reservations.models import Reservation
 from .models import Profile
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login,logout
@@ -82,12 +84,14 @@ def log_out(request: HttpRequest):
     logout(request)
     return redirect('accounts:sign_in')
 
+
+
 @login_required
-def profile(request: HttpRequest):
-    if request.user.is_authenticated:
-        return render(request, 'accounts/profile.html')
-    else:
-        return redirect('accounts:sign_in')
+def profile(request):
+    user = request.user
+    reservations = Reservation.objects.filter(user=user)
+    return render(request, 'accounts/profile.html', {'user': user, 'reservations': reservations})
+
 
 
 @login_required

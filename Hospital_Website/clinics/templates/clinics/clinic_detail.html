@@ -21,6 +21,10 @@
                     class="w-full h-[500px] object-cover rounded-xl shadow-md">
             {% endif %}
             <p class="text-gray-600 text-lg mt-4"><strong>Description:</strong> {{ clinic.description }}</p>
+            {% if user.is_authenticated %}
+            <a class="block px-4 py-3 mt-3 leading-loose text-xs text-center font-semibold bg-blue-800 text-gray-100 hover:text-blue-900 hover:bg-gray-100 rounded-lg"
+                href="{% url 'reservations:reservation_create' %}">Add Reservation</a>
+        {% endif %}
         </div>
 
         <!-- Details Section -->
@@ -30,22 +34,24 @@
             <p class="text-gray-600 text-lg mb-2"><strong>Closing Time:</strong> {{ clinic.closing_time }}</p>
             <p class="text-gray-600 text-lg mb-2"><strong>Available Appointments:</strong> {{ clinic.available_appointments }}</p>
 
-           <!-- Doctors List -->
-<h2 class="text-2xl font-bold mb-4">Doctors</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    {% for doctor in clinic.doctors.all %}
-        <div class="bg-white rounded-lg shadow-md p-4">
-            <h3 class="text-xl font-bold">
-                <a href="{% url 'doctors:doctor_detail' doctor.pk %}" class="hover:text-teal-500">{{ doctor.full_name }}</a>
-            </h3>
-            <p class="text-gray-600">{{ doctor.specialization }}</p>
+                <!-- Doctors List -->
+        <h2 class="text-2xl font-bold mb-4">Doctors</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for doctor in clinic.doctors.all %}
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h3 class="text-xl font-bold">
+                        <a href="{% url 'doctors:doctor_detail' doctor.pk %}" class="hover:text-teal-500">{{ doctor.full_name }}</a>
+                    </h3>
+                    <p class="text-gray-600">{{ doctor.specialization }}</p>
+                </div>
+            {% empty %}
+                <p class="text-gray-600">No doctors available.</p>
+            {% endfor %}
         </div>
-    {% empty %}
-        <p class="text-gray-600">No doctors available.</p>
-    {% endfor %}
-</div>
 
             <!-- Action Buttons -->
+
+            {% if request.user.is_superuser %}
                 <div class="mt-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                     <a href="{% url 'clinics:clinic_update' clinic.pk %}" class="bg-teal-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-teal-600">Edit</a>
                     <form method="post" action="{% url 'clinics:clinic_delete' clinic.pk %}">
@@ -53,6 +59,7 @@
                         <button type="submit" class="bg-red-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-red-600">Delete</button>
                     </form>
                 </div>
+            {% endif %}
         </div>
     </div>
 </div>
