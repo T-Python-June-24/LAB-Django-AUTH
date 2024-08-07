@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from doctors.models import Doctor
 from .models import Clinic
 from .forms import ClinicForm
 from django.core.paginator import Paginator
@@ -8,7 +9,8 @@ from django.contrib import messages
 
 def clinic_detail(request, pk):
     clinic = get_object_or_404(Clinic, pk=pk)
-    return render(request, 'clinics/clinic_detail.html', {'clinic': clinic})
+    other_clinics = Clinic.objects.all()
+    return render(request, 'clinics/clinic_detail.html', {'clinic': clinic,'other_clinics': other_clinics})
 
 def clinic_list(request):
     clinic_list = Clinic.objects.all()  

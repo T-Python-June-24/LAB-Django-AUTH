@@ -4,64 +4,98 @@
 {% block title %}{{ clinic.name }}{% endblock title %}
 
 {% block content %}
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
 <script>
     AOS.init();
 </script>
 
-<div class="container mx-auto p-4">
-    <div class="flex flex-col md:flex-row">
+<div class="container mx-auto p-6 mb-10">
+    <h1 class="bold-font-prop tilt-in-fwd-bl text-blue-800 text-4xl font-bold mb-4 ">Clinic Details</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Image Section -->
-        <div class="w-full md:w-1/2 mb-6 md:mb-0">
+        <div class="order-1 md:order-1">
             {% if clinic.feature_image %}
                 <img src="{{ clinic.feature_image.url }}" alt="{{ clinic.name }}'s Photo"
-                    class="w-full h-[500px] object-cover rounded-xl shadow-md">
+                    class="w-full h-[500px] object-cover rounded-xl shadow-lg transition-transform duration-300 hover:scale-105">
             {% else %}
                 <img src="{% static 'images/default_clinic.png' %}" alt="Default Clinic"
-                    class="w-full h-[500px] object-cover rounded-xl shadow-md">
+                    class="w-full h-[500px] object-cover rounded-xl shadow-lg transition-transform duration-300 hover:scale-105">
             {% endif %}
-            <p class="text-gray-600 text-lg mt-4"><strong>Description:</strong> {{ clinic.description }}</p>
-            {% if user.is_authenticated %}
-            <a class="block px-4 py-3 mt-3 leading-loose text-xs text-center font-semibold bg-blue-800 text-gray-100 hover:text-blue-900 hover:bg-gray-100 rounded-lg"
-                href="{% url 'reservations:reservation_create' %}">Add Reservation</a>
-        {% endif %}
         </div>
-
         <!-- Details Section -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-6">
-            <h1 class="text-3xl font-bold mb-4">{{ clinic.name }}</h1>
-            <p class="text-gray-600 text-lg mb-2"><strong>Opening Time:</strong> {{ clinic.opening_time }}</p>
-            <p class="text-gray-600 text-lg mb-2"><strong>Closing Time:</strong> {{ clinic.closing_time }}</p>
-            <p class="text-gray-600 text-lg mb-2"><strong>Available Appointments:</strong> {{ clinic.available_appointments }}</p>
-
-                <!-- Doctors List -->
-        <h2 class="text-2xl font-bold mb-4">Doctors</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {% for doctor in clinic.doctors.all %}
-                <div class="bg-white rounded-lg shadow-md p-4">
-                    <h3 class="text-xl font-bold">
-                        <a href="{% url 'doctors:doctor_detail' doctor.pk %}" class="hover:text-teal-500">{{ doctor.full_name }}</a>
-                    </h3>
-                    <p class="text-gray-600">{{ doctor.specialization }}</p>
-                </div>
-            {% empty %}
-                <p class="text-gray-600">No doctors available.</p>
-            {% endfor %}
-        </div>
+        <div class="order-2 md:order-2">
+            <h1 class="text-4xl font-bold mb-4">{{ clinic.name }}</h1>
+            <p class="text-gray-700 text-lg mb-4"><strong>Description:</strong> {{ clinic.description }}</p>
+            <p class="text-gray-700 text-lg mb-2"><strong>Opening Time:</strong> {{ clinic.opening_time }}</p>
+            <p class="text-gray-700 text-lg mb-2"><strong>Closing Time:</strong> {{ clinic.closing_time }}</p>
 
             <!-- Action Buttons -->
-
             {% if request.user.is_superuser %}
-                <div class="mt-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-                    <a href="{% url 'clinics:clinic_update' clinic.pk %}" class="bg-teal-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-teal-600">Edit</a>
+                <div class="mt-8 flex flex-col md:flex-row gap-4">
+                    <a href="{% url 'clinics:clinic_update' clinic.pk %}" class="bg-teal-500 text-white py-3 px-12 rounded-lg shadow-md hover:bg-teal-600 transition-colors duration-300">Edit</a>
                     <form method="post" action="{% url 'clinics:clinic_delete' clinic.pk %}">
                         {% csrf_token %}
-                        <button type="submit" class="bg-red-500 text-white py-2 px-12 rounded-lg shadow-md hover:bg-red-600">Delete</button>
+                        <button type="submit" class="bg-red-500 text-white py-3 px-12 rounded-lg shadow-md hover:bg-red-600 transition-colors duration-300">Delete</button>
                     </form>
                 </div>
             {% endif %}
         </div>
+        <!-- Doctors List -->
+        <section class="order-3 md:order-3 col-span-2 ">
+            <div class="card">
+                <h2 class="bold-font-prop tilt-in-fwd-bl text-blue-800 text-4xl font-bold mb-4 ">Doctors</h2>
+                <div class="card-body">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {% for doctor in clinic.doctors.all %}
+                            <div class="card-item bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-shadow duration-300">
+                                {% if doctor.image %}
+                                <img alt="Image" src="{{ doctor.photo.url }}" class="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px">
+                                {% else %}
+                                    <img src="{% static 'images/profile.jpeg' %}" alt="Default Doctor" class="w-full h-[200px] object-contain rounded-t-lg transition-transform duration-300 hover:scale-105">
+                                {% endif %}
+                                <div class="p-4">
+                                    <h3 class="card-item-title text-xl font-bold mb-2">
+                                        <a href="{% url 'doctors:doctor_detail' doctor.pk %}" class="card-link hover:text-teal-500">{{ doctor.full_name }}</a>
+                                    </h3>
+                                    <p class="card-item-description text-gray-600 mb-4">{{ doctor.specialization }}</p>
+                                    {% if user.is_authenticated %}
+                                        <a class="card-item-button block px-4 py-2 mt-3 text-center font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors duration-300" href="{% url 'reservations:reservation_create' %}">Add Reservation</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="text-gray-700">No doctors available.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Other Clinics Section -->
+        <div class="order-4 md:order-4 col-span-2 mt-12 ">
+            <h2 class="text-3xl font-bold mb-4 text-start text-blue-800">Other Clinics</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 " data-aos="fade-up"
+            data-aos-anchor-placement="top-bottom">
+                {% for other_clinic in other_clinics|slice:":3" %}
+                    <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
+                        {% if other_clinic.feature_image %}
+                            <img src="{{ other_clinic.feature_image.url }}" alt="{{ other_clinic.name }}'s Photo"
+                                class="w-full h-[200px] object-cover rounded-t-lg transition-transform duration-300 hover:scale-105">
+                        {% else %}
+                            <img src="{% static 'images/default_clinic.png' %}" alt="Default Clinic"
+                                class="w-full h-[200px] object-cover rounded-t-lg transition-transform duration-300 hover:scale-105">
+                        {% endif %}
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold mb-2">
+                                <a href="{% url 'clinics:clinic_detail' other_clinic.pk %}" class="hover:text-teal-600">{{ other_clinic.name }}</a>
+                            </h3>
+                            <p class="text-gray-700">{{ other_clinic.description|truncatewords:20 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock content %}

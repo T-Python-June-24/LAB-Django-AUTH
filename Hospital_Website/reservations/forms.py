@@ -19,6 +19,12 @@ class ReservationForm(forms.ModelForm):
         reservation_date = cleaned_data.get('reservation_date')
         reservation_time = cleaned_data.get('reservation_time')
 
-        if reservation_date == datetime.now().date() and reservation_time <= datetime.now().time():
-            raise ValidationError('Reservation time must be in the future.')
+        if reservation_date and reservation_time:
+            now = datetime.now()
+            # Check if the reservation date is today
+            if reservation_date == now.date():
+                # Check if the reservation time is in the past
+                if reservation_time <= now.time():
+                    raise ValidationError('Reservation time must be in the future.')
+
         return cleaned_data

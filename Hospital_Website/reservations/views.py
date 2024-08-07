@@ -34,7 +34,6 @@ def reservation_create(request):
             clinic = form.cleaned_data['clinic']
             doctor = form.cleaned_data['doctor']
 
-            # Check if there is an existing reservation with the same clinic, doctor, and reservation date
             existing_reservation = Reservation.objects.filter(clinic=clinic, doctor=doctor, reservation_date=reservation_date).exists()
 
             if existing_reservation:
@@ -44,7 +43,6 @@ def reservation_create(request):
                 reservation.user = request.user
                 reservation.save()
 
-                # Prepare email parameters
                 subject = 'Your Reservation Confirmation'
                 html_template = 'Notifications/reservation_email.html' 
                 context = {
@@ -54,7 +52,6 @@ def reservation_create(request):
                 }
                 recipient_list = [request.user.email]
 
-                # Send email notification
                 send_reservation_email(subject, html_template, context, recipient_list)
 
                 messages.success(request, 'Reservation created successfully!')

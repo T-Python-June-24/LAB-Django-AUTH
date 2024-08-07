@@ -19,7 +19,6 @@
    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-      <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
    <title>{% block title %}Hospital{% endblock %}</title>
 
@@ -31,9 +30,15 @@
    </script>
    <nav class="relative px-4 py-4 flex items-center justify-between bg-transparent">
       {% if request.user.is_authenticated %}
+      
       <div class="flex items-center justify-center sm:justify-start relative z-10 mb-5">
-         <a href="{% url 'accounts:profile' %}" class="mr-2"><img src="{{ user.profile.user_image.url }}"
+         {% if user.profile.user_image %}
+            <a href="{% url 'accounts:profile' %}" class="mr-2"><img src="{{ user.profile.user_image.url }}"
                alt="user-avatar-image" class="border-4 border-solid border-white rounded-full h-10 w-10"></a>
+         {% else %}
+            <a href="{% url 'accounts:profile' %}" class="mr-2"><img src="{% static 'images/profile.jpeg' %}"
+               alt="user-avatar-image" class="border-4 border-solid border-white rounded-full h-10 "></a>
+         {% endif %}
          <a href="{% url 'accounts:profile' %}">
             <p class="text-blue-800 font-bold text-xl">Welcome {{ user.username }} 👋</p>
          </a>
@@ -96,7 +101,18 @@
          <li>
             <a class="text-sm text-blue-700 font-bold hover:text-blue-900 transition duration-200" href="{% url 'doctors:doctor_list' %}">Doctors</a>
          </li>
-
+         {% if request.user.is_authenticated %}
+         <li class="text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill"
+               viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+            </svg>
+         </li>
+         <li>
+            <a class="text-sm text-blue-700 font-bold hover:text-blue-900 transition duration-200" href="{% url 'doctors:search' %}">Search</a>
+         </li>
+         {% endif %}
       </ul>
 
 
@@ -164,6 +180,10 @@
                <li>
                   <a class="block p-4 text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded"
                      href="{% url 'doctors:doctor_list' %}">Doctors</a>
+               </li>
+               <li>
+                  <a class="block p-4 text-sm font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded"
+                     href="{% url 'doctors:search' %}">Search</a>
                </li>
 
             </ul>

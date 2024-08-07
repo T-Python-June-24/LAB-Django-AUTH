@@ -1,9 +1,38 @@
 from django.shortcuts import render, redirect,get_object_or_404
+
+from clinics.models import Clinic
 from .models import Doctor
 from .forms import DoctorForm
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import  Doctor
+from .forms import SearchForm
 
+def search(request):
+    query = request.GET.get('query', '')
+    clinics_list = Clinic.objects.filter(name__icontains=query)
+    doctors_list = Doctor.objects.filter(full_name__icontains=query)
+    
+    clinic_paginator = Paginator(clinics_list, 5)  
+    doctor_paginator = Paginator(doctors_list, 5)  
+
+    clinic_page_number = request.GET.get('clinic_page')
+    doctor_page_number = request.GET.get('doctor_page')
+
+    clinics = clinic_paginator.get_page(clinic_page_number)
+    doctors = doctor_paginator.get_page(doctor_page_number)
+
+    form = SearchForm(request.GET)
+
+    context = {
+        'form': form,
+        'clinics': clinics,
+        'doctors': doctors,
+        'query': query,
+    }
+
+    return render(request, 'doctors/search_results.html', context)
 
 def doctor_list(request):
     doctors = Doctor.objects.all()

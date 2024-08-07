@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Search Results{% endblock title %}
+
+{% block content %}
+<div class="p-4 md:p-8">
+    <h1 class="text-blue-800 text-3xl font-bold mb-6">Search Results</h1>
+
+    <div class="mb-4 flex justify-center flex-wrap md:flex-nowrap">
+        <form action="{% url 'doctors:search' %}" method="GET" class="mb-4 flex flex-wrap justify-center w-full md:w-auto">
+            <input type="text" minlength="1" maxlength="512" required name="query" placeholder="Search by name or specialization" value="{{ query }}" class="mr-2 mb-2 md:mr-8 border p-2 rounded w-full md:w-[800px] place-content-center justify-center">
+            <button type="submit" class="w-full md:w-auto py-2 px-4 md:px-8 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold rounded-xl transition duration-200 mb-2 md:mb-0">Search</button>
+
+        </form>
+    </div>
+
+    {% if query %}
+        <h2 class="text-xl font-bold mb-4 text-teal-500">Results for "{{ query }}":</h2>
+        
+        <div class="mb-6">
+            <h3 class="text-4xl font-bold mb-8 text-blue-800 ">Clinics</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for clinic in clinics %}
+                    <div class="border border-teal-600 rounded-lg p-4 shadow-lg">
+                        <h4 class="text-lg font-bold">{{ clinic.name }}</h4>
+                        <p>{{ clinic.description }}</p>
+                        <a href="{% url 'clinics:clinic_detail' clinic.id %}" class="text-blue-600 hover:underline">View Clinic</a>
+                    </div>
+                {% empty %}
+                    <p class="text-red-500 text-4xl font-semibold">No clinics found.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+            <h3 class="text-4xl font-bold mb-8 text-blue-800">Doctors</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for doctor in doctors %}
+                    <div class="border border-blue-200 rounded-lg mb-8 p-4 shadow-lg">
+                        <h4 class="text-lg font-bold">{{ doctor.full_name }}</h4>
+                        <p>{{ doctor.specialty }}</p>
+                        <a href="{% url 'doctors:doctor_detail' doctor.id %}" class="text-blue-600 hover:underline">View Doctor</a>
+                    </div>
+                {% empty %}
+                <p class="text-red-500 text-4xl font-semibold">No doctors found.</p>
+                {% endfor %}
+            </div>
+        <div class="text-center">
+            <div class="mx-6 justify-center items-center ">
+                <span class="block mb-8">Page {{ doctors.number }} of {{ doctors.paginator.num_pages }}</span>
+                <div class="flex justify-between">
+                    {% if doctors.has_previous %}
+                        <a href="?query={{ query }}&clinic_page={{ clinics.number }}&doctor_page={{ doctors.previous_page_number }}" class="text-blue-600 hover:underline">Previous</a>
+                    {% endif %}
+                    {% if doctors.has_next %}
+                        <a href="?query={{ query }}&clinic_page={{ clinics.number }}&doctor_page={{ doctors.next_page_number }}" class="text-blue-600 hover:underline">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>Enter a search term to find clinics and doctors.</p>
+    {% endif %}
+</div>
+{% endblock content %}

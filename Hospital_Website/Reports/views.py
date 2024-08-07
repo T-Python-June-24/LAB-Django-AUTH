@@ -28,7 +28,6 @@ def dashboard(request):
     most_popular_doctor = Doctor.objects.annotate(total_reservations=Count('reservation')).order_by('-total_reservations').first()
     least_popular_doctor = Doctor.objects.annotate(total_reservations=Count('reservation')).order_by('total_reservations').first()
 
-    # Monthly reservations
     monthly_reservations = Reservation.objects.annotate(month=TruncMonth('reservation_date')).values('month').annotate(total_reservations=Count('id')).order_by('month')
     monthly_reservations_labels = [res['month'].strftime('%b %Y') for res in monthly_reservations]
     monthly_reservations_labels_card = [res['month'].strftime('%b %Y') for res in monthly_reservations]
@@ -40,7 +39,6 @@ def dashboard(request):
         y=[total_clinics, total_doctors, total_reservations],
     )]
 
-    # Category distribution data for pie chart
     category_labels = ['Admins', 'Staff', 'Users']
     category_data = [total_admins, total_staff, total_users]
 
@@ -57,7 +55,7 @@ def dashboard(request):
         'least_popular_doctor': least_popular_doctor.full_name if least_popular_doctor else 'N/A',
         'total_data': json.dumps([trace.to_plotly_json() for trace in total_data]),
         'monthly_reservations_labels': json.dumps(monthly_reservations_labels),
-        'monthly_reservations_labels_card': monthly_reservations_labels_card,  # For the card
+        'monthly_reservations_labels_card': monthly_reservations_labels_card,  #! For the card
         'monthly_reservations_data': json.dumps(monthly_reservations_data),
         'category_labels': json.dumps(category_labels),
         'category_data': json.dumps(category_data),

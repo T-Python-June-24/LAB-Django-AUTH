@@ -9,6 +9,7 @@ class Reservation(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     reservation_date = models.DateField()
     reservation_time = models.TimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Reservation for {self.user.username} with {self.doctor.full_name} at {self.clinic.name}"
