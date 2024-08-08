@@ -55,16 +55,21 @@ def clinic_view(request):
     clinics = Clinic.objects.all()
     doctors=Doctor.objects.all()
 
+    # Check if a search was made
+    searched = request.GET.get('searched', '')
+    if searched:
+        clinics = clinics.filter(name__icontains=searched)
+
 
     page_number = request.GET.get("page", 1)
     paginator = Paginator(clinics, 6)
     clinics = paginator.get_page(page_number)
 
     if request.user.is_staff:
-     return render(request, "clinics/clinic_view.html", {"clinics" : clinics,"doctors":doctors})
+     return render(request, "clinics/clinic_view.html", {"clinics" : clinics,"doctors":doctors,"search_term": searched})
     if not request.user.is_staff:
 
-      return render(request, "clinics/user_clinic_view.html", {"clinics" : clinics })
+      return render(request, "clinics/user_clinic_view.html", {"clinics" : clinics ,"search_term": searched })
 
 def clinic_detail(request,clinic_id):
      clinic = Clinic.objects.get(pk=clinic_id)

@@ -13,9 +13,28 @@
     }
 
 </style>
-<div class="container mt-4">
-    <h2>Clinics Catalog</h2>
-    <hr>
+            <div class="container mt-4">
+                <h2>Clinics Catalog</h2>
+                <hr>
+                <!-- Search Form -->
+                <form class="d-flex" role="search" method="get" action="{% url 'clinics:clinic_view' %}">
+                    <input class="form-control me-2 search-input" type="search" placeholder="Search for a clinic" aria-label="Search" name="searched" value="{{ search_term }}">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                    <!-- Search Results Message -->
+                    {% if search_term %}
+                    <br>
+                    <br>
+                        <h3>Search Results for "{{ search_term }}"</h3>
+                        {% if clinics %}
+                        <br>
+                        <br>
+                        {% else %}
+                            <p>No clinics found.</p>
+                        {% endif %}
+                    {% endif %}
+                    <hr>
+                </div>
     <!-- Clinics Table -->
     <div class="shadow-sm p-3 mt-5 mb-5 bg-white rounded">
         <table class="table table-striped mt-3">

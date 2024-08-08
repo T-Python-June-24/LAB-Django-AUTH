@@ -44,7 +44,10 @@
         opacity: 0; 
         transition: opacity .3s ease-in-out; 
     }
-
+    .search-input,
+    .search-button {
+        height: 60px; 
+    }
     .card:hover .overlay-text {
         opacity: 1; 
     }
@@ -64,8 +67,26 @@
                 <div class="section-text mt-4">
                 <h1>Explore Our Clinics .. Expert Care for Every Need</h1>
                 <br>
-                <hr>
-            </div>
+      <!-- Search Form -->
+    <form class="d-flex" role="search" method="get" action="{% url 'clinics:clinic_view' %}">
+        <input class="form-control me-2 search-input" type="search" placeholder="Search for a clinic" aria-label="Search" name="searched" value="{{ search_term }}">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+        <!-- Search Results Message -->
+        {% if search_term %}
+        <br>
+        <br>
+            <h3>Search Results for "{{ search_term }}"</h3>
+            {% if clinics %}
+            <br>
+            <br>
+            {% else %}
+                <p>No clinics found.</p>
+            {% endif %}
+        {% endif %}
+        <hr>
+    </div>
+
         {% for clinic in clinics %}
         <div class="col-md-4 col-sm-12 mb-4">
             <div class="card shadow-lg">

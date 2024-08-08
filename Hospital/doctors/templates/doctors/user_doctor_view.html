@@ -48,6 +48,10 @@
     .card:hover .overlay-text {
         opacity: 1; 
     }
+    .search-input,
+    .search-button {
+        height: 60px; 
+    }
     @keyframes fadeIn {
     from {
         opacity: 0;
@@ -64,6 +68,23 @@
         <div class="section-text mt-4">
         <h1>Meet Our Dedicated Team of Health Professionals</h1>
         <br>
+                    <!-- Search Form -->
+    <form class="d-flex" role="search" method="get" action="{% url 'doctors:doctor_view' %}">
+        <input class="form-control me-2 search-input" type="search" placeholder="Search for a doctor" aria-label="Search" name="searched" value="{{ search_term }}">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+        <!-- Search Results Message -->
+        {% if search_term %}
+        <br>
+        <br>
+            <h3>Search Results for "{{ search_term }}"</h3>
+            {% if doctors %}
+            <br>
+            <br>
+            {% else %}
+                <p>No doctors found.</p>
+            {% endif %}
+        {% endif %}
         <hr>
     </div>
 

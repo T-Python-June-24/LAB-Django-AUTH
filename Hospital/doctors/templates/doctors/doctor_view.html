@@ -14,6 +14,25 @@
 <div class="container mt-4">
     <h2>Doctors Catalog</h2>
     <hr>
+                        <!-- Search Form -->
+                        <form class="d-flex" role="search" method="get" action="{% url 'doctors:doctor_view' %}">
+                            <input class="form-control me-2 search-input" type="search" placeholder="Search for a doctor" aria-label="Search" name="searched" value="{{ search_term }}">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                            <!-- Search Results Message -->
+                            {% if search_term %}
+                            <br>
+                            <br>
+                                <h3>Search Results for "{{ search_term }}"</h3>
+                                {% if doctors %}
+                                <br>
+                                <br>
+                                {% else %}
+                                    <p>No doctors found.</p>
+                                {% endif %}
+                            {% endif %}
+                            <hr>
+                        </div>
     <!-- Doctors Table -->
 <div class="shadow-sm p-3 mt-5 mb-5 bg-white rounded">
     <table class="table table-striped mt-3">

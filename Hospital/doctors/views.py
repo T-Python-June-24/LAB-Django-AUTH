@@ -49,13 +49,22 @@ def update_doctor(request:HttpRequest,doctor_id):
       
 def doctor_view(request:HttpRequest):
     doctors = Doctor.objects.all() 
+
+    # Check if a search was made
+    searched = request.GET.get('searched', '')
+    if searched:
+        doctors = doctors.filter(full_name__icontains=searched)
+
+
     page_number = request.GET.get("page", 1)
     paginator = Paginator(doctors, 6)
     doctors = paginator.get_page(page_number)
     if request.user.is_staff:
-     return render(request, "doctors/doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices})
+     return render(request, "doctors/doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices, "search_term": searched,
+})
     else:
-     return render(request, "doctors/user_doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices})
+     return render(request, "doctors/user_doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices,"search_term": searched,
+})
 
 
 def doctor_detail(request:HttpRequest,doctor_id:int):
