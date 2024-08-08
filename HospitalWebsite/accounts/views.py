@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError, transaction
 from django.contrib import messages
 from .models import Profile
+from reservations.models import Reservation
 
 # Create your views here.
 
@@ -63,3 +64,47 @@ def log_out(request: HttpRequest):
     messages.success(request, "Logged out successfully")
 
     return redirect(request.GET.get("next", "/"))
+
+
+def profile_view(request: HttpRequest):
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        messages.error(request, "You need to be logged in to view this page.")
+        return redirect('accounts:sign_in')
+
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        messages.error(request, "Profile not found.")
+        return redirect('accounts:sign_in')
+
+    # Get reservations for the logged-in user
+    reservations = Reservation.objects.filter(user=request.user).order_by('-date', '-time_slot')
+
+    return render(request, 'accounts/profile.html', {
+        'profile': profile,
+        'reservations': reservations
+    })
+
+
+def edit_profile_view(request: HttpRequest):
+    profile = Profile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        address = request.POST.get('address')
+
+        # Update user information
+        request.user.email = request.POST.get('email')
+        request.user.save()
+
+        # Update profile information
+        profile.phone_number = phone_number
+        profile.address = address
+        profile.save()
+
+        messages.success(request, "Profile updated successfully!")
+        return redirect('accounts:profile')
+
+    return render(request, 'accounts/edit_profile.html', {'profile': profile})
+
