@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Clinic, Doctor,Reservation,Profile
+from django.db import transaction
 
 def select_clinic(request:HttpRequest):
     if not request.user.is_authenticated:
@@ -22,33 +23,49 @@ def select_doctor(request:HttpRequest,clinic_id):
     return render(request, 'reservations/select_details.html', {'clinic': clinic, 'doctors': doctors})
 
 
-def make_reservation(request:HttpRequest):
 
+
+def make_reservation(request):
     if not request.user.is_authenticated:
         messages.error(request, "You need to be logged in to make a reservation", "alert-danger")
         return redirect("profiles:sign_in")
-
+    
+    # getting the user entries from teh selcet doctor view 
     if request.method == "POST":
         user_profile = Profile.objects.get(user=request.user)
-
-       
         clinic_id = request.POST.get("clinic")
-        clinic_instance = Clinic.objects.get(id=clinic_id)
+        doctor_id = request.POST.get("doctor")
+        time_slot = request.POST.get("time_slot")
+        date = request.POST.get("date")
 
-        doctor_id=request.POST.get("doctor")
+        # creating clinc and doctor instance based on the user entries (by the id)
+        clinic_instance = Clinic.objects.get(id=clinic_id)
         doctor_instance = Doctor.objects.get(id=doctor_id)
 
-        new_reservation = Reservation(
-            user=user_profile, 
-            time_slot=request.POST.get("time_slot"),
-            date=request.POST.get("date"),  
-            clinic=clinic_instance,  
-            doctor=doctor_instance,  
-        )
-        new_reservation.save()
+        # Check if  existing reservation as the user entries 
+        existing_reservation = Reservation.objects.filter(
+            clinic=clinic_instance,
+            doctor=doctor_instance,
+            time_slot=time_slot,
+            date=date
+        ).exists()
 
-        messages.success(request, "Reservation made successfully!", "alert-success")
-        return redirect("main:home_view")
+        if existing_reservation:
+            messages.error(request, "Unavailable. Try another date or doctor.", "alert-danger")
+            return redirect("reservations:select_doctor",clinic_id)
+
+        # If no existing reservation, then add new one to create a new one
+        with transaction.atomic():
+            new_reservation = Reservation(
+                user=user_profile, 
+                time_slot=time_slot,
+                date=date,  
+                clinic=clinic_instance,  
+                doctor=doctor_instance,  
+            )
+            new_reservation.save()
+            messages.success(request, "Reservation made successfully!", "alert-success")
+            return redirect("main:home_view")
 
     return render(request, "reservations/make_reservation.html")
 
@@ -66,8 +83,25 @@ def edit_reservation(request, reservation_id):
         reservation.time_slot = request.POST.get("time_slot")
         reservation.date = request.POST.get("date")
         reservation.doctor = doctor  
+      
+        existing_reservation = Reservation.objects.filter(
+            clinic=clinic,
+            doctor=doctor,
+            time_slot=reservation.time_slot,
+            date=reservation.date
+        ).exists()
 
-        reservation.save()  
+        if existing_reservation:
+            messages.error(request, "Unavailable. Try another date or doctor.", "alert-danger")
+            return redirect("profiles:user_profile_view",user_name=user_profile.user.username)
+
+        # If no existing reservation, then add new one to create a new one
+        with transaction.atomic():
+            reservation.user = reservation.user
+            reservation.doctor = reservation.doctor
+            reservation.time_slot = reservation.time_slot
+            reservation.date = reservation.date
+            reservation.save()
 
         messages.success(request, 'Reservation updated successfully!', 'alert-success')
         return redirect('profiles:user_profile_view', user_name=user_profile.user.username)
@@ -77,6 +111,8 @@ def edit_reservation(request, reservation_id):
         'clinic': clinic,
         'doctors': doctors,
     })
+
+
 def cancle_reservation(request,reservation_id):
     user_profile = Profile.objects.get(user=request.user)
     reservation=Reservation.objects.get(pk=reservation_id)
