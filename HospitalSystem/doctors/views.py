@@ -93,3 +93,7 @@ def update_doctor(request:HttpRequest,doctor_id):
     return redirect('main:home_view')
 
 
+def doctor_detail(request:HttpRequest,doctor_id:int):
+    doctor = Doctor.objects.get(pk=doctor_id)
+    return render(request, "doctors/doctor_detail.html",{"doctor": doctor})
+

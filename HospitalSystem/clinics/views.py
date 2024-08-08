@@ -95,3 +95,8 @@ def update_clinic(request:HttpRequest,clinic_id):
     return redirect('main:home_view')
 
 
+def clinic_detail(request,clinic_id):
+     clinic = Clinic.objects.get(pk=clinic_id)
+     doctors=clinic.doctors.all()
+     return render(request, "clinics/clinic_detail.html",{"clinic":clinic , "doctors":doctors})
+

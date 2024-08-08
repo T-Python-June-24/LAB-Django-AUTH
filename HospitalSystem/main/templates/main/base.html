@@ -76,7 +76,7 @@
 
               {% if request.user.is_authenticated %}
               <div class="d-flex gap-1 align-items-center">
-                <a class="nav-link" href="#">{{ request.user.username }},</a>
+                <a class="nav-link" href="{% url 'accounts:user_profile' request.user.username %}">{{ request.user.username }},</a>
                 <a  class="nav-link" href="{% url 'accounts:log_out' %}?next={{request.path}}">Log out</a>
               </div>
               {% else %}

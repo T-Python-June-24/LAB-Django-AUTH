@@ -5,8 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError, transaction
 from django.contrib import messages
 from .models import Profile
-
-# avatar=request.FILES.get("avatar", Profile.avatar.field.get_default())
+from django.db.models import Count
+from reservations.models import Reservation
 
 def signup(request:HttpRequest):
 
@@ -66,18 +66,48 @@ def log_out(request: HttpRequest):
 
 
 
-def user_profile_view(request:HttpRequest, user_name):
+def user_profile(request:HttpRequest, user_name):
 
     try:
         user = User.objects.get(username=user_name)
         if not Profile.objects.filter(user=user).first():
             new_profile = Profile(user=user)
             new_profile.save()
-        #profile:Profile = user.profile  
-        #profile = Profile.objects.get(user=user)
+
     except Exception as e:
         print(e)
         return render(request,'404.html')
     
 
     return render(request, 'accounts/profile.html', {"user" : user})
+
+def update_profile(request):
+
+    if not request.user.is_authenticated:
+        messages.warning(request, "Only registered users can update their profile", "warning")
+        return redirect("accounts:sign_in")
+    
+
+    if request.method == "POST":
+
+        try:
+            with transaction.atomic():
+                user:User = request.user
+
+                user.first_name = request.POST["first_name"]
+                user.last_name = request.POST["last_name"]
+                user.email = request.POST["email"]
+                user.save()
+
+                profile:Profile = user.profile
+                profile.address = request.POST["address"]
+                profile.phone_number = request.POST["phone_number"]
+                profile.save()
+
+            messages.success(request, "updated profile successfuly", "success")
+        except Exception as e:
+            messages.error(request, "Couldn't update profile", "danger")
+            print(e)
+
+    return render(request, 'accounts/profile.html')
+
