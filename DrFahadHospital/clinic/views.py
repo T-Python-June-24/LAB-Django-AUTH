@@ -8,3 +8,8 @@ def clinic_list(request):
 def clinic_detail(request, clinic_id):
     clinic = get_object_or_404(Clinic, pk=clinic_id)
     return render(request, 'clinic/clinic_detail.html', {'clinic': clinic})
+
+def search_clinics(request):
+    query = request.GET.get('q')
+    results = Clinic.objects.filter(name__icontains=query) if query else []
+    return render(request, 'clinic/search_results.html', {'results': results, 'query': query})

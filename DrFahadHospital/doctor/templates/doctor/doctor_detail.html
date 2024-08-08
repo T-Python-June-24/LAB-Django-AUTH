@@ -3,10 +3,10 @@
 {% block content %}
 <h2>{{ doctor.full_name }}</h2>
 <img src="{{ doctor.photo.url }}" class="img-fluid" alt="{{ doctor.full_name }}">
-<p>{{ doctor.bio }}</p>
 <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+<p>{{ doctor.bio }}</p>
 
-<h3>Clinics</h3>
+<h3>Clinics Associated with This Doctor</h3>
 <ul>
     {% for clinic in doctor.clinic_set.all %}
         <li><a href="{% url 'clinic_detail' clinic.id %}">{{ clinic.name }}</a></li>
@@ -21,6 +21,6 @@
         <button type="submit" class="btn btn-primary">Reserve</button>
     </form>
 {% else %}
-    <p>Please <a href="{% url 'login' %}">log in</a> to make a reservation.</p>
+    <p>Please <a href="{% url 'login' %}">login</a> to make a reservation.</p>
 {% endif %}
 {% endblock %}

@@ -27,6 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.example.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'BlueHuawei67_@outlook.com'
+EMAIL_HOST_PASSWORD = '12367Ahad'
+DEFAULT_FROM_EMAIL = 'BlueHuawei67_@outlook.com'
 
 # Application definition
 

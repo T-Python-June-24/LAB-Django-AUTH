@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Reservation Details</h2>
+<p><strong>Clinic:</strong> {{ reservation.clinic.name }}</p>
+<p><strong>Doctor:</strong> {{ reservation.doctor.full_name }}</p>
+<p><strong>Date:</strong> {{ reservation.date }}</p>
+<p><strong>Time:</strong> {{ reservation.time_slot }}</p>
+<a href="{% url 'reservation_cancel' reservation.id %}" class="btn btn-danger">Cancel Reservation</a>
+{% endblock %}

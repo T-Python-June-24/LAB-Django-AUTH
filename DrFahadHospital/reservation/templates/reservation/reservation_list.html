@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>My Reservations</h2>
+<ul>
+    {% for reservation in reservations %}
+        <li>
+            <strong>Clinic:</strong> {{ reservation.clinic.name }} |
+            <strong>Doctor:</strong> {{ reservation.doctor.full_name }} |
+            <strong>Date:</strong> {{ reservation.date }} |
+            <strong>Time:</strong> {{ reservation.time_slot }}
+            <a href="{% url 'reservation_detail' reservation.id %}">View Details</a> |
+            <a href="{% url 'reservation_cancel' reservation.id %}">Cancel</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
