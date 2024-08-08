@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from .models import Profile
 
@@ -73,17 +74,43 @@ def log_out(request:HttpRequest):
 
     return redirect(request.GET.get("next", "/"))
 
-
+@login_required(login_url="account:log_in")
 def profile_view(request:HttpRequest, user_name):
     try:
         user = User.objects.get(username=user_name)
-        if not Profile.objects.filter(user=user).first():
-            new_profile = Profile(user=user)
-            new_profile.save()
-        #profile:Profile = user.profile  
-        #profile = Profile.objects.get(user=user)
+        profile = Profile.objects.filter(user=user).first()
+        
+        if not profile:
+            # Redirect to create_profile_view if profile doesn't exist
+            return redirect('account:create_profile_view', user_name=user_name)
+        
     except Exception as e:
-        print(e)
-        return render(request,'404.html')
-    
-    return render(request,"profile.html")
+        print(f"An error occurred: {e}")
+        return render(request, "404.html")
+    return render(request, "profile.html", {'profile': profile})
+
+@login_required(login_url="account:log_in")
+def create_profile_view(request:HttpRequest, user_name):
+    user = get_object_or_404(User, username=user_name)
+
+    if request.method == "POST":
+        try:
+            new_profile = Profile(
+                user=user,  # Associate the profile with the user
+                first_name=request.POST["first_name"],
+                last_name=request.POST["last_name"],
+                age=request.POST["age"],
+                hight=request.POST["hight"],
+                wight=request.POST["wight"],
+                phone=request.POST["phone"]
+            )
+            if 'avatar' in request.FILES:
+                new_profile.avatar = request.FILES["avatar"]
+            new_profile.save()
+            messages.success(request, "Profile Created Successfully")
+            return redirect('account:profile_view', user_name=user_name)
+        except IntegrityError:
+            messages.error(request, "An error occurred during Creating profile.", "alert-danger")
+        except Exception as e:
+            messages.error(request, f"An unexpected error occurred: {str(e)}", "alert-danger")
+    return render(request,"addProfile.html", {'user': user})
