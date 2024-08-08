@@ -46,15 +46,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'crispy_forms',
+    'user.apps.UserConfig',  # This should be kept
     'clinic',      
     'doctor',      
-    'staff',       
-    'user',     
+    'staff',    
     'main',       
     'reservation', 
 ]
 
-#SITE_ID = 1
+SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
+from .models import Profile
 from django.contrib.auth.decorators import login_required
 
 def signup(request):
@@ -8,6 +9,8 @@ def signup(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # Create a profile for the new user
+            Profile.objects.create(user=user)
             login(request, user)
             return redirect('profile')
     else:
