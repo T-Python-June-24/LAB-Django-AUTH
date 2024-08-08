@@ -1,0 +1,45 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Edit Clinic{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-20">
+    <h1 class="text-3xl font-bold mb-6">Edit Clinic</h1>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700">Clinic Name:</label>
+            <input type="text" id="name" name="name" value="{{ clinic.name }}" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+            <label for="description" class="block text-gray-700">Description:</label>
+            <textarea id="description" name="description" class="w-full p-2 border rounded" required>{{ clinic.description }}</textarea>
+        </div>
+        <div class="mb-4">
+            <label for="working_hours" class="block text-gray-700">Working Hours:</label>
+            <select id="working_hours" name="working_hours" class="w-full p-2 border rounded" required>
+                {% for value, display in clinic.WORKING_HOURS_CHOICES %}
+                <option value="{{ value }}" {% if value == clinic.working_hours %}selected{% endif %}>{{ display }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="feature_image" class="block text-gray-700">Feature Image:</label>
+            <input type="file" id="feature_image" name="feature_image" class="w-full p-2 border rounded">
+            {% if clinic.feature_image %}
+            <img src="{{ clinic.feature_image.url }}" alt="Clinic Image" class="mt-4 h-32 w-32 object-cover">
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <label for="doctors" class="block text-gray-700">Select Doctors:</label>
+            <select id="doctors" name="doctors" class="w-full p-2 border rounded" multiple>
+                {% for doctor in doctors %}
+                <option value="{{ doctor.id }}" {% if doctor.id in clinic.doctors.all|slice:":-1" %}selected{% endif %}>{{ doctor.full_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">Update Clinic</button>
+    </form>
+</div>
+{% endblock %}

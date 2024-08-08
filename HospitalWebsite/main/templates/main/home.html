@@ -3,8 +3,17 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-<main class="px-32 py-32">
-  <h1 class="text-4xl font-semibold pt-12 pb-12">Welcome to Our Hospital</h1>
+<main class="px-32 py-24">
+  <div class="flex flex-row gap-12 justify-center">
+    <div>
+      <h1 class="text-4xl text-green-700 font-semibold pt-12 pb-3 text-wrap">Compassionate Care, Advanced Medicine, Your Health, Our Priority.</h1>
+      <p class="font-extralight">Our dedicated team of healthcare professionals is committed to providing you with the highest standard of care while ensuring your comfort and well-being.</p>
+    </div>
+    <div class="w-full">
+      <img src="https://www.ahdubai.com//uploads/contents/1711452519AHDExterior(1).jpg" class="rounded-bl-full w-[550px] h-[600px]">
+    </div>
+  </div>
+
   <h2 class="text-4xl font-semibold pb-10">Clinics</h2>
   <ul class="flex flex-row gap-6">
     {% for clinic in clinics %}

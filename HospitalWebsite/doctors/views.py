@@ -41,3 +41,54 @@ def add_doctor(request: HttpRequest):
     messages.error(request, 'All fields are required.')
 
   return render(request, 'doctors/add_doctor.html')
+
+
+def update_doctor(request: HttpRequest, doctor_id: int):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('doctors:doctors_list')
+
+    try:
+        doctor = Doctor.objects.get(pk=doctor_id)
+    except Doctor.DoesNotExist:
+        messages.error(request, 'Doctor not found.')
+        return redirect('doctors:doctors_list')
+
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        specialization = request.POST.get('specialization')
+        bio = request.POST.get('bio')
+        photo = request.FILES.get('photo')
+
+        if full_name and specialization and bio:
+            doctor.full_name = full_name
+            doctor.specialization = specialization
+            doctor.bio = bio
+            if photo:
+                doctor.photo = photo
+            doctor.save()
+            messages.success(request, 'Doctor updated successfully!')
+            return redirect('doctors:doctors_list')
+        else:
+            messages.error(request, 'All fields are required.')
+
+    return render(request, 'doctors/update_doctor.html', {'doctor': doctor})
+
+
+def delete_doctor(request: HttpRequest, doctor_id: int):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('doctors:doctors_list')
+
+    try:
+        doctor = Doctor.objects.get(pk=doctor_id)
+    except Doctor.DoesNotExist:
+        messages.error(request, 'Doctor not found.')
+        return redirect('doctors:doctors_list')
+
+    if request.method == 'POST':
+        doctor.delete()
+        messages.success(request, 'Doctor deleted successfully!')
+        return redirect('doctors:doctors_list')
+
+    return render(request, 'doctors/delete_doctor.html', {'doctor': doctor})
