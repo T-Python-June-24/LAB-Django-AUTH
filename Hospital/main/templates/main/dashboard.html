@@ -1,0 +1,42 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    .nav-underline {
+        display: flex;                
+        justify-content: center; 
+        padding: 10px 0;             
+    }
+
+    .nav-underline .nav-link {
+        color: #555;
+        border-bottom: 2px solid transparent; 
+        padding: 10px 15px;  
+    }
+
+    .nav-underline .nav-link:hover {
+        border-color: #007bff;
+    }
+
+    .nav-underline .nav-link.active {
+        border-color: #0056b3;
+    }
+</style>
+
+<nav class="nav nav-underline">
+  <li class="nav-item">
+    <a class="nav-link {% if request.resolver_match.url_name == 'clinic_view' %}active{% endif %}" aria-current="page" href="{% url 'clinics:clinic_view' %}">Clinic</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if request.resolver_match.url_name == 'doctor_view' %}active{% endif %}" href="{% url 'doctors:doctor_view' %}">Doctor</a>
+  </li>
+</nav>
+
+<div class="container">
+    {% block Dashboard-content %}
+    {% endblock %}
+</div>
+{% endblock %}

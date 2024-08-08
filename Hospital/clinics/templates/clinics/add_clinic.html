@@ -1,0 +1,60 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Add Clinic{% endblock %}
+{% block content %}
+<style>
+    .form-container {
+        background-color: white; 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+        padding: 20px;
+        border-radius: 8px;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="align-self-center mt-4">Add New Clinic</h1>
+    <div class="form-container">
+        <form action="{% url 'clinics:add_clinic' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="nameInput" class="form-label">Name <span class="required-asterisk">*</span></label>
+                <input type="text" class="form-control" id="nameInput" placeholder="Fill in name" name="name" required minlength="3">
+            </div>
+            <div class="mb-3">
+                <label for="descriptionArea" class="form-label">Description <span class="required-asterisk">*</span></label>
+                <textarea class="form-control" id="descriptionArea" placeholder="Fill in description" name="description" required minlength="3" maxlength="2000"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="workingHoursSelect" class="form-label">Working Hours</label>
+                <select class="form-control" id="workingHoursSelect" name="working_hours" required>
+                    <option value="" disabled selected>Select working hours</option>
+                    <option value="08:00-12:00">Morning Shift (08:00-12:00)</option>
+                    <option value="12:00-16:00">Afternoon Shift (12:00-16:00)</option>
+                    <option value="16:00-20:00">Evening Shift (16:00-20:00)</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="featureImageInput" class="form-label">Feature Image</label>
+                <input type="file" class="form-control" id="featureImageInput" name="feature_image" accept="image/*">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">doctors</label>
+                <div>
+                    {% for doctor in doctors %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{ doctor.id }}" id="doctor-{{ doctor.id }}" name="doctors" {% if doctor in clinic.doctors.all %} checked {% endif %}>
+                        <label class="form-check-label"  for="doctor-{{ doctor.id }}">
+                            {{ doctor.full_name }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Add Clinic" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

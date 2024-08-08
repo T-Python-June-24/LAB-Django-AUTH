@@ -1,0 +1,42 @@
+.navbar-custom {
+    align-items: center;
+    background-color: #ffffff; 
+    color: #383838;
+}
+body{
+    background-color: #F3F9FB;
+}
+.logo-img {
+    width: 200px;
+    height: auto; 
+    margin-right: 1rem;
+    position: static;
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link,
+.navbar-custom .navbar-toggler-icon {
+    color: #383838;
+    font-family: "Rubik", sans-serif;
+    font-weight: 500;
+}
+
+.navbar-custom .nav-link.active {
+    background-color: #F4FAF8; 
+    border-radius: 10px;
+    padding: 1px 18px !important;
+    margin-top: .34rem;
+}
+
+
+.navbar-custom .dropdown-menu {
+    background-color: #F0F0F0; 
+}
+.navbar-custom .dropdown-item {
+    color: #333333; 
+}
+.navbar-custom .dropdown-item:hover {
+    background-color: #d3392b; 
+    color: #FFFFFF;
+}
+
+

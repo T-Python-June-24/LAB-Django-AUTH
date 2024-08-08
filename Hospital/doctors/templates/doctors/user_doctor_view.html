@@ -1,0 +1,135 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Our Doctors{% endblock %}
+
+{% block content %}
+<style>
+    h1{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    color: #d3392b;
+}
+.section-text {
+    
+    margin-top: 2rem;
+    padding: 20px; 
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+}
+    .card {
+        overflow: hidden; 
+        position: relative;
+        transition: transform .3s ease-in-out; 
+    }
+
+    .card-img-top {
+        transition: transform .3s ease-in-out; 
+    }
+
+    .card:hover .card-img-top {
+        transform: scale(1.1);
+    }
+
+    .overlay-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white; 
+        font-size: 24px; 
+        pointer-events: none;
+        opacity: 0; 
+        transition: opacity .3s ease-in-out; 
+    }
+
+    .card:hover .overlay-text {
+        opacity: 1; 
+    }
+    .search-input,
+    .search-button {
+        height: 60px; 
+    }
+    @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="section-text mt-4">
+        <h1>Meet Our Dedicated Team of Health Professionals</h1>
+        <br>
+                    <!-- Search Form -->
+    <form class="d-flex" role="search" method="get" action="{% url 'doctors:doctor_view' %}">
+        <input class="form-control me-2 search-input" type="search" placeholder="Search for a doctor" aria-label="Search" name="searched" value="{{ search_term }}">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+        <!-- Search Results Message -->
+        {% if search_term %}
+        <br>
+        <br>
+            <h3>Search Results for "{{ search_term }}"</h3>
+            {% if doctors %}
+            <br>
+            <br>
+            {% else %}
+                <p>No doctors found.</p>
+            {% endif %}
+        {% endif %}
+        <hr>
+    </div>
+
+        {% for doctor in doctors %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card shadow-lg">
+                <a href="{% url 'doctors:doctor_detail' doctor.id %}">
+                    <img src="{{ doctor.photo.url }}" class="card-img-top" alt="{{ doctor.full_name }}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ doctor.full_name }}</h5>
+                    <hp class="align-items-center d-flex ">
+                        <span class="material-symbols-outlined me-4"> stethoscope</span>
+                        {{ doctor.get_specialization_display }}
+                    </p>         
+                       </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p>No doctors available.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- pagination -->
+<div class="pagination d-flex justify-content-center align-items-center mt-5 gap-4">
+    {% if doctors.has_previous %}
+        <div class="d-flex gap-1">
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ doctors.previous_page_number }}">&laquo; previous</a>
+        </div>
+    {% endif %}
+
+    <div class="current">
+        Page {{ doctors.number }} of {{ doctors.paginator.num_pages }}
+    </div>
+    {% if doctors.has_next %}
+    <div class="d-flex gap-1">
+        <a href="?page={{ doctors.next_page_number }}">next &raquo;</a>
+        <a href="?page={{ doctors.paginator.num_pages }}">last &raquo;</a>
+    </div>
+{% endif %}
+
+{% endblock %}
+

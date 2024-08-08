@@ -1,0 +1,166 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<style>
+p ,h1{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    
+}
+.section-text {
+    background-color: #f8f9fa; 
+    padding: 20px; 
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+}
+h2{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;  
+    color: #d3392b;
+
+}
+h3{
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;  
+}
+.card {
+    overflow: hidden; 
+    position: relative;
+    transition: transform .3s ease-in-out; 
+    animation: fadeIn 1s ease-in;
+}
+
+.card-img-top {
+    transition: transform .3s ease-in-out; 
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white; 
+    font-size: 24px; 
+    pointer-events: none;
+    opacity: 0; 
+    transition: opacity .3s ease-in-out; 
+}
+
+.card:hover .overlay-text {
+    opacity: 1; 
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+a:hover{
+    color:#d3392b;
+}
+a:hover h3 {
+    color: #d3392b; /* Change to red color on hover */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+</style>
+
+<div class="position-relative text-white" style="animation: fadeIn 2s;">
+    <img src="{% static 'images/alhabib.jpg' %}" alt="Descriptive Alt Text" class="img-fluid">
+    <div class="position-absolute top-50 start-0 translate-middle-y ps-3">
+        <p class="fs-1 fs-md-2 fs-lg-3 fs-xl-4 fs-xxl-5">Leading the Way<br>
+        in Healthcare<br>
+        Excellence</p>
+
+        <div class="row ">
+            <div class="col">
+                <a href="{% url 'clinics:clinic_view'%}"><h3 style="color: #f8f9fa;">+{{ clinics_count }} clinics</h3></a>
+            </div>
+            <div class="col">
+                <a href="{% url 'doctors:doctor_view'%}"><h3 style="color: #f8f9fa; ">+{{ doctors_count }} doctors</h3></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-text mt-4">
+    <h1>Your Health, Our Priority</h1>
+    <br>
+    <br>
+    <br>
+    <h2>Our Clinics</h2>
+    <br>
+    <br>
+
+    <div class="container mt-4">
+        <div class="row">
+            {% for clinic in clinics %}
+            <div class="col-md-4 col-sm-12 mb-4">
+                <div class="card shadow-lg">
+                    <a href="{% url 'clinics:clinic_detail' clinic.id %}"><img src="{{ clinic.feature_image.url }}" class="card-img-top" alt="{{ clinic.name }}"></a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ clinic.name }}</h5>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <br>
+        <a href="{% url 'clinics:clinic_view'%}"><h3>More Clinics</h3></a>
+        <br>
+        <br>
+
+        <br>
+        <br>
+        <h2>Our Experts</h2>
+        <div class="container mt-4">
+            <div class="row">
+                {% for doctor in doctors %}
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="card shadow-lg">
+                        <a href="{% url 'doctors:doctor_detail' doctor.id %}">
+                            <img src="{{ doctor.photo.url }}" class="card-img-top" alt="{{ doctor.full_name }}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ doctor.full_name }}</h5>
+                            <p class="align-items-center d-flex">
+                                <span class="material-symbols-outlined me-4">stethoscope</span>
+                                {{ doctor.get_specialization_display }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <br>
+
+                <a href="{% url 'doctors:doctor_view'%}"><h3>More Experts</h3></a>
+                <br>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
