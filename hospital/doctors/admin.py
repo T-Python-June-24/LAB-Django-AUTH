@@ -5,8 +5,8 @@ from .models import Doctor
 
 class DoctorAdmin(admin.ModelAdmin):
 
-    list_display = ("name", "specialization", "bio", "image",)
-    list_filter = ("name",)
+    list_display = ("full_name", "specialization", "bio", "photo",)
+    list_filter = ("full_name",)
 
 admin.site.register(Doctor, DoctorAdmin)
 

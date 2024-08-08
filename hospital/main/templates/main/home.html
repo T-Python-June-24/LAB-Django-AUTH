@@ -4,8 +4,8 @@
 
 {% block content %}
 
-<div class="album bg-primary-subtle">
-<div class="container-fluid bg-primary-subtle">
+
+<div class="bg-primary-subtle">
 <div id="carouselExampleCaptions" class="carousel slide">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -45,8 +45,54 @@
   </button>
 </div>
 </div>
-</div>
 
+<div class="container mt-4">
+  <div class="row">
+      {% for clinic in clinics %}
+      <div class="col-md-4 col-sm-12 mb-4">
+          <div class="card shadow-lg">
+              <a href="{% url 'clinics:clinic_detail' clinic.id %}"><img src="{{ clinic.feature_image.url }}" class="card-img-top" alt="{{ clinic.name }}"></a>
+              <div class="card-body">
+                  <h5 class="card-title">{{ clinic.name }}</h5>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+  <br>
+  <a href="{% url 'clinics:clinic_view'%}"><h3>More Clinics</h3></a>
+  <br>
+  <br>
+
+  <br>
+  <br>
+  <h2>Our Experts</h2>
+  <div class="container mt-4">
+      <div class="row">
+          {% for doctor in doctors %}
+          <div class="col-md-4 col-sm-6 mb-4">
+              <div class="card shadow-lg">
+                  <a href="{% url 'doctors:doctor_detail' doctor.id %}">
+                      <img src="{{ doctor.photo.url }}" class="card-img-top" alt="{{ doctor.full_name }}">
+                  </a>
+                  <div class="card-body">
+                      <h5 class="card-title">{{ doctor.full_name }}</h5>
+                      <p class="align-items-center d-flex">
+                          <span class="material-symbols-outlined me-4">stethoscope</span>
+                          {{ doctor.get_specialization_display }}
+                      </p>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+          <br>
+
+          <a href="{% url 'doctors:doctor_view'%}"><h3>More Experts</h3></a>
+          <br>
+
+      </div>
+  </div>
+</div>
 
 
 {% endblock %}

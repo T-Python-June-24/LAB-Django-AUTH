@@ -1,0 +1,56 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Add New Doctor {% endblock%}
+
+
+{% block content%}
+
+
+<div class="container mt-4">
+
+    <div class="row mb-4">
+        <div class="col-12 col-md-6">
+            <img src="{{ doctor.photo.url }}" alt="Photo of {{ doctor.full_name }}" class="img-fluid">
+        </div>
+        <div class="col-12 col-md-6">
+            <h1>{{ doctor.full_name }}</h1>
+            <p>{{ doctor.bio }}</p>
+
+            <h6 class="align-items-center d-flex ">
+                <span class="material-symbols-outlined me-4"> stethoscope</span>
+                {{ doctor.get_specialization_display }}
+            </h6>
+            
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-12">
+            <h2>Clinics where {{ doctor.full_name }} works</h2>
+            <hr>
+            <br>
+        </div>
+        <br>
+<br>
+        {% for clinic in doctor.clinic_set.all %} <!-- Adjusted to use the default related_name 'clinic_set' -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card">
+                <a href="{% url 'clinics:clinic_detail' clinic.id %}">
+                    <img src="{{ clinic.feature_image.url }}" class="card-img-top" alt="Feature image of {{ clinic.name }}">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ clinic.name }}</h5>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <p>No clinics associated with this doctor at the moment.</p>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

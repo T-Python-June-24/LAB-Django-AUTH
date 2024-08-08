@@ -1,34 +1,93 @@
-from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponse
-
-from django.contrib import messages
-
+from django.shortcuts import render, get_object_or_404, redirect
+from doctors.models import Doctor
+from clinics.models import Clinic
 from .models import Reservation
 from .forms import ReservationForm
+from django.core.paginator import Paginator
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 
 
-# Create your views here.
-def create(request:HttpRequest):
 
-    if not (request.user.is_staff and request.user.has_perm("reservation.create")):
-        messages.warning(request, "only staff can add reservations", "alert-warning")
-        return redirect("main:home")
-    
-    if request.method == "POST":
+@login_required
+def reservation_list(request):
+    reservations = Reservation.objects.all() 
+    paginator = Paginator(reservations, 9)  
 
-        reservation_form = ReservationForm(request.POST, request.FILES)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'page_obj': page_obj,
+        'clinics': Clinic.objects.all(),
+        'doctors': Doctor.objects.all(),
+        'form': ReservationForm(), 
+    }
 
-        if reservation_form.is_valid():
-            reservation_form.save()
+    return render(request, 'reservations/reservation_list.html', context)
+
+@login_required
+def add_reservation(request):
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            date = form.cleaned_data['date']
+            clinic = form.cleaned_data['clinic']
+            doctor = form.cleaned_data['doctor']
+
+            existing_reservation = Reservation.objects.filter(clinic=clinic, doctor=doctor, date=date).exists()
+
+            if existing_reservation:
+                messages.error(request, 'There is already a reservation for this clinic and doctor at the selected time.')
+            else:
+                reservation = form.save(commit=False)
+                reservation.user = request.user
+                reservation.save()
+
+                messages.success(request, 'Reservation created successfully!')
+                return redirect('reservations:reservation_list')
         else:
-            print(reservation_form.errors)
+            messages.error(request, 'There was an error with your submission. Please correct the errors below.')
+    else:
+        form = ReservationForm()
 
-        return redirect("reservation:reservation_page")
+    context = {
+        'clinics': Clinic.objects.all(),
+        'doctors': Doctor.objects.all(),
+        'form': form,
+        'today': now().date(),
+    }
+    return render(request, 'reservations/add_reservation.html', context)
 
-    return render(request, "reservation/create.html")
+
+
+def reservation_update(request, pk):
+
+    reservation = get_object_or_404(Reservation, pk=pk)
+
+    if request.method == 'POST':
+        form = ReservationForm(request.POST, instance=reservation)
+        if form.is_valid():
+            form.save()
+            return redirect('reservations:reservation_list')
+    else:
+        form = ReservationForm(instance=reservation)
+    
+    context = {
+        'clinics': Clinic.objects.all(),
+        'doctors': Doctor.objects.all(),
+        'form': form, 
+    }
+    return render(request, 'reservations/update_reservation.html', context)
 
 
 
-def reservation_page(request:HttpRequest):
 
-    return render(request, "reservation/reservation_page.html")
+def reservation_delete(request, pk):
+
+    reservation = get_object_or_404(Reservation, pk=pk)
+
+    if request.method == "POST":
+        reservation.delete()
+        return redirect('reservations:reservation_list')
+    return render(request, 'reservations/reservation_confirm_delete.html', {'reservation': reservation})

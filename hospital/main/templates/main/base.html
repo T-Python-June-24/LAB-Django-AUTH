@@ -37,39 +37,78 @@
     <div class="container">
     <nav class="navbar navbar-expand-lg justify-content-lg-between">
         <div class="container-fluid ">
-          <a class="navbar-brand" href="#"><img src="{% static '/Tlogo3.png' %}" style="height: 4rem;"></a>
+          <a class="navbar-brand" href="/"><img src="{% static '/Tlogo3.png' %}" style="height: 4rem;"></a>
           
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
+
+          {% url 'clinic:clinics_list' 'all' as all_clinics_url %}
+          {% url 'doctors:all_doctors' as doctors_list_url %}
+          {% url 'reservations:create' as create_reservation_url %}
+          {% url 'clinic:add_clinic' as add_clinic_url %}
+          {% url 'doctors:add_doctor' as add_doctor_url %}
+
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-center">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'main:home' %}">Home</a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="{{all_clinics_url}}">Clinics</a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="{{doctors_list_url}}">Doctors</a>
               </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{create_reservation_url}}">Reservations</a>
+              </li>
+
+              {% if request.user.is_staff %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Staff List</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Add Clinic</a></li>
-                  <li><a class="dropdown-item" href="#">Add Doctor</a></li>
+                  <li><a class="dropdown-item" href="{{add_clinic_url}}">Add Clinic</a></li>
+                  
+                  <li><a class="dropdown-item" href="{{add_doctor_url}}">Add Doctor</a></li>
+                  
                   <!-- <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li> -->
                 </ul>
               </li>
+              {% endif %}
 
               <li>
               <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               </form>
             </li>
+
+            <li class="nav-item">
+
+              {% if request.user.is_authenticated %}
+              <div class="d-flex gap-1 align-items-center">
+                <!-- <img src="{{request.user.profile.avatar.url}}" class="rounded-circle avatar" /> -->
+                <a class="nav-link" href="{% url 'profiles:user_profile_view' request.user.username %}">{{ request.user.username }},</a>
+                <a  class="nav-link" href="{% url 'profiles:log_out' %}?next={{request.path}}">Log out</a>
+              </div>
+              {% else %}
+              <div class="dropdown bg-transparent">
+                <a class="btn nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Sign up/ Sign in
+                </a>
+              <ul class="dropdown-menu p-3">
+                <li><a class="dropdown-item" href="{% url 'profiles:sign_up' %}?next={{request.path}}">Sign up</a></li>
+                <li><a class="dropdown-item" href="{% url 'profiles:sign_in' %}?next={{request.path}}">Sign in</a></li>
+              </ul>
+            </div>
+              {% endif %}
+      
+          </li>
+
               <li class="nav-item">
                 <div class="display-mode d-flex align-items-center gap-1">    
                   <a href="{% url 'main:mode_view' 'light' %}?next={{request.path}}" class="nav-link"><span class="material-symbols-outlined {% if 'mode' not in request.COOKIES or 'mode' in request.COOKIES and request.COOKIES.mode != 'dark' %} active-icon {% endif %}">light_mode</span></a>

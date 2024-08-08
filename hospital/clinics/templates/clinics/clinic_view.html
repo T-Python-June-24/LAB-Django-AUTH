@@ -1,0 +1,158 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{clinic.name}}{% endblock%}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Clinics Catalog</h2>
+    <hr>
+    <!-- Search Form -->
+    <form class="d-flex" role="search" method="get" action="{% url 'clinics:clinic_view' %}">
+        <input class="form-control me-2 search-input" type="search" placeholder="Search for a clinic" aria-label="Search" name="searched" value="{{ search_term }}">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+        <!-- Search Results Message -->
+        {% if search_term %}
+        <br>
+        <br>
+            <h3>Search Results for "{{ search_term }}"</h3>
+            {% if clinics %}
+            <br>
+            <br>
+            {% else %}
+                <p>No clinics found.</p>
+            {% endif %}
+        {% endif %}
+        <hr>
+    </div>
+<!-- Clinics Table -->
+<div class="shadow-sm p-3 mt-5 mb-5 bg-white rounded">
+<table class="table table-striped mt-3">
+<thead>
+    <tr>
+        <th style="background-color: #E7EFF3; color: #495D69;"></th>
+        <th style="background-color: #E7EFF3; color: #495D69;"></th>
+        <th style="background-color: #E7EFF3; color: #495D69;">Name</th>
+        <th style="background-color: #E7EFF3; color: #495D69;">Working Hours</th>
+    </tr>
+</thead>
+<tbody>
+    {% for clinic in clinics %}
+        <tr>
+            <td>
+                <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ clinic.id }}" href="#">
+                    <span class="material-symbols-outlined">edit</span>    
+                </a>
+            </td>
+            <td>
+                <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ clinic.id }}" href="#">
+                    <span class="material-symbols-outlined">delete</span>
+                </a>
+            </td>
+            <td><a href="{% url 'clinics:clinic_detail' clinic.id %}">{{ clinic.name }}</a></td>
+            <td>{{ clinic.get_working_hours_display }}</td>
+        </tr>
+        <!-- Modal for Update Form -->
+        <div class="modal fade" id="updateModal-{{ clinic.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ clinic.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel-{{ clinic.id }}">Update Clinic</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'clinics:update_clinic' clinic.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-container">
+                                <div class="mb-3">
+                                    <label for="clinic-name-{{ clinic.id }}" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="clinic-name-{{ clinic.id }}" name="name" value="{{ clinic.name }}" required minlength="3">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="clinic-description-{{ clinic.id }}" class="form-label">Description</label>
+                                    <textarea class="form-control" id="clinic-description-{{ clinic.id }}" name="description" required minlength="3" maxlength="2000">{{ clinic.description }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="clinic-hours-{{ clinic.id }}" class="form-label">Working Hours</label>
+                                    <select class="form-control" id="clinic-hours-{{ clinic.id }}" name="working_hours" required>
+                                        {% for option_key, option_value in clinic.WORKING_HOURS_CHOICES %}
+                                            <option value="{{ option_key }}" {% if clinic.working_hours == option_key %}selected{% endif %}>{{ option_value }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="clinic-featureImage-{{ clinic.id }}" class="form-label">Feature Image</label>
+                                    <input type="file" class="form-control" id="clinic-featureImage-{{ clinic.id }}" name="feature_image" accept="image/*">
+                                </div>
+                                <label class="form-label">doctors</label>
+                                <div>
+                                    {% for doctor in doctors %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="{{ doctor.id }}" id="doctor-{{ doctor.id }}" name="doctors" {% if doctor in clinic.doctors.all %} checked {% endif %}>
+                                        <label class="form-check-label"  for="doctor-{{ doctor.id }}">
+                                            {{ doctor.full_name }}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal for Deletion Confirmation -->
+        <div class="modal fade" id="deleteModal-{{ clinic.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ clinic.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel-{{ clinic.id }}">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete {{ clinic.name }}?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="{% url 'clinics:delete_clinic' clinic.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <tr>
+            <td colspan="4">No clinics available.</td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+</div>
+<a href="{% url 'clinics:add_clinic' %}">add clinic</a> 
+
+</div>
+<!-- pagination -->
+<div class="pagination d-flex justify-content-center align-items-center mt-5 gap-4">
+{% if clinics.has_previous %}
+<div class="d-flex gap-1">
+<a href="?page=1">&laquo; first</a>
+<a href="?page={{ clinics.previous_page_number }}">&laquo; previous</a>
+</div>
+{% endif %}
+
+<div class="current">
+Page {{ clinics.number }} of {{ clinics.paginator.num_pages }}
+</div>
+{% if clinics.has_next %}
+<div class="d-flex gap-1">
+<a href="?page={{ clinics.next_page_number }}">next &raquo;</a>
+<a href="?page={{ clinics.paginator.num_pages }}">last &raquo;</a>
+</div>
+{% endif %}
+
+
+{% endblock %}

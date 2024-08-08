@@ -1,42 +1,87 @@
-from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponse
-
-from django.contrib import messages
-
+from django.shortcuts import render,redirect
+from django.http import HttpRequest,HttpResponse
 from .models import Doctor
 from .forms import DoctorForm
+from django.contrib import messages 
+from django.core.paginator import Paginator
 
 
 # Create your views here.
+
 def add_doctor(request:HttpRequest):
 
-    if not (request.user.is_staff and request.user.has_perm("doctor.add_doctor")):
-        messages.warning(request, "only staff can add doctors", "alert-warning")
-        return redirect("main:home")
-    
-    if request.method == "POST":
+    if request.method=="POST":
+        doctorForm=DoctorForm(request.POST,request.FILES)
 
-        doctor_form = DoctorForm(request.POST, request.FILES)
+        if doctorForm.is_valid():
+            doctorForm.save()
+            messages.success(request, 'doctor added successfully!','alert-success')
+            return redirect("doctors:doctor_view")
+        else:    
+            for field, errors in doctorForm.errors.items():
+                 for error in errors:
+                     messages.error(request, f"{field}: {error}",'alert-danger')
 
-        if doctor_form.is_valid():
-            doctor_form.save()
-        else:
-            print(doctor_form.errors)
-
-        return redirect("doctor:doctor_page")
-
-    return render(request, "doctor/add_doctor.html")
+    return render(request, "doctors/add_doctors.html",{"specialization":Doctor.Specialization.choices})        
 
 
-def doctors_list(request:HttpRequest):
 
-    doctor = Doctor.objects.all()[:9]
+def delete_doctor(request:HttpRequest,doctor_id):
+     
+     doctor = Doctor.objects.get(pk=doctor_id)
 
-    return render(request, "doctor/doctors_list.html", {"doctor" : doctor})
+     if doctor.delete():
+             messages.success(request, 'doctor deleted successfully!',"alert-success")
+             return redirect('doctors:doctor_view')
+     else:
+         for field, errors in doctor.errors.items():
+             for error in errors:
+                 messages.error(request, f"{field}: {error}","alert-danger")
+
+     return redirect('doctors:doctor_view')
 
 
-def doctor_page(request:HttpRequest, doctor_id):
 
-    doctor = Doctor.objects.get(id=doctor_id)
+def update_doctor(request:HttpRequest,doctor_id):
+     
+     doctor = Doctor.objects.get(pk=doctor_id)
 
-    return render(request, "doctor/doctor_page.html", {"doctor" : doctor})
+     if request.method == "POST":
+         doctorForm=DoctorForm(request.POST, request.FILES, instance=doctor)
+
+         if doctorForm.is_valid():
+             doctorForm.save()
+             messages.success(request, 'doctor updated successfully!',"alert-success")
+             return redirect('doctors:doctor_view')
+         else:
+             for field, errors in doctorForm.errors.items():
+                 for error in errors:
+                     messages.error(request, f"{field}: {error}","alert-danger")
+
+     return render(request, "doctors/doctor_view.html", {'doctorForm': doctorForm, 'doctor': doctor, 'specialization': Doctor.Specialization.choices})
+      
+
+
+def doctor_view(request:HttpRequest):
+    doctors = Doctor.objects.all() 
+
+    searched = request.GET.get('searched', '')
+    if searched:
+        doctors = doctors.filter(full_name__icontains=searched)
+
+
+    page_number = request.GET.get("page", 1)
+    paginator = Paginator(doctors, 6)
+    doctors = paginator.get_page(page_number)
+
+    if request.user.is_staff:
+     return render(request, "doctors/doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices, "search_term": searched,})
+    else:
+     return render(request, "doctors/user_doctor_view.html", {"doctors" : doctors,'specialization': Doctor.Specialization.choices,"search_term": searched,})
+
+
+
+def doctor_detail(request:HttpRequest,doctor_id:int):
+
+    doctor = Doctor.objects.get(pk=doctor_id)
+    return render(request, "doctors/doctor_detail.html",{"doctor": doctor})
