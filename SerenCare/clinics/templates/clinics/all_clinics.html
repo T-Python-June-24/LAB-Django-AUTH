@@ -1,0 +1,58 @@
+
+{% extends 'main/base.html' %}
+
+{% block title %}Clinics{% endblock %}
+
+{% block content %}
+
+<h2>Our Clinics</h2>
+
+
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4">
+
+    {% for clinic in clinics %}
+      <div class="col">
+          <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+            <div class="d-flex align-items-center">
+                <h5 class="m-0 p-0">{{clinic.name}} </h5>
+            </div>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex gap-2">
+                    <a href="{% url 'clinics:clinic_detail_view' clinic.id %}"><img src="{{ clinic.feature_image.url }}" class=" overflow-hidden clinic-logo" /></a>
+                </div>
+
+                
+            </div>
+
+           
+          
+            <div class="d-flex justify-content-center" >
+               <h6 class="m-0 p-0 ">Working hours:</h6><p class="d-flex ms-2 text-primary">{{clinic.working_hours.start_time}} - {{clinic.working_hours.end_time}}</p>
+            </div>
+          </div>
+      </div>
+    {% endfor %}
+  </div>
+
+
+
+<div class="pagination d-flex justify-content-center align-items-center mt-5 gap-4">
+    {% if clinics.has_previous %}
+        <div class="d-flex gap-1">
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{clinics.previous_page_number}}">&laquo; previous</a>
+        </div>
+    {% endif %}
+    <div class="current">
+        Page {{clinics.number}} of {{clinics.paginator.num_pages}}
+    </div>
+    {% if clinics.has_next %}
+        <div class="d-flex gap-1">
+            <a href="?page={{ clinics.next_page_number }}">next &raquo;</a>
+            <a href="?page={{ clinics.paginator.num_pages }}"> last &raquo;</a>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
