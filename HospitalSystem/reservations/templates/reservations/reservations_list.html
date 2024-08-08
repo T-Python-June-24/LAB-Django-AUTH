@@ -1,0 +1,11 @@
+{% extends 'main/base.html'%}
+
+
+{% block title %} {{user.username}} | profile {% endblock %}
+
+{% block content %}
+
+{% include 'reservations/reservations.html' %}
+
+
+{% endblock %}
