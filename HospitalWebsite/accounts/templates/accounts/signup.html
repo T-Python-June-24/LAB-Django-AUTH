@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Sign Up {% endblock %}
+
+{% block content %}
+<div class="container my-32 flex flex-col justify-center items-center gap-2">
+
+    <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
+    <form class="flex flex-col gap-8 w-full max-w-md" action="{% url 'accounts:sign_up' %}" method="POST">
+        {% csrf_token %}
+        
+        <div class="relative">
+            <input type="email" class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" placeholder="Email address" name="email" required>
+            <label class="absolute top-0 left-4 text-gray-600 text-sm -translate-y-5">Email address</label>
+        </div>
+
+        <div class="relative">
+            <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" placeholder="User name" name="username" required>
+            <label class="absolute top-0 left-4 text-gray-600 text-sm -translate-y-5">User name</label>
+        </div>
+
+        <div class="relative">
+            <input type="password" class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" placeholder="Password" name="password" required>
+            <label class="absolute top-0 left-4 text-gray-600 text-sm -translate-y-5">Password</label>
+        </div>
+
+        <div class="relative">
+            <input type="text" class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" placeholder="Phone Number" name="phone_number" required>
+            <label class="absolute top-0 left-4 text-gray-600 text-sm -translate-y-5">Phone Number</label>
+        </div>
+
+        <textarea class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500" placeholder="Address" name="address" required></textarea>
+
+        <button class="w-full py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600" type="submit">Sign Up</button>
+    </form>
+</div>
+
+{% endblock %}

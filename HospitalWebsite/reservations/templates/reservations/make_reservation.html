@@ -1,0 +1,57 @@
+<!-- make_reservation.html -->
+
+{% extends 'main/base.html' %}
+
+{% block title %}Make a Reservation{% endblock %}
+
+{% block content %}
+<div class="container mx-32 my-24 w-1/2">
+    <h2 class="text-2xl font-bold mb-4">Make a Reservation</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 gap-4">
+            <div>
+                <label for="clinic" class="block text-gray-700">Select Clinic:</label>
+                <select name="clinic" id="clinic" class="w-full p-2 border rounded" required>
+                    <option value="">Choose a Clinic</option>
+                    {% for clinic in clinics %}
+                    <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="doctor" class="block text-gray-700">Select Doctor:</label>
+                <select name="doctor" id="doctor" class="w-full p-2 border rounded" required>
+                    <option value="">Choose a Doctor</option>
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">{{ doctor.full_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="date" class="block text-gray-700">Select Date:</label>
+                <input type="date" name="date" id="date" class="w-full p-2 border rounded" required>
+            </div>
+
+            <div>
+                <label class="block text-gray-700">Select Time Slot:</label>
+                <div class="flex flex-col gap-2">
+                    {% for slot, display in time_slots %}
+                    <div class="flex items-center">
+                        <input type="radio" id="time_slot_{{ slot }}" name="time_slot" value="{{ slot }}" class="mr-2" required>
+                        <label for="time_slot_{{ slot }}" class="text-gray-600">{{ display }}</label>
+                    </div>
+                    {% empty %}
+                    <p class="text-red-500">No time slots available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">Book Reservation</button>
+    </form>
+</div>
+{% endblock %}

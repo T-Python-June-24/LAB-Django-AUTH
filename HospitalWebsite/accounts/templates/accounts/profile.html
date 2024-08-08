@@ -1,0 +1,54 @@
+<!-- templates/accounts/profile.html -->
+
+{% extends 'main/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="px-32 py-24">
+  <h2 class="text-4xl font-bold mb-4">Profile</h2>
+  <hr class="w-1/2 pb-4"/>
+  <div class="flex flex-col gap-4">
+    <p><strong class="text-green-700">Username:</strong> {{ request.user.username }}</p>
+    <p><strong class="text-green-700">Email:</strong> {{ request.user.email }}</p>
+    <p><strong class="text-green-700">Phone Number:</strong> {{ profile.phone_number }}</p>
+    <p><strong class="text-green-700">Address:</strong> {{ profile.address }}</p>
+
+    <a href="{% url 'accounts:edit_profile' %}" class="mt-2 w-[120px] text-center px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-md">Edit Profile</a>
+  </div>
+
+  <h3 class="text-xl font-bold mt-8 mb-4">My Reservations</h3>
+  {% if reservations %}
+    <table class="w-full table-auto bg-white shadow-md rounded p-4">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2">Clinic</th>
+          <th class="px-4 py-2">Doctor</th>
+          <th class="px-4 py-2">Date</th>
+          <th class="px-4 py-2">Time Slot</th>
+          <th class="px-4 py-2">Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reservation in reservations %}
+          <tr>
+            <td class="border px-4 py-2">{{ reservation.clinic.name }}</td>
+            <td class="border px-4 py-2">{{ reservation.doctor.full_name }}</td>
+            <td class="border px-4 py-2">{{ reservation.date }}</td>
+            <td class="border px-4 py-2">{{ reservation.get_time_slot_display }}</td>
+            <td class="border px-4 py-2">{{ reservation.created_at }}</td>
+            <td class="border px-4 py-2">
+              <form action="{% url 'reservations:delete_reservation' reservation.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Delete</button>
+              </form>
+          </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+    {% else %}
+      <p>No reservations made yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

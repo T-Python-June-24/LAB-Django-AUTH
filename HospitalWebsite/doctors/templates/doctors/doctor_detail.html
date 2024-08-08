@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+
+{% block title %}Doctor Detail{% endblock %}
+
+{% block content %}
+<main class="px-32 py-20">
+  <div class="flex flex-row gap-12 py-32">
+    <div>
+      <img class="w-[1000px] h-[350px]" src="{{ doctor.photo.url }}" alt="Dr. {{ doctor.full_name }}"> 
+    </div>
+    <div>
+      <h1 class="text-4xl pb-2">Dr. {{ doctor.full_name }}</h1>
+      <hr class="w-1/3 py-2" />
+      <p class="text-lg text-green-700 font-light py-2">Specialization: <span class="text-black">{{ doctor.specialization }}</span></p>
+      <p class="text-wrap w-3/4 font-light" >{{ doctor.bio }}</p>
+      <h2 class="font-medium text-green-700 py-2">Clinics Associated</h2>
+      <ul class="font-light">
+        {% for clinic in doctor.clinic_set.all %}
+        <li>{{ clinic.name }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  
+  </div>
+
+</main>
+{% endblock %}
