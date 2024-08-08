@@ -118,3 +118,12 @@ def update_profile(request):
             messages.error(request, f'Profile update failed: {e}')
     
     return render(request, 'accounts/update_profile.html')
+
+
+@login_required
+def reservation_delete(request, pk):
+    reservation = Reservation.objects.get(pk=pk)
+    if request.method == 'POST':
+        reservation.delete()
+        return redirect('accounts:profile')
+    return render(request, 'doctors/doctor_confirm_delete.html', {'reservation': reservation})
