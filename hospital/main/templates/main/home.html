@@ -47,11 +47,13 @@
 </div>
 
 <div class="container mt-4">
+
+  <h2>Our Clinics</h2>
   <div class="row">
       {% for clinic in clinics %}
       <div class="col-md-4 col-sm-12 mb-4">
           <div class="card shadow-lg">
-              <a href="{% url 'clinics:clinic_detail' clinic.id %}"><img src="{{ clinic.feature_image.url }}" class="card-img-top" alt="{{ clinic.name }}"></a>
+              <a href="{% url 'clinics:clinic_detail' clinic.id %}"><img src="{{ clinic.featureImg.url }}" class="card-img-top" alt="{{ clinic.name }}"></a>
               <div class="card-body">
                   <h5 class="card-title">{{ clinic.name }}</h5>
               </div>
@@ -60,13 +62,13 @@
       {% endfor %}
   </div>
   <br>
-  <a href="{% url 'clinics:clinic_view'%}"><h3>More Clinics</h3></a>
+  <a href="{% url 'clinics:clinic_view'%}"><h3>view all</h3></a>
   <br>
   <br>
 
   <br>
   <br>
-  <h2>Our Experts</h2>
+  <h2>Our Doctors</h2>
   <div class="container mt-4">
       <div class="row">
           {% for doctor in doctors %}
@@ -87,7 +89,7 @@
           {% endfor %}
           <br>
 
-          <a href="{% url 'doctors:doctor_view'%}"><h3>More Experts</h3></a>
+          <a href="{% url 'doctors:doctor_view'%}"><h3>view all</h3></a>
           <br>
 
       </div>
