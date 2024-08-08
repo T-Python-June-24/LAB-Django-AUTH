@@ -1,0 +1,72 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Seren Care {% endblock %}
+
+{% block content %}
+
+
+<h2>Our Clinics</h2>
+
+
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4">
+
+    {% for clinic in clinics %}
+    <div class="col">
+        <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+            <div class="d-flex align-items-center">
+                <h4 class="m-0 p-0">{{clinic.name}} </h4>
+            </div>
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex gap-2">
+                    <a href="{% url 'clinics:clinic_detail_view' clinic.id %}"><img src="{{ clinic.feature_image.url }}"
+                            class=" overflow-hidden clinic-logo" /></a>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <h6 class="m-0 p-0 ">Working hours:</h6>
+                <p class="d-flex ms-2 text-primary">{{clinic.working_hours.start_time}} - {{clinic.working_hours.end_time}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+<div class="d-flex justify-content-end mt-2">
+    <a href="{% url 'clinics:all_clinics_view' 'all'%}" class="btn sky-bg ">more</a>
+</div>
+<hr>
+
+<h2>Our Doctors</h2>
+
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4">
+
+    {% for doctor in doctors %}
+    <div class="col">
+        <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex gap-2">
+                    <a href="{% url 'doctors:doctor_detail_view' doctor.id %}"><img src="{{ doctor.photo.url }}"
+                            class="rounded-circle overflow-hidden image-small" /></a>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <h5 class="m-0 p-0">Dr. {{doctor.full_name}} </h5>
+                </div>
+            </div>
+
+            <h6 class="m-0 p-0 text-primary">{{doctor.specialization}}</h6>
+            <div class="d-flex justify-content-between align-items-center w-100">
+
+                <h6 class="m-0 p-0">{{doctor.bio}}</h6>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="d-flex justify-content-end mt-2">
+    <a href="{% url 'doctors:all_doctors_view' 'all'%}" class="btn sky-bg ">more</a>
+</div>
+
+{% endblock %}
