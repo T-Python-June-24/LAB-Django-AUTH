@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Update Clinic{% endblock title %}
+{% block content %}
+<section class="py-12 bg-gray-100">
+    <div class="max-w-3xl mx-auto px-4">
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <h2 class="text-4xl font-bold text-center text-blue-800 mb-8">Update Clinic</h2>
+
+            <form method="post" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Clinic Name -->
+                <div class="flex flex-col">
+                    <label for="id_name" class="text-lg font-semibold text-gray-700">Clinic Name</label>
+                    <input type="text" id="id_name" name="name" value="{{ form.name.value }}" class="border border-gray-300 rounded-lg p-2 mt-1 w-full" required>
+                </div>
+
+                <!-- Description -->
+                <div class="flex flex-col">
+                    <label for="id_description" class="text-lg font-semibold text-gray-700">Description</label>
+                    <textarea id="id_description" name="description" class="border border-gray-300 rounded-lg p-2 mt-1 w-full" rows="4" required>{{ form.description.value }}</textarea>
+                </div>
+
+                <!-- Opening Time -->
+                <div class="flex flex-col">
+                    <label for="id_opening_time" class="text-lg font-semibold text-gray-700">Opening Time</label>
+                    <input type="time" id="id_opening_time" name="opening_time" value="{{ form.opening_time.value }}" class="border border-gray-300 rounded-lg p-2 mt-1 w-full" required>
+                </div>
+
+                <!-- Closing Time -->
+                <div class="flex flex-col">
+                    <label for="id_closing_time" class="text-lg font-semibold text-gray-700">Closing Time</label>
+                    <input type="time" id="id_closing_time" name="closing_time" value="{{ form.closing_time.value }}" class="border border-gray-300 rounded-lg p-2 mt-1 w-full" required>
+                </div>
+
+                <!-- Feature Image -->
+                <div class="flex flex-col mt-4">
+                    <label for="id_feature_image" class="text-lg font-semibold text-gray-700">Feature Image</label>
+                    <input type="file" id="id_feature_image" name="feature_image" class="border border-gray-300 rounded-lg p-2 mt-1 w-full">
+                    {% if form.instance.feature_image %}
+                        <img src="{{ form.instance.feature_image.url }}" alt="Feature Image" class="mt-4 w-full max-w-sm mx-auto rounded-lg">
+                    {% endif %}
+                </div>
+
+                <!-- Doctors -->
+                <div class="flex flex-col mt-4">
+                    <label for="id_doctors" class="text-lg font-semibold text-gray-700">Doctors</label>
+                    <select id="id_doctors" name="doctors" class="border border-gray-300 rounded-lg p-2 mt-1 w-full">
+                        {% for doctor in form.doctors.field.queryset %}
+                            <option value="{{ doctor.id }}" {% if doctor.id == form.doctors.value %}selected{% endif %}>{{ doctor.full_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center mt-8">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg w-full transition duration-300 transform hover:scale-105">Update Clinic</button>
+                </div>
+            </form>
+
+            <!-- Back to List Link -->
+            <div class="mt-6 text-center">
+                <a href="{% url 'clinics:clinic_list' %}" class="text-blue-600 hover:text-blue-800 text-lg font-semibold">Back to List</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

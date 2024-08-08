@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Reservation{% endblock title %}
+
+{% block content %}
+<div class="p-4 md:p-8 bg-white shadow rounded-lg">
+    <h1 class="text-blue-800 text-3xl font-bold mb-6">Add Reservation</h1>
+
+    {% if messages %}
+        <div class="max-w-4xl mx-auto px-4">
+            {% for message in messages %}
+                <div class="bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3 shadow-md mb-4 relative" role="alert">
+                    <div class="flex justify-between">
+                        <div>
+                            <strong class="font-bold">{{ message.tags|title }}</strong>
+                            <span class="block sm:inline">{{ message }}</span>
+                        </div>
+                        <div class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                            <svg class="fill-current h-6 w-6 text-blue-500 cursor-pointer" role="button" onclick="this.parentElement.parentElement.parentElement.style.display='none'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <title>Close</title>
+                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form id="reservationForm" method="post" action="{% url 'reservations:reservation_create' %}" class="space-y-6">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 gap-6">
+            <!-- Clinic Dropdown -->
+            <div>
+                <label for="clinic" class="block text-sm font-medium text-gray-700 mb-1">Clinic</label>
+                <select id="clinic" name="clinic" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    {% for clinic in clinics %}
+                        <option value="{{ clinic.id }}" {% if form.clinic.value == clinic.id|stringformat:"s" %}selected{% endif %}>{{ clinic.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.clinic.errors %}
+                    <div class="text-red-600 text-sm mt-1">{{ form.clinic.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Doctor Dropdown -->
+            <div>
+                <label for="doctor" class="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
+                <select id="doctor" name="doctor" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}" {% if form.doctor.value == doctor.id|stringformat:"s" %}selected{% endif %}>{{ doctor.full_name }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.doctor.errors %}
+                    <div class="text-red-600 text-sm mt-1">{{ form.doctor.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Reservation Date -->
+            <div>
+                <label for="reservation_date" class="block text-sm font-medium text-gray-700 mb-1">Reservation Date</label>
+                <input type="date" id="reservation_date" name="reservation_date" value="{{ form.reservation_date.value }}" min="{{ today }}" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                {% if form.reservation_date.errors %}
+                    <div class="text-red-600 text-sm mt-1">{{ form.reservation_date.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Reservation Time -->
+            <div>
+                <label for="reservation_time" class="block text-sm font-medium text-gray-700 mb-1">Reservation Time</label>
+                <input type="time" id="reservation_time" name="reservation_time" value="{{ form.reservation_time.value }}" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                {% if form.reservation_time.errors %}
+                    <div class="text-red-600 text-sm mt-1">{{ form.reservation_time.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mt-8 flex justify-center items-center text-center">
+            <button type="submit" class="bg-blue-800 hover:bg-blue-600 text-white font-bold rounded-lg px-32 py-3 transition duration-200">Save</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
