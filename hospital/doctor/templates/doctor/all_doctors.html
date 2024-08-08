@@ -14,7 +14,7 @@
             <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-xl h-80">
               <img src="{{doctor.photo.url}}" alt="profile-picture" />
             </div>
-            <div class="p-6 text-center">
+            <div class="p-6 text-center h-2/5">
               <a href="{% url 'doctor:doctor_page' doctor.id %}" class="hover:text-teal-500 "><h4 class="block mb-2  hover:ease-linear duration-200 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900  text-nowrap">
                 Dr. {{doctor.full_name}}
               </h4></a>

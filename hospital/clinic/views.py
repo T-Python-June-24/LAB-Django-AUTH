@@ -30,3 +30,6 @@ def clinic_page(request:HttpRequest,clinic_id):
     time_slots = get_available_time_slots(clinic, date)
     
     return render(request,"clinic/clinic_page.html",{"clinic":clinic, "time_slots": time_slots,"today":datetime.now().date().isoformat()})
+def all_clinic(request:HttpRequest):
+    clinics=Clinic.objects.all()
+    return render(request,"clinic/all_clinic.html",{"clinics":clinics})

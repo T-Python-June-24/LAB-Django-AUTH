@@ -7,7 +7,7 @@ from django.contrib import messages
 def home_view(request:HttpRequest):
     doctors=Doctor.objects.all()[0:4]
     print(Doctor.objects.get(pk=1).clinic_set.all())
-    clinics=Clinic.objects.all()[0:4]
+    clinics=Clinic.objects.all()[0:3]
     return render(request,'main/home.html',{'doctors':doctors,"clinics":clinics})
 def sttaf_view(request:HttpRequest):
     if request.user.is_staff:

@@ -11,7 +11,7 @@
                 <h2 class="md:text-4xl lg:text-4xl text-white font-bold sm:text-xl">Taking care of <br>your healthcare is our <br>top priority.</h2>
                 <p class="text-sm text-gray-100">Being healthy is more than just getting sick. it entaills mentails, physical <br>and social well-being .it's not just about treatment , it's about healing.</p>
                </div>
-            <a href=""><Button class="bg-teal-600 text-white rounded-md p-2 hover:scale-110 duration-200 hover:ease-linear hover:bg-teal-700">Book an appoiment</Button></a>
+            <a href="{% url 'clinic:all_clinic'%}"><Button class="bg-teal-600 text-white rounded-md p-2 hover:scale-110 duration-200 hover:ease-linear hover:bg-teal-700">Book an appoiment</Button></a>
             {% include 'main/searchComponent.html' %}
             </div>
         </div>
@@ -55,7 +55,7 @@
                         </span><h2 class="text-xl">A term of professionals</h2>
                 </div>
         </div>
-        <a href="" class="mt-10"><Button class="bg-teal-600 text-white rounded-md p-2 hover:scale-110 duration-200 hover:ease-linear hover:bg-teal-700">Book an appoiment</Button></a>
+        <a href="{% url 'clinic:all_clinic' %}" class="mt-10"><Button class="bg-teal-600 text-white rounded-md p-2 hover:scale-110 duration-200 hover:ease-linear hover:bg-teal-700">Book an appoiment</Button></a>
            
        </div>
     </div>
@@ -77,7 +77,7 @@
                 <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-xl h-80">
                   <img src="{{doctor.photo.url}}" alt="profile-picture" />
                 </div>
-                <div class="p-6 text-center">
+                <div class="p-6 text-center h-2/5">
                   <a href="{% url 'doctor:doctor_page' doctor.id %}" class="hover:text-teal-500 "><h4 class="block mb-2  hover:ease-linear duration-200 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900  text-nowrap">
                     Dr. {{doctor.full_name}}
                   </h4></a>
@@ -116,16 +116,16 @@
         <div>
             <div class="flex flex-row justify-between">
                 <h2 class="text-xl font-bold">Our clincs</h2>
-            <span class="material-symbols-outlined mr-20 text-3xl text-teal-500">
+            <a href="{% url 'clinic:all_clinic' %}"><span class="material-symbols-outlined mr-20 text-3xl text-teal-500">
                     read_more
-                    </span>
+                    </span></a>
                 
             </div>
             <div class="flex flex-row gap-3">
             {% for clinic in clinics %}
             
             <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
-                <div class="p-6">
+                <div class="p-6 h-full">
                     <i class="fa-solid fa-house-chimney-medical text-2xl"></i>
                   <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                     {{ clinic.name }}

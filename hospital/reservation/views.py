@@ -38,5 +38,17 @@ def create_reservation(request:HttpRequest,clinic_id):
             messages.error(request, f"Error: {e}")
             return redirect('main:clinic_page', clinic_id=clinic_id)
 
-  
-    
+
+
+def cancel_appointment(request: HttpRequest, reservation_id):
+    try:
+        print(reservation_id)
+        reservation = Reservation.objects.get(pk=reservation_id)
+        user = reservation.user.username
+        reservation.delete()
+        messages.success(request,"Deleted successfully.",'green')
+        return redirect('registration:profile_view', user_name=user)
+    except Reservation.DoesNotExist:
+        # Handle the case where the reservation does not exist
+        # You can redirect to a different page or show an error message
+        return redirect('profile:profile_view', user_name=request.user.username) 
