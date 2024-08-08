@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Add Doctor{% endblock %}
+{% block content %}
+    <div class="container mt-4 col-6">
+        <h1 class="align-self-center mt-4">Add Doctor</h1>
+        <div class="form-container">
+            <form action="{% url 'doctors:create_doctor' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="fullname-field" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="fullname-field" placeholder="Full Name"
+                           name="full_name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Specialization</label>
+                    <select name="specialization" class="form-select" required>
+                        <option>Choose specialization</option>
+                        {% for value, label in specialization %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="mb-3">
+                    <label for="bio-field" class="form-label">Bio</label>
+                    <textarea class="form-control" id="bio-field" placeholder="Bio" name="bio" required
+                              minlength="10" maxlength="500"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="photo-field" class="form-label">Photo</label>
+                    <input type="file" class="form-control" id="photo-field" name="photo" accept="image/*">
+                </div>
+
+                <div class="mb-3">
+                    <input type="submit" value="Add Doctor" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

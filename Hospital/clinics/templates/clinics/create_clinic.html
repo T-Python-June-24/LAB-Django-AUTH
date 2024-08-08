@@ -1,0 +1,54 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Add Clinic{% endblock %}
+{% block content %}
+    <div class="container mt-4 col-6">
+        <h1 class="align-self-center mt-4">Add Clinic</h1>
+        <div class="form-container">
+            <form action="{% url 'clinics:create_clinic' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name-field" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name-field" placeholder="Name" name="name"
+                           required minlength="3">
+                </div>
+                <div class="mb-3">
+                    <label for="description-field" class="form-label">Description</label>
+                    <textarea class="form-control" id="description-field" placeholder="Description"
+                              name="description" required minlength="10" maxlength="500"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="working-hours" class="form-label">Working Hours</label>
+                    <select class="form-control" id="working-hours" name="working_hours" required>
+                        <option value="" disabled selected>Select working hours</option>
+                        <option value="07:00-15:00">Morning (07:00 AM - 3:00 PM)</option>
+                        <option value="15:00-23:00">Evening (3:00 PM - 11:00 PM)</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="feature-image" class="form-label">Feature Image</label>
+                    <input type="file" class="form-control" id="feature-image" name="feature_image"
+                           accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Doctors</label>
+                    <div>
+                        {% for doctor in doctors %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ doctor.id }}"
+                                       id="doctor-{{ doctor.id }}" name="doctors" {% if doctor in clinic.doctors.all %}
+                                       checked {% endif %}>
+                                <label class="form-check-label" for="doctor-{{ doctor.id }}">
+                                    {{ doctor.full_name }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="Add Clinic" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
