@@ -24,8 +24,8 @@
             <p>{{doctors.bio}}</p>
           </div>
           <div class="doctor-card-buttons">
-            <a href="#" class="btn btn-book">Book Now</a>
-            <a href="#" class="btn btn-details">View Details</a>
+            
+            <a href="{% url 'Home:dector_detail' doctors.full_name %}" class="btn btn-details">View Details</a>
           </div>
         </div>
       </div>
@@ -33,6 +33,22 @@
   {% endfor %}
 </div>
 </section>
-
+<div class="d-flex justify-content-center col-12 mt-3">
+  {% if views_product.has_previous %}
+  <div class="d-flex gap-1">
+      <a href="?page=1" class="btn btn-my">&lang;&lang;</a>
+      <a href="?page={{views_product.previous_page_number}}" class="btn btn-my">&lang; </a>
+  </div>  
+  {% endif %}
+  <div class="current d-flex align-items-center" >
+      Page {{views_product.number}} of {{views_product.paginator.num_pages}}
+  </div>
+  {% if views_product.has_next %}
+  <div class="d-flex gap-1">
+      <a href="?page={{views_product.next_page_number}}" class="btn btn-my"> &rang;</a>
+      <a href="?page={{views_product.paginator.num_pages}}" class="btn btn-my"> &rang;&rang;</a>
+  </div> 
+  {% endif %}
+</div>
 
 {% endblock %}

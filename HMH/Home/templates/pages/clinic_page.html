@@ -4,39 +4,58 @@
 {% block body %}
 
 <div class="container margin">
-    <div class="row">
-        <div class="col-12 text-center animate-on-scroll mb-5">
-            <h1>Our Clinics</h1>
-            <p>Explore our various clinics that offer specialized medical care and services.</p>
-        </div>
+  <div class="row">
+    <div class="col-12 text-center animate-on-scroll mb-5">
+      <h1>Our Clinics</h1>
+      <p>Explore our various clinics that offer specialized medical care and services.</p>
     </div>
+  </div>
 </div>
 {% include 'base_Home/search.html' %}
-<section style="background: url('{% static 'images/back2.png' %}') no-repeat left top #ffffff;" class="animate-on-scroll">
-    <div class="container margin">
-        <div class="row">
-            <!-- Example Clinic Card -->
-            
-            <!-- Repeat Clinic Card for more clinics -->
-            <div class="col-md-4 mb-4 animate-on-scroll">
-                
-                    <div class="clinic-card d-flex flex-column justify-content-center">
-                      <div class="clinic-image">
-                        <img src="{% static 'images/maram.png' %}" alt="" class="img-fluid">
-                      </div>
-                      <div class="clinic-info text-center mt-2">
-                        <h4>dfgdg</h4>
-                        <p>dfgdgdfgdfgdfgdfg</p>
-                        <a href="#" class="btn btn-light">Learn More</a>
-                      </div>
-                    </div>
-                  
-            </div>
+<section style="background: url('{% static 'images/back2.png' %}') no-repeat left top #ffffff;"
+  class="animate-on-scroll">
+  <div class="container margin">
+    <div class="row">
 
-            
+      {% for clinics in clinic %}
 
-            <!-- Add more clinic cards as needed -->
+      <div class="col-md-4 mb-4 animate-on-scroll">
+
+        <div class="clinic-card d-flex flex-column justify-content-center">
+          <div class="clinic-image">
+            <img src="{{clinics.feature_image.url}}" alt="" class="img-fluid">
+          </div>
+          <div class="clinic-info text-center mt-2">
+            <h4>{{clinics.name}}</h4>
+            <p>{{clinics.description}}</p>
+            <a href="{% url 'Home:clinic_detail' clinics.name %}" class="btn btn-light">Learn More</a>
+          </div>
         </div>
+
+      </div>
+      {% endfor %}
+
+
+
+
     </div>
+  </div>
 </section>
+<div class="d-flex justify-content-center col-12 mt-3">
+  {% if views_product.has_previous %}
+  <div class="d-flex gap-1">
+      <a href="?page=1" class="btn btn-my">&lang;&lang;</a>
+      <a href="?page={{views_product.previous_page_number}}" class="btn btn-my">&lang; </a>
+  </div>  
+  {% endif %}
+  <div class="current d-flex align-items-center" >
+      Page {{views_product.number}} of {{views_product.paginator.num_pages}}
+  </div>
+  {% if views_product.has_next %}
+  <div class="d-flex gap-1">
+      <a href="?page={{views_product.next_page_number}}" class="btn btn-my"> &rang;</a>
+      <a href="?page={{views_product.paginator.num_pages}}" class="btn btn-my"> &rang;&rang;</a>
+  </div> 
+  {% endif %}
+</div>
 {% endblock %}

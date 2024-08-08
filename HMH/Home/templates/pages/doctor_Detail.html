@@ -2,7 +2,9 @@
 {% load static %}
 {% block title %}Clinics{% endblock %}
 {% block body %}
+<div class="affict animate-on-scroll">
 
+</div>
 <div class="container margin">
     <div class="row shadow  rounded">
         <div class="col-lg-4 col-md-12">
@@ -10,15 +12,15 @@
                 <div class="filter_cont_sec_left_img">
 
                     <picture>
-                        <source type="image/webp" srcset="{% static 'images/maram.png' %}"><img class=""
-                            src="{% static 'images/mna.jpg' %}" width="444" height="430" alt="د. اسماعيل المنسي"
+                        <img class=""
+                            src="{{doctor.photo.url}}" width="444" height="430" alt=""
                             loading="lazy">
                     </picture>
                 </div>
                 <div class="filter_cont_sec_left_cont mt-3">
-                    <h3>Dr. Ismail El-Mansy</h3>
-                    <h6>Consultant in Internal Medicine</h6>
-                    <p>Internal Medicine</p>
+                    <h3>Dr. {{doctor.full_name|capfirst}}</h3>
+                    <h6>{{doctor.specialization}}</h6>
+                    
                 </div>
                 <hr class="spacer20px">
 
@@ -29,8 +31,8 @@
             <strong><span style="font-size: 200%; color: #0d7c74;">Bio:</span></strong>
             <div><span style="font-size: 18.6667px;"><strong><br></strong></span>
                 <div>
-                    <p>Dr. Alex Johnson is a renowned cardiologist with over 15 years of experience in diagnosing and treating heart conditions. He completed his medical education at Harvard Medical School and went on to complete his residency in cardiology at Mayo Clinic. Dr. Johnson is board-certified in internal medicine and cardiology, with a focus on advanced cardiac imaging and interventional procedures.
-
+                    <p>
+                        {{doctor.bio}}
                     </p>
                 </div>
             </div>
@@ -43,18 +45,21 @@
         <div class="col-12">
             <h1>Clinic :</h1>
         </div>
+        {% for clinic in clinics %}
         <div class="col-4">
             <div class="card text-secondary">
-                <a href="" class="link-clinic">
-                    <img src="{% static 'images/maram.jpg' %}" class="card-img-top" alt="Clinic Name">
+                <a href="{% url 'Home:clinic_detail' clinic.name %}" class="link-clinic">
+                    <img src="{{clinic.feature_image.url}}" class="card-img-top" alt="Clinic Name">
                     <div class="card-body text-secondary">
-                        <h5 class="card-title text-secondary">Clinic Name 1</h5>
-                        <p class="card-text text-secondary">A brief description of the clinic, its services, and
-                            specialties. This clinic provides excellent care in various fields.</p>
+                        <h5 class="card-title text-secondary">{{clinic.name}}</h5>
                     </div>
                 </a>
             </div>
         </div>
+
+        {% empty %}
+        <h1>There is no doctor's office</h1>
+        {% endfor %}
     </div>
 </div>
 </div>

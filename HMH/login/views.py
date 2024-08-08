@@ -33,3 +33,24 @@ def sign_in(request:HttpRequest):
             return redirect('login:sign_in')
 
     return render(request , 'pages_sign/sign_in.html')
+
+
+def update_user(request:HttpRequest , user_id):
+    referer = request.META.get('HTTP_REFERER')
+    user = User.objects.get(pk = user_id)
+    profile=Profile.objects.get(user=user)
+    if request.method == 'POST':
+        user.username = request.POST['username']
+        user.email = request.POST['email']
+        user.first_name  = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        profile.phone_number =  request.POST['phone_number']
+        profile.address = request.POST['address']
+        user.save()
+        profile.save()
+        messages.success(request , 'done')
+        return redirect(referer)
+
+def logout_user(request:HttpRequest):
+    logout(request)
+    return redirect('Home:Home')

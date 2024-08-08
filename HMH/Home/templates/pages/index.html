@@ -17,7 +17,7 @@
   </div>
 
   <div class="col-12 col-md-6 w-100 animate-on-scroll d-flex  align-items-center justify-content-center">
-    <video autoplay muted loop playsinline id="hail_video_slide" data-video="1" class="mtz-lpcbi rounded height ">
+    <video autoplay muted loop playsinline id="hail_video_slide" data-video="1" class="mtz-lpcbi rounded-video height ">
       <source
         src="https://res.cloudinary.com/dvyxhy5gu/video/upload/v1722884905/Untitled_video_-_Made_with_Clipchamp_16_emwk8v.mp4"
         type="video/mp4">
@@ -85,19 +85,19 @@
     <div class="col-12 animate-on-scroll d-flex justify-content-center mb-5">
       <h1>CLINIC</h1>
     </div>
+    {% for clinics in clinic %}
     <div class="col-12 animate-on-scroll col-md-4 mb-4">
       <div class="clinic-card d-flex flex-column justify-content-center">
         <div class="clinic-image">
-          <img src="{% static 'images/maram.png' %}" alt="" class="img-fluid">
+          <img src="{{clinics.feature_image.url}}" alt="" class="img-fluid">
         </div>
         <div class="clinic-info text-center">
-          <h4>dfgdg</h4>
-          <p>dfgdgdfgdfgdfgdfg</p>
-          <a href="#" class="btn btn-light">Learn More</a>
+          <h4>{{clinics.name}}</h4>
+          <a href="{% url 'Home:clinic_detail' clinics.name %}" class="btn btn-light">Learn More</a>
         </div>
       </div>
     </div>
-
+{% endfor %}
   </div>
   <div class="col-12 animate-on-scroll d-flex justify-content-center">
     <a href="{% url 'Home:view_clinic' %}" class="btn btn-light">view more</a>
@@ -111,62 +111,23 @@
     <div class="col-12 animate-on-scroll d-flex justify-content-center mb-5">
       <h1>DOCTORS</h1>
     </div>
+    {% for doctors in doctor %}
     <div class="col-12 animate-on-scroll col-md-4 mb-4">
       <div class="doctor-card">
-        <img src="{% static 'images/maram.png' %}" alt="{{ doctor.name }}">
+        <img src="{{doctors.photo.url}}" alt="{{ doctor.name }}">
         <div class="doctor-card-body">
-          <h4>mna</h4>
+          <h4>{{doctors.full_name}}</h4>
           <!--specialization -->
-          <p>dfdgdgdfg</p>
+          <p>{{doctors.specialization}}</p>
         </div>
         <div class="doctor-card-buttons">
-          <a href="#" class="btn btn-book">Book Now</a>
-          <a href="#" class="btn btn-details">View Details</a>
+          
+          <a href="{% url 'Home:dector_detail' doctor_name=doctors.full_name %}" class="btn btn-details">View Details</a>
         </div>
       </div>
     </div>
-    <div class="col-12 animate-on-scroll col-md-4 mb-4">
-      <div class="doctor-card">
-        <img src="{% static 'images/maram.png' %}" alt="{{ doctor.name }}">
-        <div class="doctor-card-body">
-          <h4>mna</h4>
-          <!--specialization -->
-          <p>dfdgdgdfg</p>
-        </div>
-        <div class="doctor-card-buttons">
-          <a href="#" class="btn btn-book">Book Now</a>
-          <a href="#" class="btn btn-details">View Details</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 animate-on-scroll col-md-4 mb-4">
-      <div class="doctor-card">
-        <img src="{% static 'images/maram.png' %}" alt="{{ doctor.name }}">
-        <div class="doctor-card-body">
-          <h4>mna</h4>
-          <!--specialization -->
-          <p>dfdgdgdfg</p>
-        </div>
-        <div class="doctor-card-buttons">
-          <a href="#" class="btn btn-book">Book Now</a>
-          <a href="#" class="btn btn-details">View Details</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 animate-on-scroll col-md-4 mb-4">
-      <div class="doctor-card">
-        <img src="{% static 'images/maram.png' %}" alt="{{ doctor.name }}">
-        <div class="doctor-card-body">
-          <h4>mna</h4>
-          <!--specialization -->
-          <p>dfdgdgdfg</p>
-        </div>
-        <div class="doctor-card-buttons">
-          <a href="#" class="btn btn-book">Book Now</a>
-          <a href="#" class="btn btn-details">View Details</a>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
+   
     <div class="col-12 animate-on-scroll d-flex justify-content-center">
       <a href="{% url 'Home:view_doctor' %}" class="btn btn-light">view more</a>
     </div>
