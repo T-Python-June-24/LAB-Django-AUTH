@@ -163,7 +163,7 @@ body{
   }
   .doctor-card img {
     width: 100%;
-    height: auto;
+    height: 50vh;
   }
   .doctor-card-body {
     padding: 15px;

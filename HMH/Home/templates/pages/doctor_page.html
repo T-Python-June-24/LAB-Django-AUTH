@@ -3,51 +3,49 @@
 {% block title %}Clinics{% endblock %}
 {% block body %}
 <div class="container margin">
-    <div class="row">
-      <div class="col-12 text-center mb-5 animate-on-scroll">
-        <h1>Our Doctors</h1>
-        <p>Meet our team of highly skilled doctors dedicated to providing exceptional medical care and expertise.</p>
-      </div>
+  <div class="row">
+    <div class="col-12 text-center mb-5 animate-on-scroll">
+      <h1>Our Doctors</h1>
+      <p>Meet our team of highly skilled doctors dedicated to providing exceptional medical care and expertise.</p>
     </div>
   </div>
+</div>
 {% include 'base_Home/search.html' %}
-  <section style="background: url('{% static 'images/backgound.png' %}') no-repeat right top #ffffff;" class="animate-on-scroll">
-    <div class="container margin">
-  <div class="row">
-    {% for doctors in doctor %}
-    <div class="col-12 animate-on-scroll col-md-4 mb-4">
+<section style="background: url('{% static 'images/background.png' %}') no-repeat right top #ffffff;" class="animate-on-scroll">
+  <div class="container margin">
+    <div class="row">
+      {% for doctors in doctor %}
+      <div class="col-12 col-md-4 mb-4 animate-on-scroll">
         <div class="doctor-card">
-          <img src="{{doctors.photo.url}}" alt="{{ doctors.name }}">
+          <img src="{{ doctors.photo.url }}" alt="{{ doctors.name }}" class="img-fluid">
           <div class="doctor-card-body">
-            <h4>{{ doctors.full_name}}</h4>
-            <!--specialization -->
-            <p>{{doctors.bio}}</p>
+            <h4>{{ doctors.full_name }}</h4>
+            <p>{{ doctors.bio }}</p>
           </div>
           <div class="doctor-card-buttons">
-            
             <a href="{% url 'Home:dector_detail' doctors.full_name %}" class="btn btn-details">View Details</a>
           </div>
         </div>
       </div>
+      {% endfor %}
+    </div>
   </div>
-  {% endfor %}
-</div>
 </section>
 <div class="d-flex justify-content-center col-12 mt-3">
   {% if views_product.has_previous %}
   <div class="d-flex gap-1">
-      <a href="?page=1" class="btn btn-my">&lang;&lang;</a>
-      <a href="?page={{views_product.previous_page_number}}" class="btn btn-my">&lang; </a>
-  </div>  
+    <a href="?page=1" class="btn btn-my">&lang;&lang;</a>
+    <a href="?page={{views_product.previous_page_number}}" class="btn btn-my">&lang; </a>
+  </div>
   {% endif %}
-  <div class="current d-flex align-items-center" >
-      Page {{views_product.number}} of {{views_product.paginator.num_pages}}
+  <div class="current d-flex align-items-center">
+    Page {{views_product.number}} of {{views_product.paginator.num_pages}}
   </div>
   {% if views_product.has_next %}
   <div class="d-flex gap-1">
-      <a href="?page={{views_product.next_page_number}}" class="btn btn-my"> &rang;</a>
-      <a href="?page={{views_product.paginator.num_pages}}" class="btn btn-my"> &rang;&rang;</a>
-  </div> 
+    <a href="?page={{views_product.next_page_number}}" class="btn btn-my"> &rang;</a>
+    <a href="?page={{views_product.paginator.num_pages}}" class="btn btn-my"> &rang;&rang;</a>
+  </div>
   {% endif %}
 </div>
 

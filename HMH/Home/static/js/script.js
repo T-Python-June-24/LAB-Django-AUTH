@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0;
 
     function changeContent() {
-        imgElement.classList.add('fade'); // ابدأ تأثير التلاشي على الصورة
-        titleElement.classList.add('fade'); // ابدأ تأثير التلاشي على النصوص
+        imgElement.classList.add('fade'); 
+        titleElement.classList.add('fade'); 
         specializationElement.classList.add('fade');
         detailsElement.classList.add('fade');
 
@@ -55,20 +55,20 @@ document.addEventListener('DOMContentLoaded', function() {
             currentIndex = (currentIndex + 1) % images.length;
             imgElement.src = images[currentIndex];
             
-            // تحديث النصوص
+           
             titleElement.innerHTML = texts[currentIndex].title;
             specializationElement.innerHTML = texts[currentIndex].specialization;
             detailsElement.innerHTML = texts[currentIndex].details;
 
-            // إزالة تأثير التلاشي
+            
             imgElement.classList.remove('fade');
             titleElement.classList.remove('fade');
             specializationElement.classList.remove('fade');
             detailsElement.classList.remove('fade');
-        }, 1000); // مدة تأثير التلاشي
+        }, 1000); 
     }
 
-    setInterval(changeContent, 5000); // تغيير الصورة والنصوص كل 5 ثوانٍ
+    setInterval(changeContent, 5000); 
 });
 const observer = new IntersectionObserver(
     (entries) => {

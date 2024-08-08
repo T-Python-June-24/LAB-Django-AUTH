@@ -4,7 +4,8 @@ from django.http  import HttpRequest
 from .forms import ReservationForm
 from django.contrib import messages
 from Clinic.models import Clinic
-from django.core.mail import EmailMessage
+
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
 # Create your views here.
@@ -38,21 +39,18 @@ def add_reservation(request: HttpRequest, clinic_name):
             reservation.user = request.user
             reservation.save()
             
-            messages.success(request, 'Your appointment has been successfully booked.')
-            
             page_html = render_to_string('mail/send_reservation.html', {
                 'clinic': clinic,
                 'date': data,
                 'time': time_slot
             })
             
-            send_to = request.user.email
-            email_message = EmailMessage(
-                f"Your appointment has been scheduled with {clinic.name}",
-                page_html,
-                settings.EMAIL_HOST_USER,
-                [send_to]
-            )
+            subject = f"Your appointment has been scheduled with {clinic.name}"
+            from_email = settings.EMAIL_HOST_USER
+            to_email = request.user.email
+
+            email_message = EmailMultiAlternatives(subject, '', from_email, [to_email])
+            email_message.attach_alternative(page_html, "text/html")  
             email_message.send()
             
             return redirect(referer)
