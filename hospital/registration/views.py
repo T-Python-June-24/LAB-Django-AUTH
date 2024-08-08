@@ -48,6 +48,7 @@ def profile_view(request:HttpRequest,user_name):
     if request.user.username==user_name:
 
         try:
+            
             user = User.objects.get(username=user_name)
             reservations=user.reservation_set.all()
 
