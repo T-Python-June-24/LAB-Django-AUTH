@@ -75,6 +75,10 @@ a{
 a:hover{
     color:#d3392b;
 }
+a:hover h3 {
+    color: #d3392b; /* Change to red color on hover */
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -91,6 +95,15 @@ a:hover{
         <p class="fs-1 fs-md-2 fs-lg-3 fs-xl-4 fs-xxl-5">Leading the Way<br>
         in Healthcare<br>
         Excellence</p>
+
+        <div class="row ">
+            <div class="col">
+                <a href="{% url 'clinics:clinic_view'%}"><h3 style="color: #f8f9fa;">+{{ clinics_count }} clinics</h3></a>
+            </div>
+            <div class="col">
+                <a href="{% url 'doctors:doctor_view'%}"><h3 style="color: #f8f9fa; ">+{{ doctors_count }} doctors</h3></a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="section-text mt-4">
