@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %} ClinicmDetails  {% endblock %}
+
+{% block content %}
+<section class="py-8 bg-white md:py-16 light:bg-gray-900 antialiased">
+    <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
+      <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+        <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
+          <img class="w-full light:hidden" src="{{clinic.feature_image.url}}" alt="" />
+        </div>
+        <div class="mt-6 sm:mt-8 lg:mt-0">
+          <h1
+            class="text-xl font-semibold text-gray-900 sm:text-2xl light:text-white"
+          >
+            {{clinic.name}}
+          </h1>
+          <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
+            <div class="flex items-center gap-2 mt-2 sm:mt-0">
+              <p class="text-sm font-medium leading-none text-gray-500 light:text-gray-400">
+                Work Day: {{clinic.get_working_hours_display}}
+              </p>
+             
+            </div>
+          </div>
+
+          <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+            <a
+              href="#"
+              title=""
+              class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 light:focus:ring-gray-700 light:bg-gray-800 light:text-gray-400 light:border-gray-600 light:hover:text-white light:hover:bg-gray-700"
+              role="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 light:text-gray-400 group-hover:text-gray-900 light:group-hover:text-white"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                <path
+                  fill-rule="evenodd"
+                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              Add to favorites
+            </a>
+
+            <a
+              href="#"
+              title=""
+              class="text-white mt-4 sm:mt-0 bg-indigo-600 shadow-xs hover:bg-indigo-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 light:bg-primary-600 light:hover:bg-primary-700 focus:outline-none light:focus:ring-primary-800 flex items-center justify-center"
+              role="button"
+            >
+            <svg
+                aria-hidden="true"
+                class="flex-shrink-0 w-6 h-6 text-white-500 transition duration-75 light:text-gray-400 group-hover:text-gray-900 light:group-hover:text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                <path
+                  fill-rule="evenodd"
+                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              Make Appointment
+            </a>
+          </div>
+
+          <hr class="my-6 md:my-8 border-gray-200 light:border-gray-800" />
+          About Clinic
+          <p class="mb-6 text-gray-500 light:text-gray-400">
+           {{clinic.description}}
+          </p>
+          <hr class="my-6 md:my-8 border-gray-200 light:border-gray-800" />
+          Doctors
+          <p class="mb-6 text-gray-500 light:text-gray-400">
+           {% for doctor in clinic.doctors_id.all %}
+                <span>{{ doctor.get_full_name }} {% if doctor.specialization %} {{ doctor.specialization }}{% endif %}</span>
+                {% endfor %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock%}
