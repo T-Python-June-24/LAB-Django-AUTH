@@ -1,0 +1,159 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="h-screen p-0 m-0 ">
+    
+    <div class="flex flex-col  w-full  absolute z-50 ">
+        <div class=" my-32 mx-32 flex flex-col justify-center">
+            <div class="flex flex-col gap-10">
+               <div class="flex flex-col gap-2">
+                <h2 class="md:text-4xl lg:text-4xl text-white font-bold sm:text-xl">Taking care of <br>your healthcare is our <br>top priority.</h2>
+                <p class="text-sm text-gray-100">Being healthy is more than just getting sick. it entaills mentails, physical <br>and social well-being .it's not just about treatment , it's about healing.</p>
+               </div>
+            <a href="{% url 'clinic:all_clinic'%}"><Button class="bg-teal-600 text-white rounded-md p-2 hover:scale-110 duration-200 hover:ease-linear hover:bg-teal-700">Book an appoiment</Button></a>
+            {% include 'main/searchComponent.html' %}
+            </div>
+        </div>
+        
+        
+        
+        
+    </div>
+    <img src="{% static 'images/bg3.jpg' %}" class=" " alt="">
+
+    <div class="mt-52 ml-52 ">
+
+       <div class="flex flex-row items-center gap-2">
+        <span class="material-symbols-outlined text-teal-500">
+            vital_signs
+            </span> <h2 class="text- text-teal-500 font-semibold">ABOUT US</h2>
+       </div>
+       <div class="mt-2 flex flex-col gap-5">
+        <h1 class="text-5xl font-bold">Welcom To Twauiq Hosiptal</h1>
+        <p>Excellence in Care, Every Step of the Way. Experience top-quality <br> healthcare tailored to your needs.</p>
+        <div class="flex flex-row gap-9 items-center ">
+            <div class="flex flex-row items-center gap-1">
+                <span class="material-symbols-outlined text-teal-500">
+                    verified
+                    </span> <h2 class="text-xl">15+ Years of excellence</h2>
+            </div>
+                
+                    <div class="flex flex-row items-center gap-1  "><span class="material-symbols-outlined text-teal-500">
+                        verified
+                        </span> <h2 class="text-xl">24/7 Hour Medical Services</h2></div>
+        </div>
+        <div class="flex flex-row gap-5">
+            <div class="flex flex-row items-center gap-1">
+                <span class="material-symbols-outlined text-teal-500">
+                    verified
+                    </span><h2 class="text-xl">A mulitispeciallty hospital</h2>
+            </div>
+                <div class="flex flex-row items-center gap-1">
+                    <span class="material-symbols-outlined text-teal-500">
+                        verified
+                        </span><h2 class="text-xl">A term of professionals</h2>
+                </div>
+        </div>
+        <a href="{% url 'clinic:all_clinic' %}" class="mt-10"><Button class="bg-teal-600 text-white rounded-md p-2 hover:scale-110 duration-200 hover:ease-linear hover:bg-teal-700">Book an appoiment</Button></a>
+           
+       </div>
+    </div>
+    <div class="mt-52 ml-52  flex flex-col  ">
+        <div>
+            <div class="flex flex-row justify-between">
+                <h2 class="text-xl font-bold">Our Doctors</h2>
+            <a href="{% url 'doctor:all_doctors_view' %}">
+              <span class="material-symbols-outlined mr-20 text-3xl text-teal-500">
+                read_more
+                </span>
+            </a>
+                
+            </div>
+            
+            <div class="flex flex-row gap-3 ">
+              {% for doctor in doctors %}
+            <div class="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border mt-10 rounded-xl w-72">
+                <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-xl h-80">
+                  <img src="{{doctor.photo.url}}" alt="profile-picture" />
+                </div>
+                <div class="p-6 text-center h-2/5">
+                  <a href="{% url 'doctor:doctor_page' doctor.id %}" class="hover:text-teal-500 "><h4 class="block mb-2  hover:ease-linear duration-200 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900  text-nowrap">
+                    Dr. {{doctor.full_name}}
+                  </h4></a>
+                  {%  for clinic in doctor.clinic_set.all %}
+                  <p
+                    class="block font-sans text-base antialiased font-medium leading-relaxed  bg-clip-text bg-gradient-to-tr from-blue-gray-600 to-blue-gray-400">
+                    {{clinic.name}}             
+                       </p>
+                       {% endfor %}
+                </div>
+                <div class="flex justify-center p-6 pt-2 gap-7">
+                  <a href="#facebook"
+                    class="block font-sans text-xl antialiased font-normal leading-relaxed text-transparent bg-clip-text bg-gradient-to-tr from-blue-600 to-blue-400">
+                    <i class="fab fa-facebook" ></i>
+                  </a>
+                  <a href="#twitter"
+                    class="block font-sans text-xl antialiased font-normal leading-relaxed  bg-clip-text bg-gradient-to-tr from-light-blue-600 to-light-blue-400">
+                    <i class="fa-brands fa-x-twitter"></i>
+                    
+                  </a>
+                  
+                  <a href="#instagram"
+                    class="block font-sans text-xl antialiased font-normal leading-relaxed text-transparent bg-clip-text bg-gradient-to-tr from-purple-600 to-purple-400"><i
+                      class="fab fa-instagram" >
+                    </i>
+                  </a>
+                </div>
+              </div>
+            
+              {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-52 ml-52 h-3/6 flex flex-col ">
+        <div>
+            <div class="flex flex-row justify-between">
+                <h2 class="text-xl font-bold">Our clincs</h2>
+            <a href="{% url 'clinic:all_clinic' %}"><span class="material-symbols-outlined mr-20 text-3xl text-teal-500">
+                    read_more
+                    </span></a>
+                
+            </div>
+            <div class="flex flex-row gap-3">
+            {% for clinic in clinics %}
+            
+            <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+                <div class="p-6 h-full">
+                    <i class="fa-solid fa-house-chimney-medical text-2xl"></i>
+                  <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                    {{ clinic.name }}
+                  </h5>
+                  <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+                    {{ clinic.description }}
+                  </p>
+                </div>
+                <div class="p-6 pt-0">
+                  <a href="{% url 'clinic:clinic_page' clinic.id %}" class="inline-block">
+                    <button
+                      class="flex items-center gap-2 px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
+                      type="button">
+                      View Clinc  
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
+                      </svg>
+                    </button>
+                  </a>
+                </div>
+              </div> 
+              {% endfor %}
+            </div>
+        </div>
+
+    </div>
+   
+</div>
+
+{% endblock %}

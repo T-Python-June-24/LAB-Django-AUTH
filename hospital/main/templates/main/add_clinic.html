@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<div class="contain py-16">
+    <div class="max-w-lg mx-auto shadow px-6 py-7 rounded overflow-hidden">
+      <h2 class="text-2xl uppercase font-medium mb-1">Add Clinic </h2>
+      
+      <form  method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <p class="text-red-500"></p>
+        <div class="space-y-2">
+          <div><label for="" class="text-gray-600 mb-2 block"></label>Clinic Name<input type="text" name="name"  class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400" placeholder="">
+          
+          </div>
+          <div class="space-y-2">
+            <div><label for="" class="text-gray-600 mb-2 block">Doctors</label>   <select name="doctor" id="" multiple class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400">
+                {% for doctor in doctors %}
+                <option value="{{doctor.id}}">Dr. {{doctor.full_name}}</option>
+                {% endfor %}
+                
+
+            </select>
+            
+        </div>
+        
+        
+       
+        <div class="space-y-2">
+          <div><label for="" class="text-gray-600 mb-2 block"></label>description <textarea name="description" id="" class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400"></textarea>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <div><label for="working_hours" class="text-gray-600 mb-2 block">Working Houres</label> 
+            <select name="working_hours" id="" class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400">
+                {% for value , disply in working_hours %}
+                <option value="{{value}}">{{disply}}</option>
+                {% endfor %}
+            </select>
+
+                  </div>
+          </div>
+       
+        
+        </div>
+        <div class="mt-4">
+          <button type="submit" class="block w-full py-2 text-center text-white bg-teal-500 border border-teal-500 rounded hover:bg-transparent hover:text-teal-500 transition uppercase font-roboto font-medium">Add</button>
+          <div class="flex gap-2 pt-5">
+            <p class="text-gray-600 text-sm">Do you want to add doctor?</p><a class="text-gray-600 text-sm underline"
+              href="{% url 'main:add_doctor_view' %}">add doctor here</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
