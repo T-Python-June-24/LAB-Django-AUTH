@@ -60,7 +60,7 @@
                             <a href="{{doctors_page}}"  {% if request.path == doctors_page %} class="rounded-md bg-white/30  px-3 py-2 text-sm font-medium text-white" {% else %} class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/30 hover:text-white" {% endif %} >Doctors</a>
                             <a href="{{clinics_page}}"  {% if request.path == clinics_page %} class="rounded-md bg-white/30  px-3 py-2 text-sm font-medium text-white" {% else %} class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/30 hover:text-white" {% endif %} >Clinics</a>
                             {% if request.user.is_staff %}
-                            <a href="{{sttaf}}" {% if request.path == sttaf %} class="rounded-md px-3 py-2 text-sm font-medium  bg-white/30 text-white" {% else %} class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/30 hover:text-white" {% endif %}>Add Doctors/Clincks</a>
+                            <a href="{{sttaf}}" {% if request.path == sttaf %} class="rounded-md px-3 py-2 text-sm font-medium  bg-white/30 text-white" {% else %} class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/30 hover:text-white" {% endif %}>sttaf dashboard</a>
                             {% endif %}
 
                         </div>

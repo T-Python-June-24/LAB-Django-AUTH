@@ -3,6 +3,7 @@ from django.http import HttpRequest ,Http404
 from doctor.models import Doctor
 from clinic.models import Clinic
 from django.contrib import messages
+from reservation.models import Reservation
 # Create your views here.
 def home_view(request:HttpRequest):
     doctors=Doctor.objects.all()[0:4]
@@ -10,10 +11,13 @@ def home_view(request:HttpRequest):
     clinics=Clinic.objects.all()[0:3]
     return render(request,'main/home.html',{'doctors':doctors,"clinics":clinics})
 def sttaf_view(request:HttpRequest):
+    doctor_count=Doctor.objects.all().count()
+    clinic=Clinic.objects.all().count()
+    reservations=Reservation.objects.all().count()
     if request.user.is_staff:
-        return render(request,"main/sttaf.html")
+        return render(request,"main/sttaf.html",{"doctor_count":doctor_count,"clinic_count":clinic,"reservation_count":reservations})
     else :
-        return redirect("main:home_view")
+        return render(request,"404.html")
     
 def add_doctor_view(request:HttpRequest):
     if request.user.is_staff:

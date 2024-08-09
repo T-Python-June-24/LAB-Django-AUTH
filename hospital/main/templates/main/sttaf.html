@@ -1,6 +1,46 @@
 {% extends 'main/base.html' %}
 {% block content %}
-    <div class="flex justify-center items-center flex-row gap-5 mt-52">
+      <div class="flex ml-64 mt-10 font-sans font-semibold text-2xl flex-wrap ">
+        <h2>Our hospital in numbers</h2>
+      </div>
+      <div class="flex justify-center items-center flex-row gap-5 flex-wrap ">
+      
+        <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+            <div class="p-4 flex flex-row items-center gap-2">
+                <i class="fa-solid fa-user-doctor text-4xl"></i>
+              <h5 class="block  font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                {{doctor_count}} doctors
+              </h5>
+             
+            </div>
+            
+          </div>
+          <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+            <div class="p-4 flex flex-row items-center gap-2">
+                <i class="fa-solid fa-house-chimney-medical text-3xl "></i>
+              <h5 class="block  font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                {{clinic_count}} Clinics 
+              </h5>
+              
+            </div>
+            
+          </div>
+          <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+            <div class="p-4 flex flex-row items-center gap-2">
+              <i class="fa-regular fa-calendar-check text-3xl"></i>
+              <h5 class="block  font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                {{reservation_count}} Appointments 
+              </h5>
+              
+            </div>
+            
+          </div>
+    </div>
+    <div class="flex ml-64 mt-10 font-sans font-semibold text-2xl flex-wrap ">
+      <h2>Action</h2>
+    </div>
+    <div class="flex justify-center items-center flex-row gap-5 mt-10">
+      
         <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
             <div class="p-4">
                 <i class="fa-solid fa-user-doctor text-4xl"></i>
