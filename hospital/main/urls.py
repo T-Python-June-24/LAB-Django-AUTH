@@ -6,5 +6,7 @@ urlpatterns = [
     path("sttaf/dashboard",views.sttaf_view,name="sttaf_view"),
     path('add/doctor',views.add_doctor_view,name="add_doctor_view"),
     path('add/clinic',views.add_clinic_view,name="add_clinic_view"),
+    path('search/result',views.search_result,name="search_result"),
+    
     
 ]

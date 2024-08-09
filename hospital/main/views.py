@@ -42,3 +42,15 @@ def add_clinic_view(request:HttpRequest):
         return render(request,"main/add_clinic.html",{"doctors":doctors,"working_hours":Clinic.WorkingHours.choices} )
     else :
         return redirect("main:home_view")
+
+def search_result(request:HttpRequest):
+    query = request.GET.get('query', '').strip()
+    if query:
+        doctor = Doctor.objects.filter(full_name__icontains=query)
+        clinic=Clinic.objects.filter(name__icontains=query)
+    else:
+        doctor = Doctor.objects.none() 
+        clinic=Clinic.objects.none()
+
+
+    return render(request,"main/search_page.html",{"query":query,"doctors":doctor,"clinics":clinic})

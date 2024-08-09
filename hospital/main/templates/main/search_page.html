@@ -1,0 +1,100 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<div class="mt-10">{% include 'main/searchComponent.html'%}</div>
+<div class="mt-10 ml-52  flex flex-col ">
+    <div>
+      
+        <div class="flex flex-row justify-between">
+            <h2 class="text-xl font-bold">Doctors <span class="text-gray-500 text-sm">found({{doctors.count}})</span></h2>
+            <a href="{% url 'doctor:all_doctors_view' %}"><span class="material-symbols-outlined mr-20 text-3xl text-teal-500">
+              read_more
+              </span></a>
+              
+        
+            
+        </div>
+        
+        <div class="flex flex-row gap-3 ">
+          {% for doctor in doctors %}
+        <div class="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border mt-10 rounded-xl w-72">
+            <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white shadow-lg bg-clip-border rounded-xl h-80">
+              <img src="{{doctor.photo.url}}" alt="profile-picture" />
+            </div>
+            <div class="p-6 text-center h-2/5">
+              <a href="{% url 'doctor:doctor_page' doctor.id %}" class="hover:text-teal-500 "><h4 class="block mb-2  hover:ease-linear duration-200 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900  text-nowrap">
+                Dr. {{doctor.full_name}}
+              </h4></a>
+              {%  for clinic in doctor.clinic_set.all %}
+              <p
+                class="block font-sans text-base antialiased font-medium leading-relaxed  bg-clip-text bg-gradient-to-tr from-blue-gray-600 to-blue-gray-400">
+                {{clinic.name}}             
+                   </p>
+                   {% endfor %}
+            </div>
+            <div class="flex justify-center p-6 pt-2 gap-7">
+              <a href="#facebook"
+                class="block font-sans text-xl antialiased font-normal leading-relaxed text-transparent bg-clip-text bg-gradient-to-tr from-blue-600 to-blue-400">
+                <i class="fab fa-facebook" ></i>
+              </a>
+              <a href="#twitter"
+                class="block font-sans text-xl antialiased font-normal leading-relaxed  bg-clip-text bg-gradient-to-tr from-light-blue-600 to-light-blue-400">
+                <i class="fa-brands fa-x-twitter"></i>
+                
+              </a>
+              
+              <a href="#instagram"
+                class="block font-sans text-xl antialiased font-normal leading-relaxed text-transparent bg-clip-text bg-gradient-to-tr from-purple-600 to-purple-400"><i
+                  class="fab fa-instagram" >
+                </i>
+              </a>
+            </div>
+          </div>
+        
+          {% endfor %}
+        </div>
+    </div>
+
+</div>
+<div class="mt-10 ml-52 h-3/6 flex flex-col ">
+    <div>
+        <div class="flex flex-row justify-between">
+            <h2 class="text-xl font-bold">clincs <span class="text-gray-400 text-sm">found ({{clinics.count}})</span></h2>
+        <a href="{% url 'clinic:all_clinic' %}"><span class="material-symbols-outlined mr-20 text-3xl text-teal-500">
+                read_more
+                </span></a>
+            
+        </div>
+        <div class="flex flex-row gap-3 flex-wrap">
+        {% for clinic in clinics %}
+        
+        <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+            <div class="p-6 h-full">
+                <i class="fa-solid fa-house-chimney-medical text-2xl"></i>
+              <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                {{ clinic.name }}
+              </h5>
+              <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit text-wrap w-72">
+                {{ clinic.description }}
+              </p>
+            </div>
+            <div class="p-6 pt-0">
+              <a href="{% url 'clinic:clinic_page' clinic.id %}" class="inline-block">
+                <button
+                  class="flex items-center gap-2 px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
+                  type="button">
+                  View Clinc  
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
+                  </svg>
+                </button>
+              </a>
+            </div>
+          </div> 
+          {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
