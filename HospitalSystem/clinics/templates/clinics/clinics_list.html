@@ -1,9 +1,9 @@
-{% extends 'main/base.html' %}
+{% extends 'main/dashboard.html' %}
 
 
-{% block title %} Add New Doctor{% endblock %}
+{% block title %} Add New Clinic{% endblock %}
 
-{% block content %}
+{% block dashboard %}
 
 <div class="container">
     <h2>Add Clinics</h2>
@@ -48,7 +48,7 @@
 
                 <td>{{ clinic.get_working_hours_display }}</td>
                 <td>
-                    <a href="#" class="btn btn-outline-primary">Details</a>
+                    <a href="{% url 'clinics:clinic_detail' clinic.id  %}" class="btn btn-outline-primary">Details</a>
                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#updateModal{{ clinic.id }}">Update</button>
                     <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ clinic.id }}" >delete</button>

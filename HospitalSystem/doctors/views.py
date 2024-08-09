@@ -4,6 +4,8 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from .forms import DoctorForm
 from .models import Doctor
+from django.db import IntegrityError
+
 
 
 def add_doctor(request:HttpRequest):
@@ -61,11 +63,18 @@ def delete_doctor(request:HttpRequest,doctor_id):
         doctor = Doctor.objects.get(pk=doctor_id)
         doctor.delete()
         messages.success(request, "Deleted Doctor Successfully", "success")
-        return redirect('doctors:all_doctors')
 
+    
+    except IntegrityError as e:
+        print(e)
+        messages.error(request, "Couldn't Delete doctor which has at least one reservation", "danger")
+
+    
     except Exception as e:
         print(e)
         messages.error(request, "Couldn't Delete Doctor", "danger")
+    return redirect('doctors:all_doctors')
+
 
 def update_doctor(request:HttpRequest,doctor_id):
 
@@ -96,4 +105,8 @@ def update_doctor(request:HttpRequest,doctor_id):
 def doctor_detail(request:HttpRequest,doctor_id:int):
     doctor = Doctor.objects.get(pk=doctor_id)
     return render(request, "doctors/doctor_detail.html",{"doctor": doctor})
+
+def doctor_display(request):
+     doctors = Doctor.objects.all()
+     return render(request, "doctors/all_doctors.html",{"doctors":doctors})
 

@@ -1,17 +1,4 @@
 
-<div class="row justify-content-around ">
-
-    <div class="col-12 text-end">
-
-        {% if request.user == user %}
-        <a href="{% url 'accounts:update_profile' request.user.username %}"><i class="bi bi-pencil-square"></i> update
-            profile</a>
-        {% endif %}
-
-    </div>
-
-</div>
-
 <h2>reservations for @{{user.username}}</h2>
 
 <div class="row m-3">

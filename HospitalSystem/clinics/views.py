@@ -5,6 +5,7 @@ from django.contrib import messages
 from .forms import ClinicForm
 from .models import Clinic
 from doctors.models import Doctor
+from django.db import IntegrityError
 
 
 def add_clinic(request:HttpRequest):
@@ -65,9 +66,16 @@ def delete_clinic(request:HttpRequest,clinic_id):
         messages.success(request, "Deleted clinic Successfully", "success")
         return redirect('clinics:all_clinics')
 
+    except IntegrityError as e:
+        print(e)
+        messages.error(request, "Couldn't Delete clinic that has at least one doctor or one reservation", "danger")
+        return redirect('clinics:all_clinics')
+    
     except Exception as e:
         print(e)
-        messages.error(request, "Couldn't Delete clinic", "danger")
+        messages.error(request, "Unkown error: Couldn't Delete clinic", "danger")
+        return redirect('clinics:all_clinics')
+    
 
 def update_clinic(request:HttpRequest,clinic_id):
 
@@ -99,4 +107,9 @@ def clinic_detail(request,clinic_id):
      clinic = Clinic.objects.get(pk=clinic_id)
      doctors=clinic.doctors.all()
      return render(request, "clinics/clinic_detail.html",{"clinic":clinic , "doctors":doctors})
+
+
+def clinic_display(request):
+     clinic = Clinic.objects.all()
+     return render(request, "clinics/all_clinics.html",{"clinics":clinic})
 

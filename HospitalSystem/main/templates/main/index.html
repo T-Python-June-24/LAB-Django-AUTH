@@ -23,45 +23,22 @@
 </div>
 
 <hr />
-<a href="#">
+<a href="{%url 'clinics:clinic_display'%}">
 <div class="d-flex align-items-center justify-content-between ">
   <h2 class="m-0 p-0">our clinics</h2>
   <span class="material-symbols-outlined text-fxl">arrow_forward</span>
 </div>
 </a>
+{%include 'clinics/clinics.html'%}
 <hr />
-<a href="#">
+<a href="{%url 'doctors:doctor_display'%}">
 <div class="d-flex align-items-center justify-content-between ">
   <h2 class="m-0 p-0">our doctors</h2>
   <span class="material-symbols-outlined text-fxl">arrow_forward</span>
 </div>
 </a>
 
-<div class="row mt-2 row-cols-1 row-cols-md-3 g-4">
-
-  {% for doctor in doctors %}
-    <div class="col">
-        <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow rounded gap-2">
-          <div class="d-flex justify-content-between align-items-center w-100">
-              <div class="d-flex gap-2">
-
-                  <a href="#"><h2 class="cat p-1 ps-3 pe-3  rounded-pill text-black">{{ doctor.full_name }}</h2></a>
-
-              </div>
-
-          </div>
-         
-          <img src="{{doctor.photo.url}}" class="w-100 poster-thumb object-fit-cover"/>
-          <div class="d-flex justify-content-between align-items-center w-100">
-            <a href=""><h6>{{doctor.bio}}</h6></a>
-          </div>
-
-        </div>
-    </div>
-  {% endfor %}
-
-
-</div>
+{%include 'doctors/doctors.html'%}
 
 
 {% endblock %}

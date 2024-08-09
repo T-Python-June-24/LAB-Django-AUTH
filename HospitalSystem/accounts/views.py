@@ -109,5 +109,5 @@ def update_profile(request):
             messages.error(request, "Couldn't update profile", "danger")
             print(e)
 
-    return render(request, 'accounts/profile.html')
+    return render(request, 'accounts/update_profile.html')
 
