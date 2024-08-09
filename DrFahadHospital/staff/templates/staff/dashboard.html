@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Staff Dashboard</h2>
+<p>Welcome to the staff dashboard! Here you can manage clinics and doctors.</p>
+<a href="{% url 'clinic_create' %}" class="btn btn-primary">Add New Clinic</a>
+<a href="{% url 'doctor_create' %}" class="btn btn-secondary">Add New Doctor</a>
+{% endblock %}

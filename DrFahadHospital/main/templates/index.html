@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to Our Hospital</h1>
+    <p class="lead">We provide the best healthcare services with top specialists and state-of-the-art facilities.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'clinic_list' %}" role="button">View Clinics</a>
+    <a class="btn btn-secondary btn-lg" href="{% url 'doctor_list' %}" role="button">View Doctors</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Our Clinics</h2>
+        <ul>
+            {% for clinic in clinics %}
+                <li><a href="{% url 'clinic_detail' clinic.id %}">{{ clinic.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'clinic_list' %}">View More</a>
+    </div>
+    <div class="col-md-6">
+        <h2>Our Doctors</h2>
+        <ul>
+            {% for doctor in doctors %}
+                <li><a href="{% url 'doctor_detail' doctor.id %}">{{ doctor.full_name }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'doctor_list' %}">View More</a>
+    </div>
+</div>
+{% endblock %}

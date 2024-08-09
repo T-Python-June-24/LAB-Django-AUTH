@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>My Reservations</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Clinic</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.clinic.name }}</td>
+                <td>{{ reservation.doctor.full_name }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.time_slot }}</td>
+                <td>
+                    <a href="{% url 'reservation_cancel' reservation.id %}" class="btn btn-danger">Cancel</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
