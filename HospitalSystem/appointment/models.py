@@ -14,4 +14,4 @@ class Appointment(models.Model):
     created_at= models.DateField(auto_now_add=True)
 
     def __str__ (self):
-        return self.user
+        return f"{self.user.first_name} in Clinic ({self.clinic.name}) with Doctor {self.doctor.name} date{self.date} "

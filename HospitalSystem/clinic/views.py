@@ -1,30 +1,26 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.http import HttpRequest
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 from django.contrib import messages
-from django.core.mail import EmailMessage
-from django.conf import settings
-from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
 from clinic.models import Clinic
 from doctor.models import Doctor
 
 
 
-
+@login_required(login_url="account:log_in")
 def all_clinics_view(request: HttpRequest):
     clinic = Clinic.objects.prefetch_related('doctors_id').all()
 
     return render(request, "allClinic.html", {"clinics":clinic})
-
+@login_required(login_url="account:log_in")
 def details_clinics_view(request: HttpRequest, clinic_id):
     # clini_details = Clinic.objects.get(id=clinic_id)
     clinic = Clinic.objects.get(id=clinic_id)
 
     return render(request, "clinicDetails.html", {"clinic":clinic})
 
-
+@login_required(login_url="account:log_in")
 def add_clinics_view(request:HttpRequest):
     doctors = Doctor.objects.all()
     working_hours_choices = Clinic.WorkingHours.choices

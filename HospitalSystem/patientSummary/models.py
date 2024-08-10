@@ -9,4 +9,4 @@ class PatientSummary(models.Model):
     created_at= models.DateTimeField(auto_now_add=True)
 
     def __str__ (self):
-        return self.appointment
+        return f"{self.appointment.user} in Clinic ({self.diagnosis}) with Doctor {self.prescription_name} date{self.created_at} "

@@ -150,6 +150,13 @@
                   >My profile</a
                 >
               </li>
+              <li>
+                <a
+                  href="{%url 'appointment:my_appointment_view' user.username%}"
+                  class="block py-2 px-4 text-sm hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-400 light:hover:text-white"
+                  >My Appointment</a
+                >
+              </li>
               {% if request.user.is_staff %}
                 <li>
                       <a
@@ -343,9 +350,11 @@
             </ul>
           </li>
           <li>
-            <a
-              href="#"
-              class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg light:text-white hover:bg-gray-100 light:hover:bg-gray-700 group"
+            <button
+              type="button"
+              class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 light:text-white light:hover:bg-gray-700"
+              aria-controls="dropdown-sales"
+              data-collapse-toggle="dropdown-appointment"
             >
               <svg
                 aria-hidden="true"
@@ -361,13 +370,44 @@
                   d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"
                 ></path>
               </svg>
-              <span class="flex-1 ml-3 whitespace-nowrap">Appointment</span>
+              <span class="flex-1 ml-3 text-left whitespace-nowrap"
+                >Appointment</span
+              >
               <span
                 class="inline-flex justify-center items-center w-5 h-5 text-xs font-semibold rounded-full text-primary-800 bg-primary-100 light:bg-primary-200 light:text-primary-800"
               >
-                4
               </span>
-            </a>
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+            <ul id="dropdown-appointment" class="hidden py-2 space-y-2">
+              <li>
+                <a
+                  href="{% url 'appointment:all_appointment_view'%}"
+                  class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 light:text-white light:hover:bg-gray-700"
+                  >All Appointment</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'appointment:add_appointment_view'%}"
+                  class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 light:text-white light:hover:bg-gray-700"
+                  >Add New Appointment</a
+                >
+              </li>
+              
+            </ul>
           </li>
           <li>
           

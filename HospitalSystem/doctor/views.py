@@ -11,13 +11,13 @@ from doctor.models import Doctor
 
 
 
-
+@login_required(login_url="account:log_in")
 def all_doctors_view(request: HttpRequest):
     doctor = Doctor.objects.all()
 
     return render(request, "allDoctors.html", {"doctors":doctor})
 
-
+@login_required(login_url="account:log_in")
 def add_doctors_view(request:HttpRequest):
     if request.method == "POST":
 
