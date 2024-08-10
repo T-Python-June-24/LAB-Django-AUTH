@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Staff Dashboard</h1>
+    <h2>Clinics</h2>
+    <a href="{% url 'add_clinic' %}" class="btn btn-primary">Add Clinic</a>
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Working Hours</th>
+                <th>Feature Image</th>
+                <th>Doctors</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for clinic in clinics %}
+            <tr>
+                <td>{{ clinic.name }}</td>
+                <td>{{ clinic.description }}</td>
+                <td>{{ clinic.get_working_hours_display }}</td>
+                <td>
+                    {% if clinic.feature_image %}
+                        <img src="{{ clinic.feature_image.url }}" alt="{{ clinic.name }}" width="100">
+                    {% endif %}
+                </td>
+                <td>
+                    <ul>
+                        {% for doctor in clinic.doctors.all %}
+                            <li>{{ doctor.full_name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <a href="{% url 'update_clinic' clinic.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'delete_clinic' clinic.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Doctors</h2>
+    <a href="{% url 'add_doctor' %}" class="btn btn-primary">Add Doctor</a>
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Specialization</th>
+                <th>Bio</th>
+                <th>Photo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+            <tr>
+                <td>{{ doctor.full_name }}</td>
+                <td>{{ doctor.specialization }}</td>
+                <td>{{ doctor.bio }}</td>
+                <td>
+                    {% if doctor.photo %}
+                        <img src="{{ doctor.photo.url }}" alt="{{ doctor.full_name }}" width="100">
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'update_doctor' doctor.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'delete_doctor' doctor.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

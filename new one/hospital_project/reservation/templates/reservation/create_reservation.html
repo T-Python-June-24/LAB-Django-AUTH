@@ -1,0 +1,126 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="fas fa-calendar-plus"></i> Create a Reservation</h1>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="{{ form.clinic.id_for_label }}" class="form-label"><i class="fas fa-clinic-medical"></i> Clinic</label>
+                {{ form.clinic }}
+                <div class="invalid-feedback">
+                    Please select a clinic.
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="{{ form.doctor.id_for_label }}" class="form-label"><i class="fas fa-user-md"></i> Doctor</label>
+                {{ form.doctor }}
+                <div class="invalid-feedback">
+                    Please select a doctor.
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="{{ form.date.id_for_label }}" class="form-label"><i class="fas fa-calendar-day"></i> Date</label>
+                {{ form.date }}
+                <div class="invalid-feedback">
+                    Please provide a valid date.
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="{{ form.time_slot.id_for_label }}" class="form-label"><i class="fas fa-clock"></i> Time Slot</label>
+                <div id="time-slot-container">
+                </div>
+                <div class="invalid-feedback">
+                    Please provide a valid time slot.
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-check"></i> Submit</button>
+    </form>
+</div>
+
+<script>
+    
+
+   
+    document.addEventListener('DOMContentLoaded', function() {
+    const clinicSelect = document.querySelector('select[name="clinic"]');
+    const doctorSelect = document.querySelector('select[name="doctor"]');
+    const timeSlotContainer = document.getElementById('time-slot-container');
+    const timeSlotSelect = document.createElement('select');
+    timeSlotSelect.name = 'time_slot';
+    timeSlotContainer.appendChild(timeSlotSelect);
+
+    function updateDoctors() {
+        const clinicId = clinicSelect.value;
+        if (clinicId) {
+            fetch(`/reservations/get_doctors_for_clinic/${clinicId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    doctorSelect.innerHTML = '';
+                    data.doctors.forEach(doctor => {
+                        const option = document.createElement('option');
+                        option.value = doctor.id;
+                        option.text = doctor.full_name;
+                        doctorSelect.appendChild(option);
+                    });
+                });
+        } else {
+            doctorSelect.innerHTML = '';
+            const defaultOption = document.createElement('option');
+            defaultOption.text = 'Select a Clinic first';
+            doctorSelect.appendChild(defaultOption);
+        }
+    }
+
+    function updateTimeSlots(workingHours) {
+        const [start, end] = workingHours.split('-');
+        const startTime = new Date(`2000-01-01T${start}:00`);
+        const endTime = new Date(`2000-01-01T${end}:00`);
+        timeSlotSelect.innerHTML = '';
+
+        const noonOption = document.createElement('option');
+        noonOption.value = '12:00';
+        noonOption.text = 'Noon';
+        timeSlotSelect.appendChild(noonOption);
+
+        while (startTime < endTime) {
+            const option = document.createElement('option');
+            option.value = startTime.toTimeString().slice(0, 5);
+            option.text = startTime.toTimeString().slice(0, 5);
+            timeSlotSelect.appendChild(option);
+            startTime.setMinutes(startTime.getMinutes() + 20);
+        }
+    }
+
+    function initializeForm() {
+        const clinicId = clinicSelect.value;
+        if (clinicId) {
+            fetch(`/reservations/get_working_hours_for_clinic/${clinicId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    updateTimeSlots(data.working_hours);
+                });
+            updateDoctors();
+        } else {
+            timeSlotSelect.innerHTML = '';
+            const defaultOption = document.createElement('option');
+            defaultOption.text = 'Select a time slot';
+            timeSlotSelect.appendChild(defaultOption);
+            doctorSelect.innerHTML = '';
+            const defaultDoctorOption = document.createElement('option');
+            defaultDoctorOption.text = 'Select a Clinic first';
+            doctorSelect.appendChild(defaultDoctorOption);
+        }
+    }
+
+    clinicSelect.addEventListener('change', function() {
+        initializeForm();
+    });
+
+    initializeForm();
+});
+</script>
+{% endblock %}

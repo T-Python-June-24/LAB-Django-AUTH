@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="fas fa-calendar-times"></i> Cancel Reservation</h1>
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text">Are you sure you want to cancel the reservation for {{ reservation.clinic.name }} with {{ reservation.doctor.full_name }} on {{ reservation.date }} at {{ reservation.time_slot }}?</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger"><i class="fas fa-check"></i> Yes, Cancel</button>
+                <a href="{% url 'reservation_list' %}" class="btn btn-secondary"><i class="fas fa-times"></i> No, Go Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

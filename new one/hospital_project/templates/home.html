@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="jumbotron bg-light p-5 rounded shadow-sm mb-5" style="background-image: url('{% static 'images/download.jpeg' %}'); background-size: cover; background-position: center; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+        <h1 class="display-4">Welcome to Our Hospital</h1>
+        <p class="lead">At Our Hospital, we are committed to providing the highest quality healthcare services to our community. With state-of-the-art facilities, a team of dedicated professionals, and a patient-centered approach, we strive to ensure that every patient receives the care they deserve.</p>
+        <hr class="my-4">
+        <p>Discover our clinics and expert doctors.</p>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-primary btn-lg me-3" href="{% url 'clinic_list' %}" role="button"><i class="fas fa-clinic-medical"></i> View Clinics</a>
+            <a class="btn btn-secondary btn-lg" href="{% url 'doctor_list' %}" role="button"><i class="fas fa-user-md"></i> View Doctors</a>
+        </div>
+    </div>
+
+    <h2 class="mt-5 mb-4 text-center"> Clinics</h2>
+    <div class="row justify-content-center">
+        {% for clinic in clinics %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    {% if clinic.feature_image %}
+                        <img src="{{ clinic.feature_image.url }}" class="card-img-top" alt="{{ clinic.name }}">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title"><a href="{% url 'clinic_detail' clinic.pk %}" class="text-decoration-none text-dark">{{ clinic.name }}</a></h5>
+                        <p class="card-text">{{ clinic.description|truncatewords:20 }}</p>
+                        <a href="{% url 'clinic_detail' clinic.pk %}" class="btn btn-primary mt-auto"><i class="fas fa-info-circle"></i> View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        <a href="{% url 'clinic_list' %}" class="btn btn-link"><i class="fas fa-list"></i> View All Clinics</a>
+    </div>
+
+    <h2 class="mt-5 mb-4 text-center"> Doctors</h2>
+    <div class="row justify-content-center">
+        {% for doctor in doctors %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    {% if doctor.photo %}
+                        <img src="{{ doctor.photo.url }}" class="card-img-top" alt="{{ doctor.full_name }}">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title"><a href="{% url 'doctor_detail' doctor.pk %}" class="text-decoration-none text-dark">{{ doctor.full_name }}</a></h5>
+                        <p class="card-text">{{ doctor.bio|truncatewords:20 }}</p>
+                        <a href="{% url 'doctor_detail' doctor.pk %}" class="btn btn-primary mt-auto"><i class="fas fa-info-circle"></i> View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        <a href="{% url 'doctor_list' %}" class="btn btn-link"><i class="fas fa-list"></i> View All Doctors</a>
+    </div>
+</div>
+{% endblock %}
