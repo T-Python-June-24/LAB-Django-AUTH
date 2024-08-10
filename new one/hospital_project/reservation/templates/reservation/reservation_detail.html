@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="fas fa-calendar-check"></i> Reservation Detail</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-clinic-medical"></i> {{ reservation.clinic.name }}</h5>
+            <p class="card-text"><strong><i class="fas fa-user-md"></i> Doctor:</strong> {{ reservation.doctor.full_name }}</p>
+            <p class="card-text"><strong><i class="fas fa-calendar-day"></i> Date:</strong> {{ reservation.date }}</p>
+            <p class="card-text"><strong><i class="fas fa-clock"></i> Time Slot:</strong> {{ reservation.time_slot }}</p>
+            <p class="card-text"><strong><i class="fas fa-calendar-plus"></i> Created At:</strong> {{ reservation.created_at }}</p>
+            <a href="{% url 'reservation_list' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Reservations</a>
+            <a href="{% url 'reservation_cancel' reservation.pk %}" class="btn btn-danger"><i class="fas fa-times"></i> Cancel Reservation</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

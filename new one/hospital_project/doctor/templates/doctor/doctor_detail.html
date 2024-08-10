@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="mb-4">{{ doctor.full_name }}</h1>
+            {% if doctor.photo %}
+                <img src="{{ doctor.photo.url }}" class="img-fluid mb-4" alt="{{ doctor.full_name }}">
+            {% endif %}
+            <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+            <p>{{ doctor.bio }}</p>
+        </div>
+        <div class="col-md-4">
+            <h2 class="mb-4">Clinics</h2>
+            <ul class="list-group">
+                {% for clinic in doctor.clinics.all %}
+                    <li class="list-group-item d-flex align-items-center">
+                        <a href="{% url 'clinic_detail' clinic.pk %}" class="text-decoration-none text-dark">
+                            <div class="d-flex align-items-center">
+                                {% if clinic.feature_image %}
+                                    <img src="{{ clinic.feature_image.url }}" class="rounded me-3" alt="{{ clinic.name }}" width="50" height="50">
+                                {% endif %}
+                                <div>
+                                    <h5 class="mb-0">{{ clinic.name }}</h5>
+                                    <small>{{ clinic.working_hours }}</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <!-- <a href="{% url 'create_reservation' %}?doctor={{ doctor.pk }}" class="btn btn-primary mt-4">Create Reservation</a> -->
+        </div>
+    </div>
+</div>
+{% endblock %}
