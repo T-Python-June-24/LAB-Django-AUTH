@@ -1,0 +1,67 @@
+{% extends "base_Home/base_home.html" %}
+{% load static %}
+{% block title %}Clinics{% endblock %}
+{% block body %}
+<div class="affict animate-on-scroll">
+
+</div>
+<div class="container margin">
+    <div class="row shadow  rounded">
+        <div class="col-lg-4 col-md-12">
+            <div class="filter_cont_sec_left">
+                <div class="filter_cont_sec_left_img">
+
+                    <picture>
+                        <img class=""
+                            src="{{doctor.photo.url}}" width="444" height="430" alt=""
+                            loading="lazy">
+                    </picture>
+                </div>
+                <div class="filter_cont_sec_left_cont mt-3">
+                    <h3>Dr. {{doctor.full_name|capfirst}}</h3>
+                    <h6>{{doctor.specialization}}</h6>
+                    
+                </div>
+                <hr class="spacer20px">
+
+            </div>
+    </div>
+    <div class="col-lg-7 col-md-12 d-flex align-items-center justify-content-center">
+        <div class="filter_cont_sec_right page_module text-center">
+            <strong><span style="font-size: 200%; color: #0d7c74;">Bio:</span></strong>
+            <div><span style="font-size: 18.6667px;"><strong><br></strong></span>
+                <div>
+                    <p>
+                        {{doctor.bio}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    
+    <div class="row shadow p-5 rounded">
+        <div class="col-12">
+            <h1>Clinic :</h1>
+        </div>
+        {% for clinic in clinics %}
+        <div class="col-4">
+            <div class="card text-secondary">
+                <a href="{% url 'Home:clinic_detail' clinic.name %}" class="link-clinic">
+                    <img src="{{clinic.feature_image.url}}" class="card-img-top" alt="Clinic Name">
+                    <div class="card-body text-secondary">
+                        <h5 class="card-title text-secondary">{{clinic.name}}</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        {% empty %}
+        <h1>There is no doctor's office</h1>
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+{% endblock %}

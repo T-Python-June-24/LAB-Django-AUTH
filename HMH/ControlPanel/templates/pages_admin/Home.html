@@ -1,0 +1,291 @@
+{% extends "page_base/base_admin.html" %}
+
+{%block body%}
+{% block title %}Home {% endblock %}
+<div class="row mb-5 mt-5">
+    <div class="col d-flex justify-content-center align-items-center">
+        <form class="mt-3" action="{% url 'ControlPanel:search' %}" method="get">
+            {% csrf_token %}
+            <div class="input-group gap-3">
+                
+                <select class="form-select" name="search_by" aria-label="Select search type">
+                    <option value="doctor" selected>doctor</option>
+                    <option value="clinic" >clinic</option>
+                    <option value="reservation" >Reservation</option>
+                </select>
+                
+                
+                <input type="text" class="form-control" name="search_term" placeholder="Search..." value="{{ request.GET.search_term }}">
+                
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="ccontent">
+    <div class="row">
+        <div class=" dash col-xs-12 col-md-6">
+            <div class="stats main-stats">
+                <div class="stats-title">
+                    <h6>Inventory Summary</h6>
+                </div>
+
+                <div class="stats-body">
+                    <div class="stats-item active">
+                        <div class="stats-icon stats-visitors"><span class="material-symbols-outlined">
+                            clinical_notes
+                            </span></div>
+                        <div class="stats-text media-left">
+                            <div class="stats-number">{{count_doctor}}</div>
+                            <div class="stats-subtext  text-size-small">doctors</div>
+                        </div>
+                    </div>
+
+                    <div class="stats-item">
+                        <div class="stats-icon stats-orders"><span class="material-symbols-outlined">
+                            emergency
+                            </span></div>
+                        <div class="stats-text media-left">
+                            <div class="stats-number"> {{count_clinic}} </div>
+                            <div class="stats-subtext  text-size-small">clinic</div>
+                        </div>
+                    </div>
+
+                    <div class="stats-item Supplier">
+                        <div class="stats-icon stats-sales"><span class="material-symbols-outlined">
+                            book_online
+                            </span></div>
+                        <div class="stats-text media-left">
+                            <div class="stats-number"> {{count_reservation}} </div>
+                            <div class="stats-subtext  text-size-small">reservation</div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="views_product">
+                <div class="panel panel-warning">
+                    <div class="panel-heading" style="background-color: #00b4d8;">reservation</div>
+                    <div class="panel-body">
+                        <div class="header-product text-white">
+                            <p>clinic</p>
+                            <p>name user </p>
+                            <p>Date and Time</p>
+                        </div>
+                        {% for reservation in recent_reservation %}
+                        <div class="product" id="product-{{reservation.id}}" data-bs-toggle="modal"
+                            data-bs-target="#modal-{{reservation.id}}">
+                            <h1>{{reservation.clinic.name}}</h1>
+                            <h1>{{reservation.user.first_name}} {{reservation.user.last_name}}</h1>
+                            <p>{{reservation.data}} & {{reservation.time_slot}}</p>
+                        </div>
+
+
+                        <div class="modal fade" id="modal-{{reservation.id}}" tabindex="-1"
+                            aria-labelledby="modalLabel-{{reservation.id}}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel-{{reservation.id}}"> clinic:
+                                            {{reservation.clinic.name}}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="model-img mb-3">
+                                            <img src="{{reservation.clinic.feature_image.url}}" alt="" class="img-fluid">
+                                        </div>
+                                        <h1>clinic: {{reservation.clinic.name}}</h1>
+                                        <p>Name user : {{reservation.user.first_name}} {{reservation.user.last_name}}</p>
+                                        <p>date : {{reservation.data}}</p>
+                                        <p> Time :{{reservation.time_slot}}</p>
+                                        <p> Doctor name :{{reservation.doctor.full_name}}</p>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12 col-lg-5">
+            
+            <div class="panel panel-warning mt-5">
+                <div class="panel-heading">Morning period </div>
+                <div class="panel-body">
+                    {% for morning in morning_clinic %}
+                    <div class="product" id="product-{{morning.id}}" data-bs-toggle="modal"
+                        data-bs-target="#modal-{{morning.id}}">
+                        <img src="{{morning.feature_image.url}}" alt="">
+                        <h1>{{morning.name}}</h1>
+                        
+                    </div>
+                    <div class="modal fade" id="modal-{{morning.id}}" tabindex="-1"
+                        aria-labelledby="modalLabel-{{morning.id}}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel-{{morning.id}}"> clinic:
+                                        {{morning.name}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="model-img mb-3">
+                                        <img src="{{morning.feature_image.url}}" alt="" class="img-fluid">
+                                    </div>
+                                    <h1>{{morning.name}}</h1>
+                                    <p>description :{{morning.description}}</p>
+                                    <p>work hours :{{morning.work_hours}}</p>
+                                    <p>Doctors:</p>
+                                    <div class="supplier">
+                                        {% for doctor in night.doctor.all %}
+                                        <p>{{doctor.full_name}}</p>
+                                        {% endfor %}
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel panel-warning mt-5">
+                <div class="panel-heading">Night period </div>
+                <div class="panel-body">
+                    {% for night in night_clinic %}
+                    <div class="product" id="product-{{night.id}}" data-bs-toggle="modal"
+                        data-bs-target="#modal-{{night.id}}">
+                        <img src="{{night.feature_image.url}}" alt="">
+                        <h1>{{night.name}}</h1>
+                        
+                    </div>
+                    <div class="modal fade" id="modal-{{night.id}}" tabindex="-1"
+                        aria-labelledby="modalLabel-{{night.id}}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel-{{night.id}}"> clinic:
+                                        {{night.name}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="model-img mb-3">
+                                        <img src="{{night.Images_Product.url}}" alt="" class="img-fluid">
+                                    </div>
+                                    <h1>{{night.name}}</h1>
+                                    <p>description :{{night.description}}</p>
+                                    <p>work hours :{{night.work_hours}}</p>
+                                    <p>Doctors:</p>
+                                    <div class="supplier">
+                                        {% for doctor in night.doctor.all %}
+                                        <p>{{doctor.full_name}}</p>
+                                        {% endfor %}
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel panel-warning mt-5">
+                <div class="panel-heading" >Evening period</div>
+                <div class="panel-body">
+                    {% for evening in evening_clinic %}
+                    <div class="product" id="product-{{evening.id}}" data-bs-toggle="modal"
+                        data-bs-target="#modal-{{evening.id}}">
+                        <img src="{{evening.feature_image.url}}" alt="">
+                        <h1>{{evening.name}}</h1>
+                       
+                    </div>
+                    <!-- Modal -->
+<div class="modal fade" id="modal-{{ evening.id }}" tabindex="-1" aria-labelledby="modalLabel-{{ evening.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel-{{ evening.id }}">clinic: {{ evening.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 text-center">
+                    <img src="{{ evening.feature_image.url }}" alt="{{ evening.name }}" class="img-fluid rounded">
+                </div>
+                <h4 class="mb-2">{{ evening.name }}</h4>
+                <p class="fs-5 text-muted">description {{ evening.evening }}</p>
+                <p>worl hours{{ evening.work_hours }}</p>
+                <p class="fw-bold">doctors:</p>
+                <ul class="list-unstyled">
+                    {% for supplier in evening.user.all %}
+                    <li>{{ supplier.full_name }}</li>
+                    {% empty %}
+                    <li>No doctors assigned</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.getElementById('fileInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const fileName = document.getElementById('fileName');
+
+        fileInput.addEventListener('change', function () {
+            if (fileInput.files.length > 0) {
+         
+                fileName.textContent = fileInput.files[0].name;
+                submitBtn.disabled = false;  
+            } else {
+                fileName.textContent = 'Choose a file';
+                submitBtn.disabled = true;   
+            }
+        });
+    });
+</script>
+
+{%endblock%}

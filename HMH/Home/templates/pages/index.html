@@ -1,0 +1,137 @@
+{%extends "base_Home/base_home.html"%}
+{% load static %}
+{% block title %}Home {% endblock %}
+{% block body %}
+<div class="affict animate-on-scroll">
+
+</div>
+<div class="affict2 animate-on-scroll"></div>
+<div class="row  h-75 ">
+  <div class="col-12 w-100 col-md-6 animate-on-scroll d-flex align-items-center justify-content-center">
+    <div class="p-3 text-banner">
+      <h1 style="font-size: 4rem;">MEDINA NAATIONAL <span style="color: #12a89d;">HOSPITAL</span> </h1>
+      <h3>The first private hospital was opened in Medina
+        Where care meets experience</h3>
+      <a href="#" class="btn btn-success mt-5 bottom">Clinics</a>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-6 w-100 animate-on-scroll d-flex  align-items-center justify-content-center">
+    <video autoplay muted loop playsinline id="hail_video_slide" data-video="1" class="mtz-lpcbi rounded-video height ">
+      <source
+        src="https://res.cloudinary.com/dvyxhy5gu/video/upload/v1722884905/Untitled_video_-_Made_with_Clipchamp_16_emwk8v.mp4"
+        type="video/mp4">
+    </video>
+  </div>
+</div>
+<div style=" background: url('{% static 'images/backgound.png' %}') no-repeat right top #ffffff;" class="animate-on-scroll">
+  <div class="container">
+    <div class="row box-dr align-items-center">
+      <div class="col-12 text-center">
+        <h1> <span style="color: #6e2d7f;">Doctors</span> staff</h1>
+      </div>
+      <div class="col-md-6 animate-on-scroll text-md-start text-center">
+        
+        <div class="box">
+          <h4>
+            dr.Halah amen
+          </h4>
+          <hr>
+          <h5> Obstetrics and Gynecology Specialist </h5>
+          <p>
+            - performing natural obstetrics and repairing the perineum <br>
+            - following up on pregnancy <br>
+            - family planning <br>
+            - following up on obstetrics and gynecology
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 animate-on-scroll d-flex justify-content-center justify-content-md-end">
+        <img src="{% static 'images/maram.png' %}" class="img-dr" alt="dr.maram">
+      </div>
+    </div>
+  </div>
+</div>
+<div style="background:url('{% static 'images/shape1-ar.webp' %}') no-repeat left top #f8f8f8; padding-top:1rem;" class="animate-on-scroll">
+<div class="container mt-5">
+  <div class="row">
+
+    <div class="col-md-6 animate-on-scroll col-12 mb-4">
+      <div class="boxx box-clinics">
+        <h4>Clinics</h4>
+        <p>
+          Explore our wide range of clinics offering specialized care and expert medical services.
+        </p>
+        <a href="{% url 'Home:view_clinic' %}" class="btn btn-light">View Clinics</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 animate-on-scroll col-12 mb-4">
+      <div class="boxx box-doctors">
+        <h4>Doctors</h4>
+        <p>
+          Meet our team of highly qualified doctors dedicated to providing top-notch healthcare.
+        </p>
+        <a href="{% url 'Home:view_doctor' %}" class="btn btn-light">View Doctors</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div style="background:url('{% static 'images/back 1.png' %}') no-repeat right top ;" class="animate-on-scroll">
+<div class="container mt-5">
+  <div class="row d-flex align-items-center justify-content-center ">
+
+    <div class="col-12 animate-on-scroll d-flex justify-content-center mb-5">
+      <h1>CLINIC</h1>
+    </div>
+    {% for clinics in clinic %}
+    <div class="col-12 animate-on-scroll col-md-4 mb-4">
+      <div class="clinic-card d-flex flex-column justify-content-center">
+        <div class="clinic-image">
+          <img src="{{clinics.feature_image.url}}" alt="" class="img-fluid">
+        </div>
+        <div class="clinic-info text-center">
+          <h4>{{clinics.name}}</h4>
+          <a href="{% url 'Home:clinic_detail' clinics.name %}" class="btn btn-light">Learn More</a>
+        </div>
+      </div>
+    </div>
+{% endfor %}
+  </div>
+  <div class="col-12 animate-on-scroll d-flex justify-content-center">
+    <a href="{% url 'Home:view_clinic' %}" class="btn btn-light">view more</a>
+  </div>
+</div>
+</div>
+</div>
+<div class="container mt-5">
+  <div class="row d-flex align-items-stretch">
+    <!--for-->
+    <div class="col-12 animate-on-scroll d-flex justify-content-center mb-5">
+      <h1>DOCTORS</h1>
+    </div>
+    {% for doctors in doctor %}
+    <div class="col-12 animate-on-scroll col-md-4 mb-4">
+      <div class="doctor-card">
+        <img src="{{doctors.photo.url}}" alt="{{ doctor.name }}">
+        <div class="doctor-card-body">
+          <h4>{{doctors.full_name}}</h4>
+          <!--specialization -->
+          <p>{{doctors.specialization}}</p>
+        </div>
+        <div class="doctor-card-buttons">
+          
+          <a href="{% url 'Home:dector_detail' doctor_name=doctors.full_name %}" class="btn btn-details">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+   
+    <div class="col-12 animate-on-scroll d-flex justify-content-center">
+      <a href="{% url 'Home:view_doctor' %}" class="btn btn-light">view more</a>
+    </div>
+    <!--endfor -->
+  </div>
+</div>
+{% endblock %}

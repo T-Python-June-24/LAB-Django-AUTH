@@ -1,0 +1,221 @@
+{% extends "page_base/base_admin.html" %}
+{% load static %}
+{% block title %} clinic {% endblock %}
+{%block body%}
+
+<div class="row mb-5 mt-5 ">
+  <div class="col d-flex justify-content-center  align-items-center">
+      <form class="mt-3" action="{% url 'ControlPanel:search' %}" method="GET">
+          {% csrf_token%}
+          <input type="hidden" name="search_by" value="clinic">
+          <div class="input-group gap-3">
+              <input type="text" class="form-control" name='search_term' placeholder="Search...">
+              <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Search</button>
+              </div>
+          </div>
+      </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col d-flex justify-content-between mb-5">
+    <h1 class="">clinic</h1>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      add clinic
+    </button>
+    
+    
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">add clinic</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'Clinic:add_clinic' %}" method="post" enctype="multipart/form-data" class="d-flex flex-column gap-3">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Clinic Name</label>
+                            <input type="text" id="Name" name="name" value="{{ clinic.naem }}" class="form-control" placeholder="doctor name" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">description</label>
+                            <textarea id="description" name="description" class="form-control" placeholder="About the doctor" required>{{ product.Description_product }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">work hours</label>
+                            <select id="category" name="work_hours" class="form-select" required>
+                                <option value="">Choose a work hours</option>
+                                {% for code, name in work_hours %}
+                                <option value="{{ code }}">{{ code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="supplier" class="form-label">Doctors</label>
+                            <select id="supplier" name="doctor" class="form-select" multiple required>
+                                {% for doctors in doctor %}
+                                <option value="{{ doctors.id }}" >{{ doctors.full_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="image" class="form-label">clinci Image</label>
+                            <input type="file" id="image" name="feature_image" accept="image/*" class="form-control" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" value="Add Product">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  </div>
+</div>
+
+<hr style="border-color: #3c4a67;"/>
+<div class="row">
+  
+{% for clinic in clinics %}
+<div class="col-md-4 mb-4">
+    <div class="card position-relative">
+        
+        <img src="{{ clinic.feature_image.url }}" class="card-img-top" alt="{{ clinic.name }}">
+        
+        <div class="card-body">
+            <h5 class="card-title">{{ clinic.name }}</h5>
+            <p class="card-text"> description: {{ clinic.description }}</p>
+            <p class="card-text"> work_hours : {{ clinic.work_hours }}</p> 
+            <p class="card-text">Clinic :
+                <ul class="list-unstyled">
+                    {% for doctor in clinic.doctor.all %}
+                    <li>{{ doctor.full_name }}</li>
+                    {% empty %}
+                    <li>No doctor assigned</li>
+                    {% endfor %}
+                </ul>
+            </p>
+            
+            
+            
+            <div class="d-flex justify-content-between mt-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1-{{ clinic.id }}">
+                    Product Update
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal2-{{ clinic.id }}">
+                    Product Delete
+                </button>
+            </div>
+        </div>
+    </div>
+ 
+ 
+    <div class="modal fade" id="exampleModal1-{{ clinic.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Doctor Update</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'Clinic:update_doctor' id_clinic=clinic.id %}" class="d-flex flex-column gap-3" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">clinic Name</label>
+                            <input type="text" id="Name" name="name" value="{{ clinic.name }}" class="form-control" placeholder="clinic name" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">description</label>
+                            <textarea id="description" name="description" class="form-control" placeholder="About the clinic" required>{{ clinic.description }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">work hours</label>
+                            <select id="category" name="work_hours" class="form-select" required>
+                                <option value="">Choose a work hours</option>
+                                {% for code, name in work_hours %}
+                                <option value="{{ code }}" {% if code == clinic.work_hours %} selected{% endif %}>{{ code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="supplier" class="form-label">Doctors</label>
+                            <select id="supplier" name="doctor" class="form-select" multiple required>
+                                {% for doctor in doctor %}
+                                <option value="{{ doctor.id }}" {% if doctor in clinic.doctor.all %}selected{% endif %}>{{ doctor.full_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <img src="{{ clinic.feature_image.url }}" alt="" class="img-fluid mt-2">
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">clinic Image</label>
+                            <input type="file" id="image" name="feature_image" accept="image/*" class="form-control" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" value="Add Product">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="modal fade" id="exampleModal2-{{ clinic.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">doctor Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'Clinic:delete_clinic' id_clinic=clinic.id %}" method="post">
+                        {% csrf_token %}
+                        <p>Are you sure you want to delete this clinic?</p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-danger" value="Delete">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    
+</div>
+{% endfor %}
+
+<div class="d-flex justify-content-center col-12 mt-3">
+    {% if clinics.has_previous %}
+    <div class="d-flex gap-1">
+        <a href="?page=1" class="btn btn-my">&lang;&lang;</a>
+        <a href="?page={{clinics.previous_page_number}}" class="btn btn-my">&lang; </a>
+    </div>  
+    {% endif %}
+    <div class="current d-flex align-items-center" >
+        Page {{clinics.number}} of {{clinics.paginator.num_pages}}
+    </div>
+    {% if clinics.has_next %}
+    <div class="d-flex gap-1">
+        <a href="?page={{clinics.next_page_number}}" class="btn btn-my"> &rang;</a>
+        <a href="?page={{clinics.paginator.num_pages}}" class="btn btn-my"> &rang;&rang;</a>
+    </div> 
+    {% endif %}
+</div>
+
+</div>
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+<div class="container">
+    
+    <div class="row mb-5">
+      <div class="col-12 animate-on-scroll">
+        <div class="search-container p-4 rounded shadow-sm bg-light">
+          <form method="GET" action="{% url 'Home:search'%}">
+            <div class="input-group d-flex flex-colome">
+              <input type="text" class="form-control" name="query" placeholder="Search for doctor..." aria-label="Search for clinics" aria-describedby="search-button">
+              <button class="btn btn-primary" type="submit" id="search-button">Search</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
