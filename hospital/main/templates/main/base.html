@@ -51,20 +51,24 @@
               </li>
             
               <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'clinic_view' %}active{% endif %}" href="{% url 'clinics:clinic_view'%}">Clinics</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'doctor_view' %}active{% endif %}" href="{%url 'doctors:doctor_view'%}">Doctors</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ">Contact Us</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'clinic_view' %}active{% endif %}" href="{% url 'clinics:clinic_view'%}">Clinics</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'main:contact'%}">Contact us</a>
+              </li>
+
+
               {% if request.user.is_staff %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Staff List</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{add_clinic_url}}">Add Clinic</a></li>
-                  
-                  <li><a class="dropdown-item" href="{{add_doctor_url}}">Add Doctor</a></li>
+
+                  <li><a class="dropdown-item" href="{% url 'doctors:add_doctor' %}">Add Doctor</a></li>
+                  <li><a class="dropdown-item" href="{% url 'clinics:add_clinic' %}">Add Clinic</a></li>
                   
                   <!-- <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li> -->

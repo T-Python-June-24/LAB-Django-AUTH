@@ -4,15 +4,15 @@
 
 {% block content %}
 
-<div class="container mt-4">
+<!-- <div class="container mt-4">
     <h2>Clinics Catalog</h2>
     <hr>
-    <!-- Search Form -->
+    #Search Form
     <form class="d-flex" role="search" method="get" action="{% url 'clinics:clinic_view' %}">
         <input class="form-control me-2 search-input" type="search" placeholder="Search for a clinic" aria-label="Search" name="searched" value="{{ search_term }}">
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
-        <!-- Search Results Message -->
+        #Search Results Message
         {% if search_term %}
         <br>
         <br>
@@ -25,16 +25,14 @@
             {% endif %}
         {% endif %}
         <hr>
-    </div>
+</div> -->
 <!-- Clinics Table -->
 <div class="shadow-sm p-3 mt-5 mb-5 bg-white rounded">
 <table class="table table-striped mt-3">
 <thead>
     <tr>
-        <th style="background-color: #E7EFF3; color: #495D69;"></th>
-        <th style="background-color: #E7EFF3; color: #495D69;"></th>
-        <th style="background-color: #E7EFF3; color: #495D69;">Name</th>
-        <th style="background-color: #E7EFF3; color: #495D69;">Working Hours</th>
+        <th>Name</th>
+        <th>Working Hours</th>
     </tr>
 </thead>
 <tbody>
@@ -83,7 +81,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="clinic-featureImage-{{ clinic.id }}" class="form-label">Feature Image</label>
-                                    <input type="file" class="form-control" id="clinic-featureImage-{{ clinic.id }}" name="feature_image" accept="image/*">
+                                    <input type="file" class="form-control" id="clinic-featureImage-{{ clinic.id }}" name="featureImg" accept="image/*">
                                 </div>
                                 <label class="form-label">doctors</label>
                                 <div>

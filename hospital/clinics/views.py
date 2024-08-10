@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 def add_clinic(request):
+    
     doctors = Doctor.objects.all()
     if request.method=="POST":
         clinicForm=ClinicForm(request.POST,request.FILES)
@@ -20,7 +21,19 @@ def add_clinic(request):
             for field, errors in clinicForm.errors.items():
                  for error in errors:
                      messages.error(request, f"{field}: {error}",'alert-danger')
-    return render(request, "clinics/add_clinic.html",{'doctors':doctors})        
+    return render(request, "clinics/add_clinic.html",{'doctors':doctors})
+# def add_doctor(request:HttpRequest):
+#     specialization_choices = Doctor.Specialization.choices
+#     if request.method=="POST":
+#             new_doctor = Doctor(full_name=request.POST["full_name"], specialization=request.POST["specialization"], bio=request.POST["bio"], photo=request.FILES["photo"])
+#             new_doctor.save()
+#             messages.success(request, 'doctor added successfully!','alert-success')
+#             return redirect("doctors:doctor_view")
+#     else:    
+#         messages.error(request, f"An unexpected error occurred: ", "alert-danger")
+
+#     return render(request, "doctors/add_doctors.html",{"specialization":specialization_choices})        
+
 
 def delete_clinic(request,clinic_id):
      
