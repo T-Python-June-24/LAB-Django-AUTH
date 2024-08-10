@@ -3,6 +3,7 @@ from django.http import HttpRequest
 from .models import Doctor
 from django.contrib import messages
 from .forms import DoctorForm
+
 # Create your views here.
 
 def view_doctor(request:HttpRequest):
@@ -12,22 +13,26 @@ def view_doctor(request:HttpRequest):
     return render(request , 'pages_doctor/view_doctor.html' , {'doctor':views_doctor , 'specializations':specializations})
 
 def add_doctor(request:HttpRequest):
+    referer = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         doctor_new = DoctorForm(request.POST , request.FILES)
         if doctor_new.is_valid:
             doctor_new.save()
             messages.success(request , 'done add Doctor')
-            return redirect('Doctor:view_doctor')
+            return redirect(referer)
         else:
             messages.error(request , f'not valid form {doctor_new.errors}')
             return redirect('Doctor:view_doctor')
-    return redirect('Doctor:view_doctor')
+    return redirect(referer)
 def detaile_doctor(request:HttpRequest , id_doctor):
     doctor = Doctor.objects.get(id=id_doctor)
     return render(request , 'pages_doctor/detaile_doctor.html' , {'view_doctor': doctor})
 
 def delete_doctor(request:HttpRequest , id_doctor):
     referer = request.META.get('HTTP_REFERER')
+    if not request.user.is_staff:
+        messages.error(request , "only staff can add game")
+        return redirect(referer)
     if request.method == 'POST':
         del_doctor = Doctor.objects.get(pk = id_doctor)
         del_doctor.delete()

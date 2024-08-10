@@ -1,0 +1,86 @@
+{% extends "page_base/base_admin.html" %}
+{% load static %}
+{% block title %} {% block title %} clinic {% endblock %} {% endblock %}
+{%block body%}
+
+<div class="row mb-5 mt-5 ">
+  <div class="col d-flex justify-content-center  align-items-center">
+      <form class="mt-3" action="{% url 'ControlPanel:search' %}" method="GET">
+          {% csrf_token%}
+          <input type="hidden" name="search_by" value="reservation">
+          <div class="input-group gap-3">
+              <input type="text" class="form-control" name='search_term' placeholder="Search...">
+              <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Search</button>
+              </div>
+          </div>
+      </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col d-flex justify-content-between mb-5">
+    <h1 class="">Reservation</h1>
+
+    
+    
+  </div>
+</div>
+
+<hr style="border-color: #3c4a67;"/>
+<div class="row">
+    <table class="table table-striped" style="color:#fff;">
+        <thead>
+            <tr>
+                
+                <th>Name </th>
+                <th>clinic</th>
+                <th>doctor</th>
+                <th>date</th>
+                <th>time slot</th>
+                <th>create at</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservations in reservation %}
+            <tr>
+                <td>{{ reservations.user.first_name }} {{ reservations.user.last_name }}</td>
+                <td>{{ reservations.clinic.name }}</td>
+                <td>{{ reservations.doctor.full_name }}</td>
+                <td>{{ reservations.data }}</td>
+                <td>{{ reservations.time_slot }}</td>
+                <td>{{ reservations.create_at }}</td>
+                
+            </tr>
+    
+            
+    
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+<div class="d-flex justify-content-center col-12 mt-3">
+    {% if reservation.has_previous %}
+    <div class="d-flex gap-1">
+        <a href="?page=1" class="btn btn-my">&lang;&lang;</a>
+        <a href="?page={{reservation.previous_page_number}}" class="btn btn-my">&lang; </a>
+    </div>  
+    {% endif %}
+    <div class="current d-flex align-items-center" >
+        Page {{reservation.number}} of {{reservation.paginator.num_pages}}
+    </div>
+    {% if reservation.has_next %}
+    <div class="d-flex gap-1">
+        <a href="?page={{reservation.next_page_number}}" class="btn btn-my"> &rang;</a>
+        <a href="?page={{reservation.paginator.num_pages}}" class="btn btn-my"> &rang;&rang;</a>
+    </div> 
+    {% endif %}
+</div>
+
+</div>
+
+
+</div>
+
+{%endblock%}

@@ -37,15 +37,19 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+{% url 'Home:Home' as Home_link %}
+  {% url 'Home:view_clinic' as Clinic_link %}
+  {% url 'Home:view_doctor' as Doctor_link %}
+
                 <ul class="navbar-nav ms-auto"> 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'Home:Home' %}">Home</a>
+                        <a class="nav-link {% if request.path == Home_link %}active{% endif %}" aria-current="page" href="{% url 'Home:Home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'Home:view_clinic' %}">clinic</a>
+                        <a class="nav-link {% if request.path == Clinic_link %}active{% endif %}" href="{% url 'Home:view_clinic' %}">clinic</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'Home:view_doctor' %}">doctor</a>
+                        <a class="nav-link {% if request.path == Doctor_link %}active{% endif %}" href="{% url 'Home:view_doctor' %}">doctor</a>
                     </li>
                    
                    

@@ -43,9 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'login',
     'Home',
-    'Clinic',
     'Doctor',
     'Reservation',
+    'ControlPanel',
+    'Clinic',
     
 ]
 
@@ -141,3 +142,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+LOGIN_REDIRECT_URL = 'pages_admin/sign_admin'

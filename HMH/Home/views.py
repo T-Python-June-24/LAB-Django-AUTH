@@ -6,12 +6,14 @@ from Reservation.models import Reservation
 from django.contrib import messages
 from django.core.paginator import Paginator
 
+
+
 # Create your views here.
 
 
 def Home(request:HttpRequest):
-    clinic = Clinic.objects.all()[:5]
-    doctor = Doctor.objects.all()[:5]
+    clinic = Clinic.objects.all()[:3]
+    doctor = Doctor.objects.all()[:3]
     return render(request, 'pages/index.html', 
                   {'clinic':clinic , 
                    'doctor':doctor
