@@ -25,7 +25,7 @@
                         <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                         </svg>
-                        Add product
+                        Add appointment
                     </a>
                     <div class="flex items-center space-x-3 w-full md:w-auto">
                         <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 light:focus:ring-gray-700 light:bg-gray-800 light:text-gray-400 light:border-gray-600 light:hover:text-white light:hover:bg-gray-700" type="button">
@@ -40,26 +40,7 @@
                         <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow light:bg-gray-700">
                             <h6 class="mb-3 text-sm font-medium text-gray-900 light:text-white">Choose brand</h6>
                             <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
-                                <li class="flex items-center">
-                                    <input id="apple" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 light:focus:ring-primary-600 light:ring-offset-gray-700 focus:ring-2 light:bg-gray-600 light:border-gray-500">
-                                    <label for="apple" class="ml-2 text-sm font-medium text-gray-900 light:text-gray-100">Apple (56)</label>
-                                </li>
-                                <li class="flex items-center">
-                                    <input id="fitbit" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 light:focus:ring-primary-600 light:ring-offset-gray-700 focus:ring-2 light:bg-gray-600 light:border-gray-500">
-                                    <label for="fitbit" class="ml-2 text-sm font-medium text-gray-900 light:text-gray-100">Microsoft (16)</label>
-                                </li>
-                                <li class="flex items-center">
-                                    <input id="razor" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 light:focus:ring-primary-600 light:ring-offset-gray-700 focus:ring-2 light:bg-gray-600 light:border-gray-500">
-                                    <label for="razor" class="ml-2 text-sm font-medium text-gray-900 light:text-gray-100">Razor (49)</label>
-                                </li>
-                                <li class="flex items-center">
-                                    <input id="nikon" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 light:focus:ring-primary-600 light:ring-offset-gray-700 focus:ring-2 light:bg-gray-600 light:border-gray-500">
-                                    <label for="nikon" class="ml-2 text-sm font-medium text-gray-900 light:text-gray-100">Nikon (12)</label>
-                                </li>
-                                <li class="flex items-center">
-                                    <input id="benq" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 light:focus:ring-primary-600 light:ring-offset-gray-700 focus:ring-2 light:bg-gray-600 light:border-gray-500">
-                                    <label for="benq" class="ml-2 text-sm font-medium text-gray-900 light:text-gray-100">BenQ (74)</label>
-                                </li>
+                                
                             </ul>
                         </div>
                     </div>
@@ -97,18 +78,92 @@
                                 <div id="{{appointment.id}}-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow light:bg-gray-700 light:divide-gray-600">
                                     <ul class="py-1 text-sm text-gray-700 light:text-gray-200" aria-labelledby="{{appointment.id}}-dropdown-button">
                                         <li>
-                                            <a href="#" class="block py-2 px-4 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white">Show</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="block py-2 px-4 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white">Edit</a>
+                                            <!-- Modal toggle -->
+                                            <button id="AddReport" data-modal-target="{{appointment.id}}-CreateReportModal" data-modal-toggle="{{appointment.id}}-CreateReportModal" class="block py-2 px-4 hover:bg-gray-100 light:hover:bg-gray-600 light:hover:text-white" type="button">
+                                            Add report
+                                            </button>
                                         </li>
                                     </ul>
                                     <div class="py-1">
-                                        <a href="#" class="block py-2 px-4 text-sm text-white bg-red-300 hover:bg-red-500 hover:text-white">Delete</a>
+                                        <button id="deleteAppointmentButton" data-modal-target="{{appointment.id}}-deleteAppointmentModal" data-modal-toggle="{{appointment.id}}-deleteAppointmentModal" class="block py-2 px-4 text-white bg-red-400 hover:bg-red-800 " type="button">
+                                            Delete Appointment
+                                        </button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+                            <!-- Main modal -->
+                            <div id="{{appointment.id}}-CreateReportModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+                                    <!-- Modal content -->
+                                    <div class="relative p-4 bg-white rounded-lg shadow light:bg-gray-800 sm:p-5">
+                                        <!-- Modal header -->
+                                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 light:border-gray-600">
+                                            <h3 class="text-lg font-semibold text-gray-900 light:text-white">
+                                                Add Patient Report
+                                            </h3>
+                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center light:hover:bg-gray-600 light:hover:text-white" data-modal-toggle="{{appointment.id}}-CreateReportModal">
+                                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <form action="{% url 'patientSummary:add_patient_summary' appointment.id %}" method="post">
+                                            {% csrf_token %} 
+                                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                                                <div>
+                                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Patient Name</label>
+                                                    <p>{{appointment.user.first_name}} {{appointment.user.last_name}}</p>
+                                                </div>
+                                                <div>
+                                                    <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Doctor name</label>
+                                                    <p>{{appointment.doctor}}</p>
+                                                </div>
+                                                <div>
+                                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Clinic</label>
+                                                    <p>{{appointment.clinic}}</p>
+                                                </div>
+                                                <div>
+                                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Date</label>
+                                                    <p>{{appointment.date}}</p>
+                                                </div>
+                                                <div class="sm:col-span-2">
+                                                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Diagnosis</label>
+                                                    <textarea id="description" name="diagnosis" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400 light:text-white light:focus:ring-primary-500 light:focus:border-primary-500" placeholder="Write diagnosis here" required></textarea>                    
+                                                </div>
+                                                <div class="sm:col-span-2">
+                                                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Prescription</label>
+                                                    <textarea id="description" name="prescription_name" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400 light:text-white light:focus:ring-primary-500 light:focus:border-primary-500" placeholder="Write prescription here" required></textarea>                    
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="text-white inline-flex items-center bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center light:bg-primary-600 light:hover:bg-primary-700 light:focus:ring-primary-800">
+                                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                                Add new patient report
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- delete modal -->
+                            <div id="{{appointment.id}}-deleteAppointmentModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                                <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
+                                    <!-- Modal content -->
+                                    <div class="relative p-4 bg-white rounded-lg shadow light:bg-gray-800 sm:p-5">
+                                            <!-- Modal header -->
+                                            <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                                                <div class="text-lg text-gray-900 md:text-xl light:text-white">
+                                                    <h3 class="font-semibold ">
+                                                        Are you sure to delete {{appointment.user.first_name}} {{appointment.user.last_name}} Appointment?
+                                                    </h3>
+                                                </div> 
+                                                    <a href="{% url 'appointment:delete_appointment_view' appointment.id %}" class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center light:bg-red-500 light:hover:bg-red-600 light:focus:ring-red-900">
+                                                        <svg aria-hidden="true" class="w-5 h-5 mr-1.5 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                                        Delete</a> 
+                                                              
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
                         {%endfor%}
                     </tbody>
                 </table>

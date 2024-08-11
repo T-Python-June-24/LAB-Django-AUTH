@@ -3,7 +3,7 @@
 {% block title %} Log In  {% endblock %}
 
 {% block content %}
-<form class="max-w-sm mx-auto" action="{% url 'account:log_in' %}{% if 'next' in request.GET %}?next={{request.GET.next}}{% endif %}" method="POST">
+<form class="max-w-sm mx-auto mt-40 mb-72" action="{% url 'account:log_in' %}{% if 'next' in request.GET %}?next={{request.GET.next}}{% endif %}" method="POST">
   {% csrf_token %}
     <div class="mb-5">
     <label for="userName" class="block mb-2 text-sm font-medium text-gray-900 light:text-white">Your User Name</label>

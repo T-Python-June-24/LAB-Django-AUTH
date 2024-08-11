@@ -147,7 +147,7 @@
                     {%endif%}
                 <li>
                   <a
-                    href="#"
+                    href="{% url 'appointment:my_appointment_view' user.username%}"
                     class="block py-2 px-4 text-sm hover:bg-gray-100 light:hover:bg-gray-600 light:text-gray-400 light:hover:text-white"
                     >My Appointment</a
                   >
@@ -170,7 +170,7 @@
             {%else%}
             <a
               href="{% url 'account:log_in' %}"
-              class="text-sm font-semibold leading-6 text-gray-900"
+              class="text-sm font-semibold bg-white leading-6 text-gray-900"
               >Log in <span aria-hidden="true">&rarr;</span></a
             >
             {%endif%}

@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     <script src="../static/js/script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     </head>
 <body>
@@ -224,7 +225,7 @@
         <ul class="space-y-2">
           <li>
             <a
-              href="#"
+              href="{%url 'main:dashboard_view'%}"
               class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg light:text-white hover:bg-gray-100 light:hover:bg-gray-700 group"
             >
               <svg
@@ -416,7 +417,7 @@
         >
           <li>
             <a
-              href="#"
+              href="{% url 'patientSummary:all_patient_summary'%}"
               class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 light:hover:bg-gray-700 light:text-white group"
             >
               <svg
@@ -433,11 +434,11 @@
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span class="ml-3">Patient Docs</span>
+              <span class="ml-3">Patients Reports</span>
             </a>
           </li>
             <a
-              href="#"
+              href=""
               class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 light:hover:bg-gray-700 light:text-white group"
             >
               <svg
@@ -467,5 +468,34 @@
  </main>
   </div>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+<script>
+function exportToPDF(patientId) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const modalContent = document.getElementById(`${patientId}-readProductModal`);
+
+    // Get patient details
+    const patientName = modalContent.querySelector('h3 + p').textContent.trim();
+    const doctorName = modalContent.querySelectorAll('h3 + p')[1].textContent.trim();
+    const diagnosis = modalContent.querySelector('dd').textContent.trim();
+    const prescription = modalContent.querySelectorAll('dd')[1].textContent.trim();
+    const dateCreated = modalContent.querySelectorAll('dd')[2].textContent.trim();
+
+    // Add content to PDF
+    doc.setFontSize(18);
+    doc.text('Patient Summary', 105, 20, null, null, 'center');
+    
+    doc.setFontSize(12);
+    doc.text(`Patient Name: ${patientName}`, 20, 40);
+    doc.text(`Doctor Name: ${doctorName}`, 20, 50);
+    doc.text(`Diagnosis: ${diagnosis}`, 20, 60);
+    doc.text(`Prescription: ${prescription}`, 20, 70);
+    doc.text(`Date Created: ${dateCreated}`, 20, 80);
+
+    // Save the PDF
+    doc.save(`patient_summary_${patientId}.pdf`);
+}
+</script>
 </body>
 </html>

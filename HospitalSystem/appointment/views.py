@@ -10,6 +10,7 @@ from clinic.models import Clinic
 from doctor.models import Doctor
 from appointment.models import Appointment
 from account.models import Profile
+from patientSummary.models import PatientSummary
 from django.contrib.auth.models import User
 from datetime import datetime
 
@@ -29,14 +30,12 @@ def all_appointment_view(request: HttpRequest):
 
 def my_appointment_view(request: HttpRequest, user_username):
     user = get_object_or_404(User, username=user_username)
-    
-    # Get the profile associated with this user
     profile = get_object_or_404(Profile, user=user)
-    
-    # Get all appointments for this profile
-    appointment = Appointment.objects.filter(user=profile)
-
-    return render(request, "myAppointment.html", {"appointments":appointment})
+    appointments = Appointment.objects.filter(user=profile).prefetch_related('appointment')
+    context = {
+        "appointments": appointments,
+    }
+    return render(request, "myAppointment.html", context)
 
 @login_required(login_url="account:log_in")
 def add_appointment_view(request: HttpRequest):
@@ -80,14 +79,15 @@ def add_appointment_view(request: HttpRequest):
     }
     return render(request, "addAppointment.html", context)
 
-def delete_appointment_view(request:HttpRequest, appointment_id: int):
+@login_required(login_url="account:log_in")
+def delete_appointment_view(request:HttpRequest, appointment_id):
     if not request.user.is_staff:
-        messages.error(request,"Only registered users can access")
+        messages.error(request,"Only registered users can delete")
         return redirect("account:log_in")
     try:
         appointment = Appointment.objects.get(id=appointment_id) # implement feedback messages
         appointment.delete()
-        messages.success(request, "Appointment has been Deleted  successfully", "alert-success")
+        messages.success(request, "Appointment has been Deleted successfully", "alert-success")
     except Exception as e:
         print(e)
         messages.error(request, "Couldn't Delete Appointment", "alert-danger")
