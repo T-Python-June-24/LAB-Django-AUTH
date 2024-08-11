@@ -56,6 +56,9 @@
               <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'clinic_view' %}active{% endif %}" href="{% url 'clinics:clinic_view'%}">Clinics</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'add_reservation' %}active{% endif %}" href="{% url 'reservations:add_reservation'%}">Reservation</a>
+              </li>
 
               <li class="nav-item">
                 <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'main:contact'%}">Contact us</a>
