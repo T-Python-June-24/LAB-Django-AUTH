@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError, transaction
 from django.contrib import messages
 from .models import Profile
+from clinics.models import Reservation
 
 
 # Create your views here.
@@ -73,12 +74,13 @@ def user_profile_view(request:HttpRequest, user_name):
             new_profile.save()
         #profile:Profile = user.profile  
         #profile = Profile.objects.get(user=user)
+        appointments = Reservation.objects.filter(user_id=user.id).order_by("date")
     except Exception as e:
         print(e)
         return render(request,'404.html')
     
 
-    return render(request, 'accounts/profile.html', {"user" : user})
+    return render(request, 'accounts/profile.html', {"user" : user, 'appointments':appointments})
 
 
 
@@ -104,10 +106,12 @@ def update_user_profile(request:HttpRequest):
                 if "phone_number" in request.POST: profile.phone_number = request.POST["phone_number"]
                 if "address" in request.POST: profile.address = request.POST["address"]
                 profile.save()
+                return render(request, "accounts/profile.html")
 
             messages.success(request, "Updated profile successfuly", "alert-success")
         except Exception as e:
             messages.error(request, "Couldn't update profile", "alert-danger")
             print(e)
+        
 
     return render(request, "accounts/update_profile.html")

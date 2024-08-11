@@ -33,13 +33,13 @@
 
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingInput" placeholder="Phone number" name="phone_number" 
-        value="{{request.user.phone_number}}">
+        value="{{request.user.profile.phone_number}}">
       <label for="floatingInput">Phone number</label>
     </div>
 
     <textarea class="form-control" placeholder="address" name="address">{{request.user.profile.address}}</textarea>
 
-    <button class="btn btn-primary w-100 py-2" type="submit">Update</button>
+    <button class="btn sky-bg w-100 py-2" type="submit">Update</button>
   </form>
 </div>
 

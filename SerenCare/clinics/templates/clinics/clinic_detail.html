@@ -64,7 +64,7 @@
 
     <div class="col-4">
 
-        <form class="d-flex flex-column gap-2" action="{% url 'clinics:reservation_view' %}" method="post" enctype="multipart/form-data">
+        <form class="d-flex flex-column gap-2"  method="post" enctype="multipart/form-data">
             {% csrf_token %}
             
             <select name="clinic" class="form-select" required>
@@ -72,22 +72,31 @@
                     <option value="{{ clinic.id }}">{{ clinic.name }}</option>
             </select>
             <select class="form-select" name="doctor" id="doctor" required>
+              {% if selected_doctor %}
+              <option value="{{ selected_doctor.id }}">{{ selected_doctor.full_name }}</option>
+              {% else %}
                 {% for doctor in clinic.doctors.all %}
                     <option value="{{ doctor.id }}">{{ doctor.full_name }}</option>
                 {% endfor %}
+                {% endif %}
             </select>
-          
-            <input type="date" name="date" class="form-control" />
+          {% if selected_date %}
+          <input type="date" name="date" value= {{selected_date}} class="form-control"/>
+          {% else %}
+            <input type="date" name="date" class="form-control"/>
+          {% endif %}
+
+            <button type="submit" name="action1" value="show appointments available" class="btn sky-bg mt-3">show appointments available  </button>
 
             
             {% for time_slot in slots %}
               <div class="form-check">
-                  <input type="radio" name="time_slot" id="time_slot_{{ time_slot }}" value="{{ time_slot }}" class="form-check-input" required>
+                  <input type="radio" name="time_slot" id="time_slot_{{ time_slot }}" value="{{ time_slot|date:'H:i:s' }}" class="form-check-input" required>
                   <label for="time_slot_{{ time_slot }}" class="form-check-label">{{ time_slot|date:"h:i A" }}</label>
           
               </div>
             {% endfor %}
-            <input type="submit" value="Confirm" class="btn sky-bg mt-3" />
+            <input type="submit" name ="action2" value="Confirm" class="btn sky-bg mt-3" />
 
         </form>
 
