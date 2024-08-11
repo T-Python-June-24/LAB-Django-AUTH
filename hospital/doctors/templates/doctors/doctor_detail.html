@@ -16,10 +16,8 @@
             <h1>{{ doctor.full_name }}</h1>
             <p>{{ doctor.bio }}</p>
 
-            <h6 class="align-items-center d-flex ">
-                <span class="material-symbols-outlined me-4"> stethoscope</span>
-                {{ doctor.get_specialization_display }}
-            </h6>
+
+            <h3>Specialized in: {{ doctor.get_specialization_display }}</h3>
             
         </div>
     </div>
@@ -27,13 +25,13 @@
 
     <div class="row">
         <div class="col-12">
-            <h2>Clinics where {{ doctor.full_name }} works</h2>
+            <h2>{{ doctor.full_name }} is assigned to the following clinics</h2>
             <hr>
             <br>
         </div>
         <br>
 <br>
-        {% for clinic in doctor.clinic_set.all %} <!-- Adjusted to use the default related_name 'clinic_set' -->
+        {% for clinic in doctor.clinic_set.all %} 
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
             <div class="card">
                 <a href="{% url 'clinics:clinic_detail' clinic.id %}">
@@ -46,7 +44,7 @@
         </div>
     {% empty %}
         <div class="col-12">
-            <p>No clinics associated with this doctor at the moment.</p>
+            <p>Not assigned to any clinic yet</p>
         </div>
     {% endfor %}
     </div>

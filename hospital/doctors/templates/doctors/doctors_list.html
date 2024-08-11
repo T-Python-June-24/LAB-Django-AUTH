@@ -1,0 +1,16 @@
+{% for doctor in doctors %}
+    <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card shadow-lg">
+            <a href="{% url 'doctors:doctor_detail' doctor.id %}">
+                <img src="{{ doctor.photo.url }}" class="card-img-top" alt="{{ doctor.full_name }}">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{ doctor.full_name }}</h5>
+                    <p class="align-items-center d-flex ">
+                        <span class="material-symbols-outlined me-4">stethoscope</span>
+                        {{ doctor.get_specialization_display }}
+                    </p>         
+            </div>
+        </div>
+    </div>
+{% endfor %}

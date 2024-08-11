@@ -28,7 +28,7 @@
         </div>
     {% endif %}
 
-    <form id="reservationForm" method="post" action="{% url 'reservations:reservation_create' %}" class="space-y-6">
+    <form id="reservationForm" method="post" action="{% url 'reservations:add_reservation' %}" class="space-y-6">
         {% csrf_token %}
         <div class="grid grid-cols-1 gap-6">
             <!-- Clinic Dropdown -->

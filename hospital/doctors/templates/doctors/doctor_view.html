@@ -23,7 +23,7 @@
                                 <br>
                                 <br>
                                 {% else %}
-                                    <p>No doctors found.</p>
+                                    <p>No Matching results</p>
                                 {% endif %}
                             {% endif %}
                             <hr>
@@ -33,27 +33,19 @@
     <table class="table table-striped mt-3">
         <thead>
             <tr>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Photo</th>
                 <th>Full Name</th>
                 <th>Specialization</th>
                 <th>Clinics</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
             {% for doctor in doctors %}
 
                 <tr>
-                    <td>
-                        <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ doctor.id }}" href="#">
-                            <span class="material-symbols-outlined">edit</span>    
-                        </a>
-                    </td>
-                    <td>
-                        <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ doctor.id }}" href="#">
-                            <span class="material-symbols-outlined">delete</span>
-                        </a>
-                    </td>
+                    <td><a href="{% url 'doctors:doctor_detail' doctor.id %}"></a><img style="height: 50px; width: 50px;" class="rounded-circle" src="{{ doctor.photo.url }}"></td>
                     <td><a href="{% url 'doctors:doctor_detail' doctor.id %}">{{ doctor.full_name }}</a></td>
                     <td>{{ doctor.get_specialization_display }}</td>
                     <td>
@@ -65,7 +57,19 @@
                             {% endfor %}
                         {% endwith %}
                     </td>
-                                </tr>
+
+                    <td>
+                        <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ doctor.id }}" href="#">
+                            <span class="material-symbols-outlined">edit</span>    
+                        </a>
+                    </td>
+                    <td>
+                        <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ doctor.id }}" href="#">
+                            <span class="material-symbols-outlined">delete</span>
+                        </a>
+                    </td>
+
+                </tr>
             <!-- Modal for Update Form -->
             <div class="modal fade" id="updateModal-{{ doctor.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ doctor.id }}" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
