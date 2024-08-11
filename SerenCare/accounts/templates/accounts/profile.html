@@ -1,0 +1,52 @@
+{% extends 'main/base.html'%}
+
+
+{% block title %} profile for {{user.username}}  {% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+
+    <div class="col">
+        <h2>Mr. {{user.get_full_name}} </h2>
+        <div>
+        <h6>User Name: @{{user.username}}</h6>
+        <h6>Email: {{user.email}}</h6>
+    </div>
+    <div class=" mb-4">
+        <h6>Mobile: {{user.profile.phone_number}}  </h6>
+        <h6>{{user.profile.address}} </h6>
+    </div>
+        {% if request.user == user %}
+        <a href="{% url 'accounts:update_user_profile' %}" class="sky-bg rounded-pill p-2 ">update profile</a>
+        
+        {% endif %}
+    </div>
+
+</div>
+
+<hr>
+
+    <div class="d-flex justify-content-center">
+    <h2>Your appointments</h2>
+</div>
+<hr>
+
+<div class="row mt-2 row-cols-1 row-cols-md-2 g-4">
+
+    {% for appointment in appointments%}
+      <div class="col">
+          <div class="d-flex flex-column justify-content-center align-items-centert h-100 w-100 shadow m-2 p-3 gap-2 bg-body-secondary bg-opacity-75">
+                    <h5 class="m-0 p-0">Clinic: <span class="fw-normal text-black">{{appointment.clinic.name}}</span></h5>
+                    <h5 class="m-0 p-0">Physician: <span class="fw-normal text-black" > Dr. {{appointment.doctor.full_name}} </span></h5>
+                    <h5 class="m-0 p-0">Date: <span class="fw-normal text-black"> {{appointment.date}}</span></h5>
+                    <h5 class="m-0 p-0">Time: <span class="fw-normal text-black"> {{appointment.time_slot}} </span></h5>
+            
+          </div>
+      </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

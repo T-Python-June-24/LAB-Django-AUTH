@@ -1,0 +1,131 @@
+
+{% extends 'main/base.html' %}
+
+
+{% block title %}Clinic Details{% endblock %}
+
+{% block content %}
+<h2>{{clinic.name}}</h2>
+
+<div class="row">
+    <div class="col">
+        <div class="d-flex flex-column gap-2 ">
+          <div class="d-flex">
+            <img src="{{ clinic.feature_image.url }}" class="clinic-img "/>
+          </div>
+              <h6>Working hours: {{clinic.working_hours.start_time}} - {{clinic.working_hours.end_time}}</h6>
+            <div class="d-flex justify-content-start gap-2 mt-4">
+              <a href="{% url 'clinics:clinic_detail_view' clinic.id %}" class="btn sky-bg"><span class="material-symbols-outlined">edit</span></a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"><span class="material-symbols-outlined">delete</span></button>
+            </div>
+            <p>{{ clinic.description }}</p>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<hr>
+
+<h5>Clinic Doctors:</h5>
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4">
+
+  {% for doctor in clinic.doctors.all %}
+  <div class="col">
+      <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+          <div class="d-flex justify-content-between align-items-center w-100">
+              <div class="d-flex gap-2">
+                  <a href="{% url 'doctors:doctor_detail_view' doctor.id %}"><img src="{{ doctor.photo.url }}"
+                          class="rounded-circle overflow-hidden image-small" /></a>
+              </div>
+
+              <div class="d-flex align-items-center">
+                  <h5 class="m-0 p-0">Dr. {{doctor.full_name}} </h5>
+              </div>
+          </div>
+
+          <h6 class="m-0 p-0 text-primary">{{doctor.specialization}}</h6>
+          <div class="d-flex justify-content-between align-items-center w-100">
+
+              <h6 class="m-0 p-0">{{doctor.bio}}</h6>
+          </div>
+
+      </div>
+  </div>
+  {% endfor %}
+</div>
+
+<hr>
+
+
+<h2>Make an appointment</h2>
+
+<div class="row">
+
+    <div class="col-4">
+
+        <form class="d-flex flex-column gap-2"  method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <select name="clinic" class="form-select" required>
+                
+                    <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+            </select>
+            <select class="form-select" name="doctor" id="doctor" required>
+              {% if selected_doctor %}
+              <option value="{{ selected_doctor.id }}">{{ selected_doctor.full_name }}</option>
+              {% else %}
+                {% for doctor in clinic.doctors.all %}
+                    <option value="{{ doctor.id }}">{{ doctor.full_name }}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+          {% if selected_date %}
+          <input type="date" name="date" value= {{selected_date}} class="form-control"/>
+          {% else %}
+            <input type="date" name="date" class="form-control"/>
+          {% endif %}
+
+            <button type="submit" name="action1" value="show appointments available" class="btn sky-bg mt-3">show appointments available  </button>
+
+            
+            {% for time_slot in slots %}
+              <div class="form-check">
+                  <input type="radio" name="time_slot" id="time_slot_{{ time_slot }}" value="{{ time_slot|date:'H:i:s' }}" class="form-check-input" required>
+                  <label for="time_slot_{{ time_slot }}" class="form-check-label">{{ time_slot|date:"h:i A" }}</label>
+          
+              </div>
+            {% endfor %}
+            <input type="submit" name ="action2" value="Confirm" class="btn sky-bg mt-3" />
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Clinic</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are You sure you want to delete {{clinic.name}} ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+           <a href="{% url 'clinics:delete_clinic_view' clinic.id %}" class="btn btn-danger">delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
