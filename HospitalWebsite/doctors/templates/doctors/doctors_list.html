@@ -3,9 +3,9 @@
 {% block title %}Doctors Page{% endblock %}
 
 {% block content %}
-<main class="px-32 py-24">
-  <h1 class="text-4xl font-semibold pt-12 pb-20">Doctors</h1>
-  <ul class="flex flex-row gap-6">
+<main class="px-32 pt-40 pb-24">
+  <h1 class="text-4xl font-semibold pb-20">Doctors</h1>
+  <ul class="flex flex-row flex-wrap gap-6">
     {% for doctor in doctors %}
     <div class="py-4 px-2 border-0 rounded-md shadow-sm">    
       <li class="w-[300px] flex flex-col gap-4">
@@ -18,20 +18,18 @@
     </div>
     {% endfor %}
   </ul>
-  <div class="py-32">
-    <span class="step-links">
+  <div class="py-32 flex flex-row gap-4 justify-center">
         {% if doctors.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ doctors.previous_page_number }}">previous</a>
+            <a class="font-semibold text-green-700" href="?page=1">&laquo; first</a>
+            <a class="font-semibold text-gray-700" href="?page={{ doctors.previous_page_number }}">previous</a>
         {% endif %}
-        <span class="current">
+        <span class="font-semibold">
             Page {{ doctors.number }} of {{ doctors.paginator.num_pages }}.
         </span>
         {% if doctors.has_next %}
-            <a href="?page={{ doctors.next_page_number }}">next</a>
-            <a href="?page={{ doctors.paginator.num_pages }}">last &raquo;</a>
+            <a class="font-semibold text-gray-700" href="?page={{ doctors.next_page_number }}">next</a>
+            <a class="text-green-700" href="?page={{ doctors.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
-    </span>
   </div>
 </main>
 {% endblock %}

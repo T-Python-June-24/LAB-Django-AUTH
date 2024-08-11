@@ -9,7 +9,7 @@ from django.contrib import messages
 
 def doctors_list(request: HttpRequest):
   doctor_list = Doctor.objects.all()
-  paginator = Paginator(doctor_list, 5) 
+  paginator = Paginator(doctor_list, 6) 
   page_number = request.GET.get('page')
   doctors = paginator.get_page(page_number)
   return render(request, 'doctors/doctors_list.html', {'doctors': doctors})
