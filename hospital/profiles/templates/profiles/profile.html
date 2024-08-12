@@ -1,0 +1,45 @@
+{% extends 'main/base.html'%}
+
+{% block title %} profile for {{user.username}}  {% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+
+    <div class="col-2">
+        <h5>@{{user.username}}</h5>
+        {% if request.user == user %}
+        <a href="{% url 'profiles:update_user_profile' %}"><i class="bi bi-pencil-square"></i></a>
+        {% endif %}
+    </div>
+
+
+    <div class="col">
+        <div class="d-flex flex-column gap-3">
+            <!-- <p>{{user.profile.about}}</p> -->
+
+            <!-- {% if request.user == user %}
+
+            <h3>Bookmarks</h3>
+
+            <div class="row row-cols-3 gap-4">
+
+            {% for bookmark in request.user.bookmark_set.all %}
+
+
+            {% endfor %}
+
+            </div>
+
+            {% endif %} -->
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

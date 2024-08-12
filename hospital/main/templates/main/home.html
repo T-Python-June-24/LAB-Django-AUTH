@@ -1,0 +1,107 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Tuwaiq Hospital {% endblock %}
+
+{% block content %}
+
+
+<div class="bg-primary-subtle">
+<div id="carouselExampleCaptions" class="carousel slide">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <a><img src="static/THDesign1.jpg"  class="d-block w-100" alt="..."></a>
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Check our various clinics</h5>
+        <p>we will be happy to give you the right treatment</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="static/THDesign3.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>we love kids</h5>
+        <p>our Pediatricians have a long proven experience of making kids happy</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="static/THDesign2.jpg" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Your smile make the difference</h5>
+        <p>our dental care can make you smile like there's no tomorrow</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</div>
+
+
+
+<div class="container mt-4">
+
+  {% include 'doctors/doctors_list.html' %}
+
+  <h2>Our Clinics</h2>
+  <div class="row">
+      {% for clinic in clinics %}
+      <div class="col-md-4 col-sm-12 mb-4">
+          <div class="card shadow-lg">
+              <a href="{% url 'clinics:clinic_detail' clinic.id %}"><img src="{{ clinic.featureImg.url }}" class="card-img-top" alt="{{ clinic.name }}"></a>
+              <div class="card-body">
+                  <h5 class="card-title">{{ clinic.name }}</h5>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+  <br>
+  <a href="{% url 'clinics:clinic_view'%}"><h3>view all</h3></a>
+  <br>
+  <br>
+
+  <br>
+  <br>
+  <h2>Our Doctors</h2>
+  <div class="container mt-4">
+      <div class="row">
+          {% for doctor in doctors %}
+          <div class="col-md-4 col-sm-6 mb-4">
+              <div class="card shadow-lg">
+                  <a href="{% url 'doctors:doctor_detail' doctor.id %}">
+                      <img src="{{ doctor.photo.url }}" class="card-img-top" alt="{{ doctor.full_name }}">
+                  </a>
+                  <div class="card-body">
+                      <h5 class="card-title">{{ doctor.full_name }}</h5>
+                      <p class="align-items-center d-flex">
+                          <span class="material-symbols-outlined me-4">stethoscope</span>
+                          {{ doctor.get_specialization_display }}
+                      </p>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+          <br>
+
+          <a href="{% url 'doctors:doctor_view'%}"><h3>view all</h3></a>
+          <br>
+
+      </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}
+

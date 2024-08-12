@@ -1,0 +1,152 @@
+{% extends 'main/base.html' %}
+
+{% block title %} All Doctors {% endblock%}
+
+
+{% block content%}
+
+
+<div class="container mt-4">
+    <h2>Our Doctors</h2>
+    <hr>
+                        <!-- Search Form -->
+                        <form class="d-flex" role="search" method="get" action="{% url 'doctors:doctor_view' %}">
+                            <input class="form-control me-2 search-input" type="search" placeholder="Search for a doctor" aria-label="Search" name="searched" value="{{ search_term }}">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                            <!-- Search Results Message -->
+                            {% if search_term %}
+                            <br>
+                            <br>
+                                <h3>Search Results for "{{ search_term }}"</h3>
+                                {% if doctors %}
+                                <br>
+                                <br>
+                                {% else %}
+                                    <p>No Matching results</p>
+                                {% endif %}
+                            {% endif %}
+                            <hr>
+                        </div>
+    <!-- Doctors Table -->
+<div class="shadow-sm p-3 mt-5 mb-5 bg-white rounded">
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Full Name</th>
+                <th>Specialization</th>
+                <th>Clinics</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+
+                <tr>
+                    <td><a href="{% url 'doctors:doctor_detail' doctor.id %}"></a><img style="height: 50px; width: 50px;" class="rounded-circle" src="{{ doctor.photo.url }}"></td>
+                    <td><a href="{% url 'doctors:doctor_detail' doctor.id %}">{{ doctor.full_name }}</a></td>
+                    <td>{{ doctor.get_specialization_display }}</td>
+                    <td>
+                        {% with doctor.clinic_set.all as clinics %}
+                            {% for clinic in clinics %}
+                                <a href="{% url 'clinics:clinic_detail' clinic.id %}">{{ clinic.name }}{% if not forloop.last %}, {% endif %}</a>
+                            {% empty %}
+                                No clinics
+                            {% endfor %}
+                        {% endwith %}
+                    </td>
+
+                    <td>
+                        <a data-bs-toggle="modal" data-bs-target="#updateModal-{{ doctor.id }}" href="#">
+                            <span class="material-symbols-outlined">edit</span>    
+                        </a>
+                    </td>
+                    <td>
+                        <a data-bs-toggle="modal" data-bs-target="#deleteModal-{{ doctor.id }}" href="#">
+                            <span class="material-symbols-outlined">delete</span>
+                        </a>
+                    </td>
+
+                </tr>
+            <!-- Modal for Update Form -->
+            <div class="modal fade" id="updateModal-{{ doctor.id }}" tabindex="-1" aria-labelledby="updateModalLabel-{{ doctor.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateModalLabel-{{ doctor.id }}">Update Doctor</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="{% url 'doctors:update_doctor' doctor.id %}">
+
+                                {% csrf_token %}
+                                
+                                <label for="doctor-name-{{ doctor.id }}" class="form-label">Full Name</label>
+                                <input type="text" class="form-control mb-3" id="doctor-name-{{ doctor.id }}" name="full_name" value="{{ doctor.full_name }}" required>
+                                <div class="mb-3">
+                                    <select name="specialization" class="form-select" >
+                                        <option>Choose specialization</option>
+                                        {% for value, label in specialization %}
+                                            <option value="{{ value }}" {% if value == doctor.specialization %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                        
+                                </div>
+                                <label for="doctor-bio-{{ doctor.id }}" class="form-label">Bio</label>
+                                <textarea class="form-control mb-3" id="doctor-bio-{{ doctor.id }}" name="bio">{{ doctor.bio }}</textarea>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal for Deletion Confirmation -->
+            <div class="modal fade" id="deleteModal-{{ doctor.id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ doctor.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel-{{ doctor.id }}">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete {{ doctor.full_name }}?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="{% url 'doctors:delete_doctor' doctor.id %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No doctors available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+     <a href="{% url 'doctors:add_doctor' %}">Add Doctor</a>
+</div>
+<!-- pagination -->
+<div class="pagination d-flex justify-content-center align-items-center mt-5 gap-4">
+    {% if doctors.has_previous %}
+        <div class="d-flex gap-1">
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ doctors.previous_page_number }}">&laquo; previous</a>
+        </div>
+    {% endif %}
+
+    <div class="current">
+        Page {{ doctors.number }} of {{ doctors.paginator.num_pages }}
+    </div>
+    {% if doctors.has_next %}
+    <div class="d-flex gap-1">
+        <a href="?page={{ doctors.next_page_number }}">next &raquo;</a>
+        <a href="?page={{ doctors.paginator.num_pages }}">last &raquo;</a>
+    </div>
+{% endif %}
+{% endblock %}
