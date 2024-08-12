@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ doctor.full_name }}</h2>
+    <img src="{{ doctor.photo.url }}" class="img-fluid mb-4" alt="{{ doctor.full_name }}">
+    <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+    <p>{{ doctor.bio }}</p>
+    <h3>Associated Clinics</h3>
+    <ul>
+        {% for clinic in doctor.clinic_set.all %}
+        <li><a href="{% url 'clinics:clinic_detail' clinic.pk %}">{{ clinic.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

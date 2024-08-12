@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Manage Clinics{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="my-4">Manage Clinics</h2>
+    <a href="{% url 'clinics:clinic_create' %}" class="btn btn-primary mb-4">Add Clinic</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Working Hours</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for clinic in page_obj %}
+            <tr>
+                <td>{{ clinic.name }}</td>
+                <td>{{ clinic.working_hours }}</td>
+                <td>
+                    <a href="{% url 'clinics:clinic_update' clinic.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'clinics:clinic_delete' clinic.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary mr-2">Previous</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-secondary">Next</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
