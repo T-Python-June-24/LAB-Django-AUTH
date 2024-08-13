@@ -1,0 +1,38 @@
+{% extends "main/base.html" %}
+
+{% block title %}Clinics Page{% endblock %}
+
+{% block content %}
+<main class="p-32">
+  <h1 class="text-4xl font-semibold pt-12 pb-20">Clinics</h1>
+  <ul class="flex flex-row gap-6">
+    {% for clinic in clinics %}
+    <div class="py-4 px-2 border-0 rounded-md shadow-sm">
+      <li class="w-[300px] flex flex-col gap-4">
+        <img class="w-[280px] h-[300px] rounded-sm" src="{{ clinic.feature_image.url }}">
+        <h2 class="text-xl font-medium">{{ clinic.name }}</h2>
+        <p class="text-wrap px-2 font-thin text-sm">{{ clinic.description|truncatechars:90 }}</p>
+        <p class="px-2 font-thin text-sm">{{ clinic.working_hours }}</p>
+        <a class="text-blue-600" href="{% url 'clinics:clinic_detail' clinic.id %}">View More</a>
+      </li>
+    </div>
+    {% endfor %}
+  </ul>
+  <div class="py-32">
+    <span class="step-links">
+        {% if clinics.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ clinics.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+            Page {{ clinics.number }} of {{ clinics.paginator.num_pages }}.
+        </span>
+        {% if clinics.has_next %}
+            <a href="?page={{ clinics.next_page_number }}">next</a>
+            <a href="?page={{ clinics.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+  </div>
+</main>
+{% endblock %}
+

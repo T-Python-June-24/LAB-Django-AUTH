@@ -1,0 +1,70 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %} {% endblock %}</title>
+  <link href="{% static 'main/css/style.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script src="{% static 'main/js/script.js' %}"></script>
+  {% tailwind_css %}
+</head>
+<body>
+  <nav class="bg-black bg-opacity-70 fixed w-full z-10 top-0 shadow">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+        <!-- Hospital Logo -->
+        <div class="flex items-center">
+            <img src="https://www.ahdubai.com//img/ahd/logo-new.webp" alt="Hospital Logo" class="h-10 mr-3">
+        </div>
+  
+        <!-- Navigation Links -->
+        <div class="flex items-center space-x-6">
+            <a href="{% url 'main:home_view' %}" class="text-white hover:text-indigo-400 transition duration-300">Home</a>
+  
+            {% if request.user.is_authenticated %}
+              {% if request.user.is_staff %}
+                <a href="{% url 'main:staff_dashboard' %}" class="text-white hover:text-indigo-400 transition duration-300">Dashboard</a>
+              {% endif %}
+              <a href="{% url 'reservations:user_reservations' %}" class="text-white hover:text-indigo-400 transition duration-300">Reservations</a>
+              <a href="{% url 'accounts:profile' %}" class="text-white hover:text-indigo-400 transition duration-300">Profile</a>
+            {% else %}
+              <!-- Dropdown for Login and Signup -->
+              <div class="relative">
+                  <button class="dropdown-button text-white hover:text-indigo-400 transition duration-300 focus:outline-none">
+                      Account
+                      <svg class="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                  </button>
+                  <div class="dropdown-menu hidden absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg overflow-hidden z-20">
+                      <a href="{% url 'accounts:sign_in' %}" class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white">Sign In</a>
+                      <a href="{% url 'accounts:sign_up' %}" class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white">Sign Up</a>
+                  </div>
+              </div>
+            {% endif %}
+        </div>
+    </div>
+  </nav>
+  
+
+{% if messages %}
+<div class="mt-24 mx-32">
+    {% for message in messages %}
+    <div class="{% if message.tags == 'success' %}bg-green-100 border border-green-400 text-green-700{% elif message.tags == 'error' %}bg-red-100 border border-red-400 text-red-700{% endif %} px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline">{{ message }}</span>
+        <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onclick="this.parentElement.style.display='none';">
+            <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.935 2.935a1 1 0 1 1-1.414-1.414l2.935-2.935-2.935-2.935a1 1 0 1 1 1.414-1.414l2.935 2.935 2.935-2.935a1 1 0 1 1 1.414 1.414L11.414 10l2.935 2.935a1 1 0 0 1 0 1.414z"/></svg>
+        </span>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+  {% block content %}
+
+  {% endblock %}
+  
+</body>
+</html>

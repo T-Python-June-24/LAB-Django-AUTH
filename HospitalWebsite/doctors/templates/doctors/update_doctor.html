@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Edit Doctor{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-20">
+    <h1 class="text-3xl font-bold mb-6">Edit Doctor</h1>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="full_name" class="block text-gray-700">Full Name:</label>
+            <input type="text" id="full_name" name="full_name" value="{{ doctor.full_name }}" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+            <label for="specialization" class="block text-gray-700">Specialization:</label>
+            <input type="text" id="specialization" name="specialization" value="{{ doctor.specialization }}" class="w-full p-2 border rounded" required>
+        </div>
+        <div class="mb-4">
+            <label for="bio" class="block text-gray-700">Bio:</label>
+            <textarea id="bio" name="bio" class="w-full p-2 border rounded" required>{{ doctor.bio }}</textarea>
+        </div>
+        <div class="mb-4">
+            <label for="photo" class="block text-gray-700">Photo:</label>
+            <input type="file" id="photo" name="photo" class="w-full p-2 border rounded">
+            {% if doctor.photo %}
+            <img src="{{ doctor.photo.url }}" alt="Doctor Photo" class="mt-4 h-32 w-32 object-cover">
+            {% endif %}
+        </div>
+        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">Update Doctor</button>
+    </form>
+</div>
+{% endblock %}

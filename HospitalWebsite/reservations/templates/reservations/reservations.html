@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Reservations{% endblock %}
+
+{% block content %}
+<div class="container px-32 py-24 p-4">
+    <h2 class="text-4xl font-bold mb-4">My Reservations</h2>
+
+    <div class="my-6">
+      <a href="{% url 'reservations:make_reservation' %}" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+        Make a New Reservation
+      </a>
+    </div>
+
+    {% if reservations %}
+    <table class="w-full table-auto bg-white shadow-md rounded p-4">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="px-4 py-2">Clinic</th>
+                <th class="px-4 py-2">Doctor</th>
+                <th class="px-4 py-2">Date</th>
+                <th class="px-4 py-2">Time Slot</th>
+                <th class="px-4 py-2">Created At</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td class="border px-4 py-2">{{ reservation.clinic.name }}</td>
+                <td class="border px-4 py-2">{{ reservation.doctor.full_name }}</td>
+                <td class="border px-4 py-2">{{ reservation.date }}</td>
+                <td class="border px-4 py-2">{{ reservation.get_time_slot_display }}</td>
+                <td class="border px-4 py-2">{{ reservation.created_at }}</td>
+                <td class="border px-4 py-2">
+                    <form action="{% url 'reservations:delete_reservation' reservation.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No reservations made yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

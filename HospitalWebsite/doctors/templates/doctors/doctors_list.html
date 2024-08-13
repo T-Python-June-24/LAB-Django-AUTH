@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+
+{% block title %}Doctors Page{% endblock %}
+
+{% block content %}
+<main class="px-32 pt-40 pb-24">
+  <h1 class="text-4xl font-semibold pb-20">Doctors</h1>
+  <ul class="flex flex-row flex-wrap gap-6">
+    {% for doctor in doctors %}
+    <div class="py-4 px-2 border-0 rounded-md shadow-sm">    
+      <li class="w-[300px] flex flex-col gap-4">
+        <img class="w-[280px] h-[300px] rounded-sm" src="{{ doctor.photo.url }}" >
+        <h2 class="text-xl font-medium">{{ doctor.full_name }} </h2>
+        <p class="text-wrap px-2 font-thin text-sm">{{ doctor.bio|truncatechars:90 }}</p>
+        <hr/>
+        <a class="text-blue-600" href="{% url 'doctors:doctor_detail' doctor.id %}">View More</a>
+      </li>
+    </div>
+    {% endfor %}
+  </ul>
+  <div class="py-32 flex flex-row gap-4 justify-center">
+        {% if doctors.has_previous %}
+            <a class="font-semibold text-green-700" href="?page=1">&laquo; first</a>
+            <a class="font-semibold text-gray-700" href="?page={{ doctors.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="font-semibold">
+            Page {{ doctors.number }} of {{ doctors.paginator.num_pages }}.
+        </span>
+        {% if doctors.has_next %}
+            <a class="font-semibold text-gray-700" href="?page={{ doctors.next_page_number }}">next</a>
+            <a class="text-green-700" href="?page={{ doctors.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+  </div>
+</main>
+{% endblock %}
