@@ -1,0 +1,66 @@
+{% extends 'main/base.html' %}
+
+{% block title %}A Hospital{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="jumbotron">
+        <h1 class="display-4">A Hospital</h1>
+        <p class="lead">phrases</p>
+        <hr class="my-4">
+        <p>Use the navigation bar to explore the features of the website.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Clinics</h5>
+                    <p class="card-text">View all clinics available in the hospital.</p>
+                    <a href="{% url 'clinics:clinic_list' %}" class="btn btn-primary btn-block">View Clinics</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Doctors</h5>
+                    <p class="card-text">View all doctors available in the hospital.</p>
+                    <a href="{% url 'doctors:doctor_list' %}" class="btn btn-primary btn-block">View Doctors</a>
+                </div>
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Reservations</h5>
+                    <p class="card-text">Make a reservation at a clinic with a specific doctor.</p>
+                    <a href="{% url 'reservations:make_reservation' %}" class="btn btn-primary btn-block">Make Reservation</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">My Reservations</h5>
+                    <p class="card-text">View or cancel your reservations.</p>
+                    <a href="{% url 'reservations:user_reservations' %}" class="btn btn-primary btn-block">View Reservations</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
